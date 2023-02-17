@@ -1,0 +1,12 @@
+.env
+.env.backup
+/frontend/.env
+/frontend/.env.local
+/frontend/.env.backup
+/backend/.env
+/backend/.env.backup
+/.idea
+/.vscode
+.DS_Store
+/backend/vendor
+/frontend/node_modules

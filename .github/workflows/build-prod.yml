@@ -1,0 +1,12 @@
+on:
+  push:
+    branches: [ prod ]
+name: Build Prod
+
+jobs:
+  deploy-prod:
+    name: "Deploy Prod"
+    uses: ./.github/workflows/build.yml
+    with:
+      environment: prod
+    secrets: inherit

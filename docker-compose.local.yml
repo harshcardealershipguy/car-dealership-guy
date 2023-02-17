@@ -1,0 +1,37 @@
+version: '3.9'
+services:
+  
+  # Application
+  frontend:
+      build:
+          dockerfile: frontend.local.dockerfile
+      ports:
+        - 3000:3000 #for vite
+      volumes:
+        - ./frontend:/var/www/frontend
+  backend:
+    build:
+      dockerfile: backend.local.dockerfile
+    volumes:
+      - ./backend:/var/www/backend
+#   Web Server
+  webnginx:
+      build:
+          dockerfile: web.local.dockerfile
+      volumes:
+        - ./nginx:/var/www/app/nginx
+  db:
+      image: postgres:14.4-alpine
+      restart: always
+      command: ["postgres", "-c", "log_statement=all"]
+      environment:
+        - POSTGRES_DB=car_dealership_guy
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+      ports:
+        - '5432:5432'
+      volumes: 
+        - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local

@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  
+  # Application
+  app:
+      build:
+          dockerfile: app.prod.dockerfile
+      
+  # Web Server
+  webnginx:
+      build:
+          dockerfile: web.prod.dockerfile
+      hostname: webnginx
+      container_name: webnginx
+      restart: unless-stopped
+      ports:
+        - 80:80

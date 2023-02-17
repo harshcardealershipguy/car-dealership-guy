@@ -1,0 +1,23 @@
+version: '3.9'
+services:
+  
+  # Application
+  frontend:
+      build:
+          context: .
+      working_dir: /var/www/frontend
+  backend:
+      build:
+          context: .
+      working_dir: /var/www/backend
+
+  # Web Server
+  webnginx:
+      build:
+          context: .
+      working_dir: /var/www
+      
+      depends_on:
+          - "app"
+      ports:
+          - 80:80
