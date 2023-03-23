@@ -6,6 +6,7 @@ import {useEffect, useState} from "react";
 import Label from "@/components/Label";
 import Input from "@/components/Input";
 import InputError from "@/components/InputError";
+import {Box, Typography} from "@mui/material";
 
 export const ThankYouPage = ({goToPage}) => {
 
@@ -30,6 +31,17 @@ export const ThankYouPage = ({goToPage}) => {
     }, [state])
 
     return (
-        <p>Thank you!</p>
+        <>
+            <Box display="flex"
+                 justifyContent="center"
+                 alignItems="center">
+                <Typography fontWeight={'bold'} variant={'h2'} sx={{my: 2}}>Thank you!</Typography>
+            </Box>
+            <Box display="flex"
+                 justifyContent="center"
+                 alignItems="center">
+                <Typography textAlign={'center'} variant={'p'}>One of our trusted partners will be in touch shortly.</Typography>
+            </Box>
+        </>
     );
 };

@@ -10,28 +10,17 @@ import {Page2No} from "@/components/CreateVehicleRequest/Page2-no";
 import {Page3} from "@/components/CreateVehicleRequest/Page3";
 import {Page4} from "@/components/CreateVehicleRequest/Page4";
 import {ThankYouPage} from "@/components/CreateVehicleRequest/ThankYouPage";
-import {Grid} from "@mui/material";
+import {Box, Grid, LinearProgress} from "@mui/material";
 import {Page5} from "@/components/CreateVehicleRequest/Page5";
 
 const CreateVehicleRequest = () => {
-    const router = useRouter()
 
-    const { login } = useAuth({
-        middleware: 'guest',
-        redirectIfAuthenticated: '/dashboard',
-    })
-
-    const [errors, setErrors] = useState([]);
     const [page, setPage] = useState('Page1');
-    const [formState, setFormState] = useState({});
+    const [progressBarValue, setProgressBarValue] = useState(0);
 
     useEffect(() => {
       //TODO: if there is an external_id in the query param, attempt to load the data
     })
-
-    function setFormValue(event) {
-        console.log(event.target.value);
-    }
 
     function renderForm() {
         switch(page) {
@@ -68,8 +57,9 @@ const CreateVehicleRequest = () => {
         }
     }
 
-    function goToPage(pageName) {
+    function goToPage(pageName, progressBar) {
         //TODO: send form state up to server
+        setProgressBarValue(progressBar);
         setPage(pageName);
     }
 
@@ -80,6 +70,10 @@ const CreateVehicleRequest = () => {
 
                     {/* Session Status */}
                     <AuthSessionStatus className="mb-4" />
+
+                    <Box sx={{ width: '100%' }}>
+                        <LinearProgress variant="determinate" value={progressBarValue} />
+                    </Box>
                     {renderForm()}
 
                 </Grid>

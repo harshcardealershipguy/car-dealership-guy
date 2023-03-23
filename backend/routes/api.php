@@ -23,3 +23,6 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::post('/request', [VehicleRequestController::class, 'store']);
 Route::post('/request/vehicle-info', [VehicleRequestController::class, 'updatePurchaseVehicleInfo']);
 Route::post('/request/personal-info', [VehicleRequestController::class, 'updatePersonalInformation']);
+
+// TODO: only allow admins
+Route::get('/vehicle-requests', [VehicleRequestController::class, 'getVehicleRequests']);

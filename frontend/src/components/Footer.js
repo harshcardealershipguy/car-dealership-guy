@@ -2,10 +2,8 @@ import {Box, Container, Paper, Typography} from "@mui/material";
 
 
 const Footer = () => (
-    <Paper sx={{marginTop: 'calc(10% + 60px)',
+    <Paper sx={{
         width: '100%',
-        position: 'fixed',
-        bottom: 0,
         backgroundColor: '#eee'
     }} component="footer" square variant="outlined">
         <Container maxWidth="lg">

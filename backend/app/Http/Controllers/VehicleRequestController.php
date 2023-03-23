@@ -14,6 +14,10 @@ use Illuminate\Auth\Events\Registered;
 class VehicleRequestController extends Controller
 {
 
+    public function getVehicleRequests() {
+        return VehicleRequest::all();
+    }
+
     /**
      * Store a newly created resource in storage.
      *

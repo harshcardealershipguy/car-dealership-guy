@@ -16,7 +16,7 @@ const GuestLayout = ({ children }) => {
                 {children}
             </div>
 
-            {/*<Footer/>*/}
+            <Footer/>
         </div>
     )
 }
