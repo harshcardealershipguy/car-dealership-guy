@@ -10,6 +10,8 @@ import {Page2No} from "@/components/CreateVehicleRequest/Page2-no";
 import {Page3} from "@/components/CreateVehicleRequest/Page3";
 import {Page4} from "@/components/CreateVehicleRequest/Page4";
 import {ThankYouPage} from "@/components/CreateVehicleRequest/ThankYouPage";
+import {Grid} from "@mui/material";
+import {Page5} from "@/components/CreateVehicleRequest/Page5";
 
 const CreateVehicleRequest = () => {
     const router = useRouter()
@@ -53,6 +55,10 @@ const CreateVehicleRequest = () => {
                 return (
                     <Page4 goToPage={goToPage}/>
                 )
+            case 'Page5':
+                return (
+                    <Page5 goToPage={goToPage}/>
+                )
             case 'ThankYouPage':
                 return (
                     <ThankYouPage/>
@@ -69,13 +75,15 @@ const CreateVehicleRequest = () => {
 
     return (
         <GuestLayout>
-            <AuthCard>
-                {/* Session Status */}
-                <AuthSessionStatus className="mb-4" />
-                {page}
-                {renderForm()}
+            <Grid container justifyContent="center" sx={{mt: 5}}>
+                <Grid item xs={5}>
 
-            </AuthCard>
+                    {/* Session Status */}
+                    <AuthSessionStatus className="mb-4" />
+                    {renderForm()}
+
+                </Grid>
+            </Grid>
         </GuestLayout>
     )
 }

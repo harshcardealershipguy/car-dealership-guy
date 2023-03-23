@@ -1,0 +1,32 @@
+export const importantFeatures = [
+    "Adaptive Cruise Control",
+    "Alloy Wheels",
+    "Android Auto",
+    "Apple CarPlay",
+    "Backup Camera/Assist",
+    "Blind Spot Monitor",
+    "Bluetooth",
+    "Cooled Seats",
+    "Driver Assistance Package",
+    "Head-Up Display",
+    "Heated Seats",
+    "Hill Assist System",
+    "Keyless Entry",
+    "Keyless Ignition",
+    "Lane Assist",
+    "Lane Departure Warning",
+    "Leather Seats",
+    "Navigation System",
+    "Parking Assist System",
+    "Power Seats",
+    "Premium Sound System",
+    "Rear Seat Entertainment",
+    "Remote Start",
+    "Satellite Radio",
+    "Stability Control",
+    "Sunroof/Moonroof",
+    "Third Row Seating",
+    "Tow Hitch"
+];
+
+

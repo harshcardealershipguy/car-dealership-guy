@@ -3,26 +3,14 @@ import { useForm } from "react-hook-form";
 
 import {Field} from "@/components/CreateVehicleRequest/Field";
 import {useEffect, useState} from "react";
+import {Button, FormControl, InputLabel, MenuItem, Select, Typography} from "@mui/material";
+import {makesModels} from "@/data/makesModels";
+import {interiorColors} from "@/data/interiorColors";
+import {exteriorColors} from "@/data/exteriorColors";
 
 export const Page2Yes = ({goToPage}) => {
     const yearLows = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
     const yearHighs = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
-    const makes = {
-        toyota: {
-            name: "Toyota",
-            models: {
-                camry: {name: "Camry", trims: ['CE', 'LE']},
-                corolla: {name: "Corolla", trims: ['CE', 'LE', 'XLE']}
-            },
-        },
-        honda: {
-            name: "Honda",
-            models: {
-                accord: {name: "Accord", trims: ['LX', 'EX']},
-                civic: {name: "Civic", trims: ['LX', 'EX', 'EX-L']}
-            }
-        }
-    };
 
     const [state, setState] = useState({});
     const {
@@ -50,76 +38,92 @@ export const Page2Yes = ({goToPage}) => {
 
     return (
         <form onSubmit={handleSubmit(saveData)}>
-            <fieldset>
-                <legend>Page 2</legend>
 
-                <Field label="New Or Used" error={errors?.new_or_used}>
-                    <select {...register("new_or_used", { required: true })} id={"new_or_used"}>
-                        <option value="new">New</option>
-                        <option value="used">Used</option>
-                        <option value="new_or_used">New Or Used</option>
-                    </select>
-                </Field>
+            <Typography variant="h5" fontWeight={'bold'}>Vehicle Info</Typography>
 
-                <Field label="Year Minimum" error={errors?.year_low}>
-                    <select defaultValue={"any"} {...register("year_low", { required: true })} id={"year_low"}>
-                        <option value="any" defaultValue>Any</option>
+            <FormControl fullWidth sx={{mt: 3}} error={errors?.new_or_used}>
+                <InputLabel>New Or Used</InputLabel>
+                <Select {...register("new_or_used", { required: true })} id={"new_or_used"}>
+                    <MenuItem value="new">New</MenuItem>
+                    <MenuItem value="used">Used</MenuItem>
+                    <MenuItem value="new_or_used">New Or Used</MenuItem>
+                </Select>
+            </FormControl>
+
+            <FormControl fullWidth sx={{mt: 3}} error={errors?.year_low}>
+                <InputLabel>Year Minimum</InputLabel>
+                    <Select defaultValue={"any"} {...register("year_low", { required: true })} id={"year_low"}>
+                        <MenuItem value="any" defaultValue>Any</MenuItem>
                         {yearLows.map(function(year) {
-                            return <option value={year} key={year}>{year}</option>
+                            return <MenuItem value={year} key={year}>{year}</MenuItem>
                         })}
-                    </select>
-                </Field>
+                    </Select>
 
-                <Field label="Year Maximum" error={errors?.year_high}>
-                    <select defaultValue={"any"} {...register("year_high", { required: true })} id={"year_high"}>
-                        <option value="any">Any</option>
+            </FormControl>
+
+            <FormControl fullWidth sx={{mt: 3}}  error={errors?.year_high}>
+                <InputLabel>Year Maximum</InputLabel>
+
+                    <Select defaultValue={"any"} {...register("year_high", { required: true })} id={"year_high"}>
+                        <MenuItem value="any">Any</MenuItem>
                         {yearHighs.map(function(year) {
-                            return <option value={year} key={year}>{year}</option>
+                            return <MenuItem value={year} key={year}>{year}</MenuItem>
                         })}
-                    </select>
-                </Field>
+                    </Select>
 
-                <Field label="Make" error={errors?.make}>
-                    <select defaultValue={"any"} {...register("make", { required: true })} id={"make"}>
-                        <option value="any">Any</option>
-                        {Object.keys(makes).map(function(makeId) {
-                            return <option value={makeId} key={makeId}>{makes[makeId].name}</option>
+            </FormControl>
+
+            <FormControl fullWidth sx={{mt: 3}} error={errors?.make}>
+                <InputLabel>Make</InputLabel>
+
+                    <Select defaultValue={"any"} {...register("make", { required: true })} id={"make"}>
+                        <MenuItem value="any">Any</MenuItem>
+                        {Object.keys(makesModels).map(function(make) {
+                            return <MenuItem value={make} key={make}>{make}</MenuItem>
                         })}
-                    </select>
-                </Field>
+                    </Select>
 
-                <Field label="Model" error={errors?.model}>
-                    <select defaultValue={"any"} {...register("model", { required: true })} id={"model"}>
-                        <option value="any">Any</option>
+            </FormControl>
 
-                        {makes[make] && Object.keys(makes[make]['models']).map(function(modelId) {
-                            return <option value={modelId} key={modelId}>{makes[make]['models'][modelId]['name']}</option>
+            <FormControl fullWidth sx={{mt: 3}} error={errors?.model}>
+                <InputLabel>Model</InputLabel>
+                    <Select defaultValue={"any"} {...register("model", { required: true })} id={"model"}>
+                        <MenuItem value="any">Any</MenuItem>
+
+                        {makesModels[make] && Object.keys(makesModels[make]).map(function(model) {
+                            return <MenuItem value={makesModels[make][model]} key={makesModels[make][model]}>{makesModels[make][model]}</MenuItem>
                         })}
-                    </select>
-                </Field>
+                    </Select>
+            </FormControl>
 
-                <Field label="Trim" error={errors?.model}>
-                    <select defaultValue={"any"} {...register("trim", { required: true })} id={"trim"}>
-                        <option value="any">Any</option>
-                        {makes[make] && makes[make]['models'][model] && makes[make]['models'][model]['trims'].map(function(trim) {
-                            return <option value={trim} key={trim}>{trim}</option>
-                        })}
-                    </select>
-                </Field>
+            <FormControl fullWidth sx={{mt: 3}} error={errors?.engine_type}>
+                <InputLabel>Engine Type</InputLabel>
+                    <Select {...register("engine_type", { required: true })} id={"engine_type"}>
+                        <MenuItem value="gasoline">Gasoline</MenuItem>
+                        <MenuItem value="hybrid">Hybrid</MenuItem>
+                        <MenuItem value="plugin_hybrid">Plugin Hybrid</MenuItem>
+                        <MenuItem value="electric">Electric</MenuItem>
+                        <MenuItem value="diesel">Diesel</MenuItem>
+                        <MenuItem value="any">Any</MenuItem>
+                    </Select>
+            </FormControl>
 
-                <Field label="Engine Type" error={errors?.engine_type}>
-                    <select {...register("engine_type", { required: true })} id={"engine_type"}>
-                        <option value="gasoline">Gasoline</option>
-                        <option value="hybrid">Hybrid</option>
-                        <option value="plugin_hybrid">Plugin Hybrid</option>
-                        <option value="electric">Electric</option>
-                        <option value="diesel">Diesel</option>
-                        <option value="any">Any</option>
-                    </select>
-                </Field>
+            <FormControl fullWidth sx={{mt: 3}} error={errors?.exterior_colors}>
+                <InputLabel>Exterior Colors</InputLabel>
+                <Select  defaultValue={'any'} {...register("exterior_colors", { required: true })} id={"exterior_colors"}>
+                    {Object.keys(exteriorColors).map(exteriorColorKey => <MenuItem value={exteriorColorKey}>{exteriorColors[exteriorColorKey]}</MenuItem>)}
+                </Select>
+            </FormControl>
 
-                <button>Next {">"}</button>
-            </fieldset>
+            <FormControl fullWidth sx={{mt: 3}} error={errors?.interior_colors}>
+                <InputLabel>Interior Colors</InputLabel>
+                <Select defaultValue={'any'} {...register("interior_colors", { required: true })} id={"interior_colors"}>
+                    {Object.keys(interiorColors).map(interiorColorKey => <MenuItem value={interiorColorKey}>{interiorColors[interiorColorKey]}</MenuItem>)}
+                </Select>
+            </FormControl>
+
+            <Button type="submit" variant="outlined" sx={{mt: 1}} fullWidth>Next</Button>
+
         </form>
     );
 };

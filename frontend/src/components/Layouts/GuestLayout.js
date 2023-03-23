@@ -1,4 +1,8 @@
 import Head from 'next/head'
+import {AppBar, Box, Button, Container, IconButton, Paper, Toolbar, Typography} from "@mui/material";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+
 
 const GuestLayout = ({ children }) => {
     return (
@@ -7,9 +11,12 @@ const GuestLayout = ({ children }) => {
                 <title>Laravel</title>
             </Head>
 
-            <div className="font-sans text-gray-900 antialiased">
+            <Header/>
+            <div>
                 {children}
             </div>
+
+            {/*<Footer/>*/}
         </div>
     )
 }

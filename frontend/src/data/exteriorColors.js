@@ -1,0 +1,16 @@
+export const exteriorColors = {
+    "any": "Any",
+    "beige": "Beige",
+    "black": "Black",
+    "blue": "Blue",
+    "brown": "Brown",
+    "gold": "Gold",
+    "gray": "Gray",
+    "green": "Green",
+    "orange": "Orange",
+    "purple": "Red",
+    "red": "Red",
+    "silver": "Silver",
+    "white": "White",
+    "yellow": "Yellow",
+};

@@ -10,3 +10,5 @@ rebuild-local:
 	docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
 ssh-backend:
 	docker-compose exec backend /bin/bash
+ssh-frontend:
+	docker-compose exec frontend sh
