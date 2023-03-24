@@ -1,7 +1,4 @@
-import { useForm } from "react-hook-form";
-
-
-import {Field} from "@/components/CreateVehicleRequest/Field";
+import {useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
 import {Button, FormControl, FormControlLabel, FormLabel, RadioGroup, Typography} from "@mui/material";
 
@@ -24,9 +21,9 @@ export const Page1 = ({goToPage}) => {
         //TODO: save to DB
 
         if(state['exact_vehicle_known'] === 'exact_vehicle_known_yes') {
-            goToPage('Page2-yes', 20);
+            goToPage('known-vehicle');
         } else if (state['exact_vehicle_known'] === 'exact_vehicle_known_no') {
-            goToPage('Page2-no', 20);
+            goToPage('unknown-vehicle');
         }
     }, [state])
 

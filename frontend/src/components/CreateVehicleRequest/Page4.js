@@ -1,18 +1,12 @@
-import { useForm } from "react-hook-form";
-
-
-import {Field} from "@/components/CreateVehicleRequest/Field";
+import {useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
-import Label from "@/components/Label";
-import Input from "@/components/Input";
-import InputError from "@/components/InputError";
 import {
-    Box,
     Button,
     FormControl,
     FormControlLabel,
     FormLabel,
-    InputLabel, LinearProgress, MenuItem,
+    InputLabel,
+    MenuItem,
     RadioGroup,
     Select,
     Typography
@@ -33,7 +27,7 @@ export const Page4 = ({goToPage}) => {
     const saveData = (data) => {
         setState({ ...state, ...data });
 
-        goToPage('Page5', 80);
+        goToPage('personal-info');
     };
 
     const make = watch('make');

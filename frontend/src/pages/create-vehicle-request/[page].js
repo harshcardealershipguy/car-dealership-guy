@@ -1,9 +1,7 @@
-import AuthCard from '@/components/AuthCard'
 import AuthSessionStatus from '@/components/AuthSessionStatus'
 import GuestLayout from '@/components/Layouts/GuestLayout'
-import { useAuth } from '@/hooks/auth'
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
+import {useEffect, useState} from 'react'
+import {useRouter} from 'next/router'
 import {Page1} from "@/components/CreateVehicleRequest/Page1";
 import {Page2Yes} from "@/components/CreateVehicleRequest/Page2-yes";
 import {Page2No} from "@/components/CreateVehicleRequest/Page2-no";
@@ -15,52 +13,53 @@ import {Page5} from "@/components/CreateVehicleRequest/Page5";
 
 const CreateVehicleRequest = () => {
 
-    const [page, setPage] = useState('Page1');
+    const router = useRouter();
+    const { page } = router.query;
+
     const [progressBarValue, setProgressBarValue] = useState(0);
+
+    const pagesToProgress = {
+        'initial': 0,
+        'known-vehicle': 20,
+        'unknown-vehicle': 20,
+        'timing': 40,
+        'trade-in': 60,
+        'personal-info': 80,
+        'thank-you': 100
+    }
 
     useEffect(() => {
       //TODO: if there is an external_id in the query param, attempt to load the data
-    })
+
+        setProgressBarValue(pagesToProgress[page]);
+        console.log("page changed: " + page);
+    }, [page])
 
     function renderForm() {
         switch(page) {
-            case 'Page1':
-                return (
-                    <Page1 goToPage={goToPage}/>
-                );
-            case 'Page2-yes':
-                return (
-                    <Page2Yes goToPage={goToPage}/>
-                );
-            case 'Page2-no':
-                return (
-                    <Page2No goToPage={goToPage}/>
-                );
-            case 'Page3':
-                return (
-                    <Page3 goToPage={goToPage}/>
-                );
-            case 'Page4':
-                return (
-                    <Page4 goToPage={goToPage}/>
-                )
-            case 'Page5':
-                return (
-                    <Page5 goToPage={goToPage}/>
-                )
-            case 'ThankYouPage':
-                return (
-                    <ThankYouPage/>
-                )
+            case 'initial':
+                return <Page1 goToPage={goToPage}/>;
+            case 'known-vehicle':
+                return <Page2Yes goToPage={goToPage}/>;
+            case 'unknown-vehicle':
+                return <Page2No goToPage={goToPage}/>;
+            case 'timing':
+                return <Page3 goToPage={goToPage}/>;
+            case 'trade-in':
+                return <Page4 goToPage={goToPage}/>;
+            case 'personal-info':
+                return <Page5 goToPage={goToPage}/>;
+            case 'thank-you':
+                return <ThankYouPage/>;
             default:
-                return <div>no page</div>
+                return <div>No page</div>
         }
     }
 
     function goToPage(pageName, progressBar) {
         //TODO: send form state up to server
-        setProgressBarValue(progressBar);
-        setPage(pageName);
+
+        router.push('/create-vehicle-request/'+pageName);
     }
 
     return (

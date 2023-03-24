@@ -1,20 +1,6 @@
-import { Controller, useForm } from "react-hook-form";
-
-
-import {Field} from "@/components/CreateVehicleRequest/Field";
+import {useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
-import {
-    Box,
-    Button,
-    Checkbox,
-    FormControl,
-    Input,
-    InputLabel,
-    LinearProgress,
-    ListItemText,
-    MenuItem,
-    Select, Typography
-} from "@mui/material";
+import {Button, FormControl, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import MultiSelect from "@/components/Form/MultiSelect";
 import {makesModels} from "@/data/makesModels";
 import {exteriorColors} from "@/data/exteriorColors";
@@ -22,16 +8,6 @@ import {interiorColors} from "@/data/interiorColors";
 import {importantFeatures} from "@/data/importantFeatures";
 
 export const Page2No = ({goToPage}) => {
-    const yearLows = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
-    const yearHighs = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
-
-    const options = [
-        { id: 1, name: "Option 1" },
-        { id: 2, name: "Option 2" },
-        { id: 3, name: "Option 3" },
-    ];
-
-
     const [state, setState] = useState({});
     const {
         control,
@@ -45,7 +21,7 @@ export const Page2No = ({goToPage}) => {
     const saveData = (data) => {
         setState({ ...state, ...data });
 
-        goToPage('Page3', 40);
+        goToPage('timing');
     };
 
     useEffect(() => {

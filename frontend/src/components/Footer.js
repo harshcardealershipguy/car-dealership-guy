@@ -3,6 +3,7 @@ import {Box, Container, Paper, Typography} from "@mui/material";
 
 const Footer = () => (
     <Paper sx={{
+        mt: 6,
         width: '100%',
         backgroundColor: '#eee'
     }} component="footer" square variant="outlined">

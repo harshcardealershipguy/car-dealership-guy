@@ -1,22 +1,6 @@
-import { useForm } from "react-hook-form";
-
-
-import {Field} from "@/components/CreateVehicleRequest/Field";
+import {useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
-import Label from "@/components/Label";
-import Input from "@/components/Input";
-import InputError from "@/components/InputError";
-import {
-    Box,
-    Button,
-    FormControl,
-    InputLabel,
-    LinearProgress,
-    MenuItem,
-    Select,
-    TextField,
-    Typography
-} from "@mui/material";
+import {Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography} from "@mui/material";
 import {states} from "@/data/states";
 
 export const Page5 = ({goToPage}) => {
@@ -32,7 +16,7 @@ export const Page5 = ({goToPage}) => {
     const saveData = (data) => {
         setState({ ...state, ...data });
 
-        goToPage('ThankYouPage', 100);
+        goToPage('thank-you');
     };
 
     useEffect(() => {

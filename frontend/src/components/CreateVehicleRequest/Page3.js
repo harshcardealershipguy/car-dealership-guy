@@ -1,9 +1,6 @@
-import { useForm } from "react-hook-form";
-
-
-import {Field} from "@/components/CreateVehicleRequest/Field";
+import {useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
-import {Box, Button, FormControl, InputLabel, LinearProgress, MenuItem, Select, Typography} from "@mui/material";
+import {Button, FormControl, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 
 export const Page3 = ({goToPage}) => {
 
@@ -18,7 +15,7 @@ export const Page3 = ({goToPage}) => {
     const saveData = (data) => {
         setState({ ...state, ...data });
 
-        goToPage('Page4', 60);
+        goToPage('trade-in');
     };
 
     const payment_method = watch('payment_method');

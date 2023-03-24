@@ -1,9 +1,6 @@
-import { useForm } from "react-hook-form";
-
-
-import {Field} from "@/components/CreateVehicleRequest/Field";
+import {useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
-import {Box, Button, FormControl, InputLabel, LinearProgress, MenuItem, Select, Typography} from "@mui/material";
+import {Button, FormControl, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import {makesModels} from "@/data/makesModels";
 import {interiorColors} from "@/data/interiorColors";
 import {exteriorColors} from "@/data/exteriorColors";
@@ -23,7 +20,7 @@ export const Page2Yes = ({goToPage}) => {
     const saveData = (data) => {
         setState({ ...state, ...data });
 
-        goToPage('Page3', 40);
+        goToPage('timing');
     };
 
     const make = watch('make');
