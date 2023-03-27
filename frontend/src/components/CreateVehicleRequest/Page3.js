@@ -2,6 +2,7 @@ import {useForm} from "react-hook-form";
 import {useState} from "react";
 import {Button, FormControl, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import axios from "@/lib/axios";
+import {LoadingButton} from "@mui/lab";
 
 export const Page3 = ({goToPage, externalId}) => {
     const {
@@ -116,7 +117,7 @@ export const Page3 = ({goToPage, externalId}) => {
                 </FormControl>
 
                 <br/>
-                <Button type="submit" variant="outlined" sx={{mt: 1}} fullWidth>Next</Button>
+                <LoadingButton type="submit" variant="outlined" sx={{mt: 1}} fullWidth loading={isLoading}>Next</LoadingButton>
             </form>
         </>
     );

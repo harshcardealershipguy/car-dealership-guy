@@ -3,6 +3,7 @@ import {useState} from "react";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography} from "@mui/material";
 import {states} from "@/data/states";
 import axios from "@/lib/axios";
+import {LoadingButton} from "@mui/lab";
 
 export const Page5 = ({goToPage, externalId}) => {
 
@@ -57,7 +58,7 @@ export const Page5 = ({goToPage, externalId}) => {
                 <TextField {...register("password", {required: true})} type={'password'} variant="outlined" label="Password" error={errors?.password} fullWidth sx={{mt: 3}}/>
                 <TextField {...register("password_confirmation", {required: true})} type={'password'} variant="outlined" label="Password Confirmation" error={errors?.password_confirmation} fullWidth sx={{mt: 3}}/>
 
-                <Button type="submit" variant="outlined" sx={{mt: 1}} fullWidth>Next</Button>
+                <LoadingButton type="submit" variant="outlined" sx={{mt: 1}} fullWidth loading={isLoading}>Next</LoadingButton>
 
             </form>
         </>

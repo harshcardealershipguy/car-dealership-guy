@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import {makesModels} from "@/data/makesModels";
 import axios from "@/lib/axios";
+import {LoadingButton} from "@mui/lab";
 
 export const Page4 = ({goToPage, externalId}) => {
 
@@ -132,7 +133,7 @@ export const Page4 = ({goToPage, externalId}) => {
 
 
                     {/*TODO: Make the next button active only when the trade-in is answered*/}
-                    <Button type="submit" variant="outlined" sx={{mt: 1}} fullWidth>Next</Button>
+                    <LoadingButton type="submit" variant="outlined" sx={{mt: 1}} fullWidth loading={isLoading}>Next</LoadingButton>
                 </div>
 
             </form>

@@ -6,6 +6,7 @@ import {interiorColors} from "@/data/interiorColors";
 import {exteriorColors} from "@/data/exteriorColors";
 import axios from "@/lib/axios";
 import MultiSelect from "@/components/Form/MultiSelect";
+import {LoadingButton} from "@mui/lab";
 
 export const Page2Yes = ({goToPage, externalId}) => {
     const yearLows = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
@@ -119,7 +120,7 @@ export const Page2Yes = ({goToPage, externalId}) => {
 
                 <MultiSelect name={'interior_colors'} label={'Preferred Interior Colors'} control={control} options={Object.keys(interiorColors).map(interiorColor => {return { "id": interiorColor, "name": interiorColors[interiorColor] }} )}/>
 
-                <Button type="submit" variant="outlined" sx={{mt: 1}} fullWidth>Next</Button>
+                <LoadingButton type="submit" variant="outlined" sx={{mt: 1}} fullWidth loading={isLoading}>Next</LoadingButton>
 
             </form>
         </>
