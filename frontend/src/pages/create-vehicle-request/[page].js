@@ -14,9 +14,10 @@ import {Page5} from "@/components/CreateVehicleRequest/Page5";
 const CreateVehicleRequest = () => {
 
     const router = useRouter();
-    const { page } = router.query;
 
     const [progressBarValue, setProgressBarValue] = useState(0);
+    const [externalId, setExternalId] = useState(null);
+    const [page, setPage] = useState(router.query.page);
 
     const pagesToProgress = {
         'initial': 0,
@@ -32,34 +33,52 @@ const CreateVehicleRequest = () => {
       //TODO: if there is an external_id in the query param, attempt to load the data
 
         setProgressBarValue(pagesToProgress[page]);
-        console.log("page changed: " + page);
     }, [page])
+
+    //when URL changes, update the state
+    useEffect(() => {
+        setPage(router.query.page)
+    }, [router.query.page]);
+
+    //when URL changes, update the state
+    useEffect(() => {
+        setExternalId(router.query.externalId)
+    }, [router.query.externalId]);
 
     function renderForm() {
         switch(page) {
             case 'initial':
                 return <Page1 goToPage={goToPage}/>;
             case 'known-vehicle':
-                return <Page2Yes goToPage={goToPage}/>;
+                return <Page2Yes goToPage={goToPage} externalId={externalId}/>;
             case 'unknown-vehicle':
-                return <Page2No goToPage={goToPage}/>;
+                return <Page2No goToPage={goToPage} externalId={externalId}/>;
             case 'timing':
-                return <Page3 goToPage={goToPage}/>;
+                return <Page3 goToPage={goToPage} externalId={externalId}/>;
             case 'trade-in':
-                return <Page4 goToPage={goToPage}/>;
+                return <Page4 goToPage={goToPage} externalId={externalId}/>;
             case 'personal-info':
-                return <Page5 goToPage={goToPage}/>;
+                return <Page5 goToPage={goToPage} externalId={externalId}/>;
             case 'thank-you':
                 return <ThankYouPage/>;
             default:
-                return <div>No page</div>
+                return <></>
         }
     }
 
-    function goToPage(pageName, progressBar) {
-        //TODO: send form state up to server
-
-        router.push('/create-vehicle-request/'+pageName);
+    function goToPage(newPageName, newExternalId) {
+        //there is a new page and we also have a new external id
+        if (newExternalId !== undefined && newPageName !== undefined) {
+            router.push('/create-vehicle-request/' + newPageName + "?externalId=" + newExternalId);
+        }
+        //there is a new page and we have an existing external id
+        else if(externalId !== undefined && newPageName !== undefined) {
+            router.push('/create-vehicle-request/' + newPageName + "?externalId=" + externalId);
+        }
+        //there is a new page and we don't have an existing external id
+        else if (newPageName !== undefined) {
+            router.push('/create-vehicle-request/' + newPageName);
+        }
     }
 
     return (

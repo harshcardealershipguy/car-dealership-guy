@@ -1,31 +1,37 @@
 import {useForm} from "react-hook-form";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Button, FormControl, InputLabel, MenuItem, Select, Typography} from "@mui/material";
+import axios from "@/lib/axios";
 
-export const Page3 = ({goToPage}) => {
-
-    const [state, setState] = useState({});
+export const Page3 = ({goToPage, externalId}) => {
     const {
+        reset,
         handleSubmit,
         register,
         watch,
         formState: { errors },
-    } = useForm({ defaultValues: state, mode: "onSubmit" });
+    } = useForm({ mode: "onSubmit" });
 
-    const saveData = (data) => {
-        setState({ ...state, ...data });
+    const [isLoading, setIsLoading] = useState(false);
+
+    const saveData = async (data) => {
+        setIsLoading(true);
+
+        data.external_id = externalId;
+        const response = axios
+            .post('/api/request/vehicle-info', data)
+            .then(res => res.data)
+            .catch((error) => {setIsLoading(false); throw error});
+        await response;
+
+        setIsLoading(false);
 
         goToPage('trade-in');
+
+        reset(); // reset form after successful submission
     };
 
     const payment_method = watch('payment_method');
-
-
-    useEffect(() => {
-        console.log(state);
-        //TODO: save to DB
-        //TODO: go to the next page
-    }, [state])
 
     return (
         <>

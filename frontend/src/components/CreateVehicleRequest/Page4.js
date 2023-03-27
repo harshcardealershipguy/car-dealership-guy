@@ -1,5 +1,5 @@
 import {useForm} from "react-hook-form";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {
     Button,
     FormControl,
@@ -12,34 +12,43 @@ import {
     Typography
 } from "@mui/material";
 import {makesModels} from "@/data/makesModels";
+import axios from "@/lib/axios";
 
-export const Page4 = ({goToPage}) => {
+export const Page4 = ({goToPage, externalId}) => {
 
     const tradeInYears = [2000, 2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
-    const [state, setState] = useState({});
+
     const {
+        reset,
         handleSubmit,
         register,
         watch,
         formState: { errors },
-    } = useForm({ defaultValues: state, mode: "onSubmit" });
+    } = useForm({ mode: "onSubmit" });
 
-    const saveData = (data) => {
-        setState({ ...state, ...data });
+    const [isLoading, setIsLoading] = useState(false);
+
+    const saveData = async (data) => {
+        setIsLoading(true);
+
+        data.external_id = externalId;
+        const response = axios
+            .post('/api/request/vehicle-info', data)
+            .then(res => res.data)
+            .catch((error) => {setIsLoading(false); throw error});
+        await response;
+
+        setIsLoading(false);
 
         goToPage('personal-info');
+
+        reset(); // reset form after successful submission
     };
 
-    const make = watch('make');
+    const tradeInMake = watch('trade_in_make');
 
     const has_trade_in = watch('has_trade_in');
 
-    useEffect(() => {
-        console.log(state);
-        //TODO: save to DB
-        //TODO: go to the next page
-
-    }, [state])
 
     return (
         <>
@@ -86,31 +95,27 @@ export const Page4 = ({goToPage}) => {
                                     <InputLabel>Trade In Year</InputLabel>
                                     <Select defaultValue={"any"} {...register("trade_in_year", {required: true})}
                                             id={"trade_in_year"}>
-                                        <MenuItem value="any" defaultValue>Any</MenuItem>
                                         {tradeInYears.map(function (year) {
                                             return <MenuItem value={year} key={year}>{year}</MenuItem>
                                         })}
                                     </Select>
                                 </FormControl>
 
-                                <FormControl fullWidth sx={{mt: 3}} error={errors?.make}>
-                                    <InputLabel>Make</InputLabel>
+                                <FormControl fullWidth sx={{mt: 3}} error={errors?.trade_in_make}>
+                                    <InputLabel>Trade In Make</InputLabel>
 
-                                    <Select defaultValue={"any"} {...register("make", { required: true })} id={"make"}>
-                                        <MenuItem value="any">Any</MenuItem>
+                                    <Select defaultValue={"any"} {...register("trade_in_make", { required: true })} id={"trade_in_make"}>
                                         {Object.keys(makesModels).map(function(make) {
                                             return <MenuItem value={make} key={make}>{make}</MenuItem>
                                         })}
                                     </Select>
                                 </FormControl>
 
-                                <FormControl fullWidth sx={{mt: 3}} error={errors?.model}>
-                                    <InputLabel>Model</InputLabel>
-                                    <Select defaultValue={"any"} {...register("model", { required: true })} id={"model"}>
-                                        <MenuItem value="any">Any</MenuItem>
-
-                                        {makesModels[make] && Object.keys(makesModels[make]).map(function(model) {
-                                            return <MenuItem value={makesModels[make][model]} key={makesModels[make][model]}>{makesModels[make][model]}</MenuItem>
+                                <FormControl fullWidth sx={{mt: 3}} error={errors?.trade_in_model}>
+                                    <InputLabel>Trade In Model</InputLabel>
+                                    <Select defaultValue={"any"} {...register("trade_in_model", { required: true })} id={"trade_in_model"}>
+                                        {makesModels[tradeInMake] && Object.keys(makesModels[tradeInMake]).map(function(model) {
+                                            return <MenuItem value={makesModels[tradeInMake][model]} key={makesModels[tradeInMake][model]}>{makesModels[tradeInMake][model]}</MenuItem>
                                         })}
                                     </Select>
                                 </FormControl>

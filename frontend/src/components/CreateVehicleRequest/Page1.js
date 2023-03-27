@@ -1,31 +1,46 @@
 import {useForm} from "react-hook-form";
-import {useEffect, useState} from "react";
-import {Button, FormControl, FormControlLabel, FormLabel, RadioGroup, Typography} from "@mui/material";
+import {useState} from "react";
+import {FormControl, FormControlLabel, FormLabel, RadioGroup, Typography} from "@mui/material";
+import axios from "@/lib/axios";
+import {LoadingButton} from "@mui/lab";
 
 export const Page1 = ({goToPage}) => {
-    const [state, setState] = useState({});
+
     const {
         handleSubmit,
         register,
-        watch,
         formState: { errors },
-    } = useForm({ defaultValues: state, mode: "onSubmit" });
+        reset,
+    } = useForm({ mode: "onSubmit" });
 
-    const saveData = (data) => {
-        setState({ ...state, ...data });
+    const [isLoading, setIsLoading] = useState(false);
 
-    };
+    const csrf = () => axios.get('/sanctum/csrf-cookie');
 
-    useEffect(() => {
-        console.log(state);
-        //TODO: save to DB
+    const saveData = async (data) => {
+        setIsLoading(true);
+        data.exact_vehicle_known = data.exact_vehicle_known === 'true';
 
-        if(state['exact_vehicle_known'] === 'exact_vehicle_known_yes') {
-            goToPage('known-vehicle');
-        } else if (state['exact_vehicle_known'] === 'exact_vehicle_known_no') {
-            goToPage('unknown-vehicle');
+        await csrf();
+
+        const response = axios
+            .post('/api/request', data)
+            .then(res => res.data)
+            .catch((error) => {setIsLoading(false); throw error});
+
+        const responseData = await response;
+
+        setIsLoading(false);
+
+        if(data['exact_vehicle_known']) {
+            goToPage('known-vehicle', responseData.external_id);
+        } else if (!data['exact_vehicle_known']) {
+            goToPage('unknown-vehicle', responseData.external_id);
         }
-    }, [state])
+
+        // reset form after successful submission
+        reset();
+    };
 
     return (
         <>
@@ -41,7 +56,7 @@ export const Page1 = ({goToPage}) => {
                             <input
                             {...register("exact_vehicle_known", { required: "Exact Vehicle Known is required" })}
                             type="radio"
-                            value="exact_vehicle_known_yes"
+                            value="true"
                             id="exact_vehicle_known_yes"
                         />
 
@@ -52,7 +67,7 @@ export const Page1 = ({goToPage}) => {
                             <input
                                 {...register("exact_vehicle_known", { required: "Exact Vehicle Known is required" })}
                                 type="radio"
-                                value="exact_vehicle_known_no"
+                                value="false"
                                 id="exact_vehicle_known_no"
                             />
 
@@ -60,7 +75,7 @@ export const Page1 = ({goToPage}) => {
 
                     </RadioGroup>
                 </FormControl>
-                <Button type="submit" variant="outlined" sx={{mt: 1}} fullWidth>Next</Button>
+                <LoadingButton type="submit" variant="outlined" sx={{mt: 1}} fullWidth loading={isLoading}>Next</LoadingButton>
             </form>
         </>
     );

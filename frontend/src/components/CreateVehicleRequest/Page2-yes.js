@@ -4,34 +4,42 @@ import {Button, FormControl, InputLabel, MenuItem, Select, Typography} from "@mu
 import {makesModels} from "@/data/makesModels";
 import {interiorColors} from "@/data/interiorColors";
 import {exteriorColors} from "@/data/exteriorColors";
+import axios from "@/lib/axios";
+import MultiSelect from "@/components/Form/MultiSelect";
 
-export const Page2Yes = ({goToPage}) => {
+export const Page2Yes = ({goToPage, externalId}) => {
     const yearLows = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
     const yearHighs = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
 
-    const [state, setState] = useState({});
     const {
+        control,
+        reset,
         handleSubmit,
         register,
         watch,
         formState: { errors },
-    } = useForm({ defaultValues: state, mode: "onSubmit" });
+    } = useForm({mode: "onSubmit" });
 
-    const saveData = (data) => {
-        setState({ ...state, ...data });
+    const [isLoading, setIsLoading] = useState(false);
+
+    const saveData = async  (data) => {
+        setIsLoading(true);
+
+        data.external_id = externalId;
+        const response = axios
+            .post('/api/request/vehicle-info', data)
+            .then(res => res.data)
+            .catch((error) => {setIsLoading(false); throw error});
+        await response;
+
+        setIsLoading(false);
 
         goToPage('timing');
+
+        reset(); // reset form after successful submission
     };
 
     const make = watch('make');
-    const model = watch('model');
-
-    useEffect(() => {
-        console.log(state);
-        //TODO: save to DB
-        //TODO: go to the next page
-
-    }, [state])
 
     return (
         <>
@@ -107,19 +115,9 @@ export const Page2Yes = ({goToPage}) => {
                         </Select>
                 </FormControl>
 
-                <FormControl fullWidth sx={{mt: 3}} error={errors?.exterior_colors}>
-                    <InputLabel>Exterior Colors</InputLabel>
-                    <Select  defaultValue={'any'} {...register("exterior_colors", { required: true })} id={"exterior_colors"}>
-                        {Object.keys(exteriorColors).map(exteriorColorKey => <MenuItem value={exteriorColorKey}>{exteriorColors[exteriorColorKey]}</MenuItem>)}
-                    </Select>
-                </FormControl>
+                <MultiSelect name={'exterior_colors'} label={'Preferred Exterior Colors'} control={control} options={Object.keys(exteriorColors).map(exteriorColor => {return { "id": exteriorColor, "name": exteriorColors[exteriorColor] }} )}/>
 
-                <FormControl fullWidth sx={{mt: 3}} error={errors?.interior_colors}>
-                    <InputLabel>Interior Colors</InputLabel>
-                    <Select defaultValue={'any'} {...register("interior_colors", { required: true })} id={"interior_colors"}>
-                        {Object.keys(interiorColors).map(interiorColorKey => <MenuItem value={interiorColorKey}>{interiorColors[interiorColorKey]}</MenuItem>)}
-                    </Select>
-                </FormControl>
+                <MultiSelect name={'interior_colors'} label={'Preferred Interior Colors'} control={control} options={Object.keys(interiorColors).map(interiorColor => {return { "id": interiorColor, "name": interiorColors[interiorColor] }} )}/>
 
                 <Button type="submit" variant="outlined" sx={{mt: 1}} fullWidth>Next</Button>
 

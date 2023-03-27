@@ -1,14 +1,16 @@
 import {useForm} from "react-hook-form";
-import {useEffect, useState} from "react";
-import {Button, FormControl, InputLabel, MenuItem, Select, Typography} from "@mui/material";
+import {useState} from "react";
+import {FormControl, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import MultiSelect from "@/components/Form/MultiSelect";
 import {makesModels} from "@/data/makesModels";
 import {exteriorColors} from "@/data/exteriorColors";
 import {interiorColors} from "@/data/interiorColors";
 import {importantFeatures} from "@/data/importantFeatures";
+import axios from "@/lib/axios";
+import {LoadingButton} from "@mui/lab";
 
-export const Page2No = ({goToPage}) => {
-    const [state, setState] = useState({});
+export const Page2No = ({goToPage, externalId}) => {
+
     const {
         control,
         reset,
@@ -16,20 +18,28 @@ export const Page2No = ({goToPage}) => {
         register,
         watch,
         formState: { errors },
-    } = useForm({ defaultValues: state, mode: "onSubmit" });
+    } = useForm({ mode: "onSubmit" });
 
-    const saveData = (data) => {
-        setState({ ...state, ...data });
+    const [isLoading, setIsLoading] = useState(false);
+
+    const saveData = async (data) => {
+        setIsLoading(true);
+
+        data.external_id = externalId;
+        const response = axios
+            .post('/api/request/vehicle-info', data)
+            .then(res => res.data)
+            .catch((error) => {setIsLoading(false); throw error});
+        await response;
+
+        setIsLoading(false);
 
         goToPage('timing');
+
+        reset(); // reset form after successful submission
     };
 
-    useEffect(() => {
-        reset({ multipleSelect: [] });
-        console.log(state);
-        //TODO: save to DB
-        //TODO: go to the next page
-    }, [state])
+
 
     return (
         <>
@@ -95,7 +105,7 @@ export const Page2No = ({goToPage}) => {
 
                 <MultiSelect name={'important_features'} label={'Important Features'} control={control} options={importantFeatures.map(importantFeature => {return { "id": importantFeature, "name": importantFeature }} )}/>
 
-                <Button type="submit" variant="outlined" sx={{mt: 1}} fullWidth>Next</Button>
+                <LoadingButton type="submit" variant="outlined" sx={{mt: 1}} fullWidth loading={isLoading}>Next</LoadingButton>
             </form>
         </>
     );

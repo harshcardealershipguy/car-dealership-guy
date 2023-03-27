@@ -37,6 +37,8 @@ class VehicleRequest extends Model
         'trade_in_make',
         'trade_in_model',
         'trade_in_trim',
-        'trade_in_mileage'
+        'trade_in_mileage',
+        'city',
+        'state'
     ];
 }

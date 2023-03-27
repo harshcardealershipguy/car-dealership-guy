@@ -1,30 +1,38 @@
 import {useForm} from "react-hook-form";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography} from "@mui/material";
 import {states} from "@/data/states";
+import axios from "@/lib/axios";
 
-export const Page5 = ({goToPage}) => {
+export const Page5 = ({goToPage, externalId}) => {
 
-    const [state, setState] = useState({});
     const {
+        reset,
         handleSubmit,
         register,
         watch,
         formState: { errors },
-    } = useForm({ defaultValues: state, mode: "onSubmit" });
+    } = useForm({ mode: "onSubmit" });
 
-    const saveData = (data) => {
-        setState({ ...state, ...data });
+    const [isLoading, setIsLoading] = useState(false);
+
+    const saveData = async (data) => {
+        setIsLoading(true);
+
+        data.external_id = externalId;
+        const response = axios
+            .post('/api/request/personal-info', data)
+            .then(res => res.data)
+            .catch((error) => {setIsLoading(false); throw error});
+        await response;
+
+        setIsLoading(false);
 
         goToPage('thank-you');
+
+        reset(); // reset form after successful submission
     };
 
-    useEffect(() => {
-        console.log(state);
-        //TODO: save to DB
-        //TODO: go to the next page
-
-    }, [state])
 
     return (
         <>
@@ -38,15 +46,14 @@ export const Page5 = ({goToPage}) => {
                     <InputLabel>State</InputLabel>
                     <Select defaultValue={"any"} {...register("state", {required: true})}
                             id={"state"}>
-                        <MenuItem value="any" defaultValue>Any</MenuItem>
                         {Object.keys(states).map(function (stateId) {
                             return <MenuItem value={stateId} key={stateId}>{states[stateId]}</MenuItem>
                         })}
                     </Select>
                 </FormControl>
 
-                <TextField {...register("name", {required: true})} variant="outlined" label="Name" error={errors?.name} fullWidth sx={{mt: 3}}/>
                 <TextField {...register("email", {required: true})} variant="outlined" label="Email" error={errors?.email} fullWidth sx={{mt: 3}}/>
+                <TextField {...register("name", {required: true})} variant="outlined" label="Name" error={errors?.name} fullWidth sx={{mt: 3}}/>
                 <TextField {...register("password", {required: true})} type={'password'} variant="outlined" label="Password" error={errors?.password} fullWidth sx={{mt: 3}}/>
                 <TextField {...register("password_confirmation", {required: true})} type={'password'} variant="outlined" label="Password Confirmation" error={errors?.password_confirmation} fullWidth sx={{mt: 3}}/>
 

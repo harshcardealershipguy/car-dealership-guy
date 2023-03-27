@@ -54,22 +54,25 @@ class VehicleRequestController extends Controller
     {
         $request->validate([
             'external_id' => ['required'],
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'confirmed', Password::defaults()],
+            'password' => ['confirmed', Password::defaults()],
             'city' => ['required'],
             'state' => ['required']
         ]);
 
+        $vehicleRequest = VehicleRequest::where('external_id', $request->external_id)->firstOrFail();
+        $vehicleRequest->fill($request->all()); //fill in city and state
+        $vehicleRequest->save();
+
         $user = User::where('email', $request->email)->first();
 
+        //if the user doesn't exist create one with the name/email/password
         if(!$user) {
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'city' => $request->city,
-                'state' => $request->state
             ]);
 
             event(new Registered($user));
