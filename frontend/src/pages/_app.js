@@ -1,4 +1,4 @@
-import 'tailwindcss/tailwind.css'
+import 'styles/styles.css'
 
 const App = ({ Component, pageProps }) => <Component {...pageProps} />
 

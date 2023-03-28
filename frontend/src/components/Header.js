@@ -13,7 +13,7 @@ const Header = () => (
                 >
 
                 </IconButton>
-                <img src={"logo.png"} style={{maxHeight: '50px', marginTop: '5px', marginBottom: '5px', marginRight: '5px'}}/>
+                <img src={"/logo.png"} style={{maxHeight: '50px', marginTop: '5px', marginBottom: '5px', marginRight: '5px'}}/>
                 <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight={'bold'}>
                     Car Dealership Guy
                 </Typography>
