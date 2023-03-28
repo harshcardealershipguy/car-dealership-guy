@@ -39,8 +39,6 @@ export const Page2No = ({goToPage, externalId}) => {
         reset(); // reset form after successful submission
     };
 
-
-
     return (
         <>
             <Typography fontWeight={'bold'} variant={'h3'} sx={{mt: 3}}>Vehicle Details</Typography>

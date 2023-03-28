@@ -28,6 +28,8 @@ export const Page4 = ({goToPage, externalId}) => {
     } = useForm({ mode: "onSubmit" });
 
     const [isLoading, setIsLoading] = useState(false);
+    const tradeInMake = watch('trade_in_make');
+    const has_trade_in = watch('has_trade_in');
 
     const saveData = async (data) => {
         setIsLoading(true);
@@ -45,11 +47,6 @@ export const Page4 = ({goToPage, externalId}) => {
 
         reset(); // reset form after successful submission
     };
-
-    const tradeInMake = watch('trade_in_make');
-
-    const has_trade_in = watch('has_trade_in');
-
 
     return (
         <>

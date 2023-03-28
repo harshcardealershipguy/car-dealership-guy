@@ -14,6 +14,7 @@ export const Page3 = ({goToPage, externalId}) => {
     } = useForm({ mode: "onSubmit" });
 
     const [isLoading, setIsLoading] = useState(false);
+    const payment_method = watch('payment_method');
 
     const saveData = async (data) => {
         setIsLoading(true);
@@ -31,8 +32,6 @@ export const Page3 = ({goToPage, externalId}) => {
 
         reset(); // reset form after successful submission
     };
-
-    const payment_method = watch('payment_method');
 
     return (
         <>

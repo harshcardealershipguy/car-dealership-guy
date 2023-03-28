@@ -1,6 +1,6 @@
 import {useForm} from "react-hook-form";
-import {useEffect, useState} from "react";
-import {Button, FormControl, InputLabel, MenuItem, Select, Typography} from "@mui/material";
+import {useState} from "react";
+import {FormControl, InputLabel, MenuItem, Select, Typography} from "@mui/material";
 import {makesModels} from "@/data/makesModels";
 import {interiorColors} from "@/data/interiorColors";
 import {exteriorColors} from "@/data/exteriorColors";
@@ -22,6 +22,7 @@ export const Page2Yes = ({goToPage, externalId}) => {
     } = useForm({mode: "onSubmit" });
 
     const [isLoading, setIsLoading] = useState(false);
+    const make = watch('make');
 
     const saveData = async  (data) => {
         setIsLoading(true);
@@ -39,8 +40,6 @@ export const Page2Yes = ({goToPage, externalId}) => {
 
         reset(); // reset form after successful submission
     };
-
-    const make = watch('make');
 
     return (
         <>
