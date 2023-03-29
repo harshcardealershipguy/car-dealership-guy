@@ -31,8 +31,9 @@ const CreateVehicleRequest = () => {
 
     useEffect(() => {
       //TODO: if there is an external_id in the query param, attempt to load the data
-
-        setProgressBarValue(pagesToProgress[page]);
+        if(page !== undefined) {
+            setProgressBarValue(pagesToProgress[page]);
+        }
     }, [page])
 
     //when URL changes, update the state

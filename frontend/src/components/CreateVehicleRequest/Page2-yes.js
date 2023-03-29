@@ -7,6 +7,7 @@ import {exteriorColors} from "@/data/exteriorColors";
 import axios from "@/lib/axios";
 import MultiSelect from "@/components/Form/MultiSelect";
 import {LoadingButton} from "@mui/lab";
+import SingleSelect from "@/components/Form/SingleSelect";
 
 export const Page2Yes = ({goToPage, externalId}) => {
     const yearLows = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
@@ -48,72 +49,48 @@ export const Page2Yes = ({goToPage, externalId}) => {
 
             <form onSubmit={handleSubmit(saveData)}>
 
-                <FormControl fullWidth sx={{mt: 3}} error={errors?.new_or_used}>
-                    <InputLabel>New Or Used</InputLabel>
-                    <Select {...register("new_or_used", { required: true })} id={"new_or_used"}>
-                        <MenuItem value="new">New</MenuItem>
-                        <MenuItem value="used">Used</MenuItem>
-                        <MenuItem value="new_or_used">New Or Used</MenuItem>
-                    </Select>
-                </FormControl>
+                <SingleSelect id={'new_or_used'} label={'New Or Used'} defaultValue={''} errors={errors} register={register}>
+                    <MenuItem value="new">New</MenuItem>
+                    <MenuItem value="used">Used</MenuItem>
+                    <MenuItem value="new_or_used">New Or Used</MenuItem>
+                </SingleSelect>
 
-                <FormControl fullWidth sx={{mt: 3}} error={errors?.year_low}>
-                    <InputLabel>Year Minimum</InputLabel>
-                        <Select defaultValue={"any"} {...register("year_low", { required: true })} id={"year_low"}>
-                            <MenuItem value="any" defaultValue>Any</MenuItem>
-                            {yearLows.map(function(year) {
-                                return <MenuItem value={year} key={year}>{year}</MenuItem>
-                            })}
-                        </Select>
+                <SingleSelect id={'year_low'} label={'Year Minimum'} defaultValue={''} errors={errors} register={register}>
+                    <MenuItem value="any" defaultValue>Any</MenuItem>
+                    {yearLows.map(function(year) {
+                        return <MenuItem value={year} key={year}>{year}</MenuItem>
+                    })}
+                </SingleSelect>
 
-                </FormControl>
+                <SingleSelect id={'year_high'} label={'Year Maximum'} defaultValue={''} errors={errors} register={register}>
+                    <MenuItem value="any">Any</MenuItem>
+                    {yearHighs.map(function(year) {
+                        return <MenuItem value={year} key={year}>{year}</MenuItem>
+                    })}
+                </SingleSelect>
 
-                <FormControl fullWidth sx={{mt: 3}}  error={errors?.year_high}>
-                    <InputLabel>Year Maximum</InputLabel>
+                <SingleSelect id={'make'} label={'Make'} defaultValue={''} errors={errors} register={register}>
+                    <MenuItem value="any">Any</MenuItem>
+                    {Object.keys(makesModels).map(function(make) {
+                        return <MenuItem value={make} key={make}>{make}</MenuItem>
+                    })}
+                </SingleSelect>
 
-                        <Select defaultValue={"any"} {...register("year_high", { required: true })} id={"year_high"}>
-                            <MenuItem value="any">Any</MenuItem>
-                            {yearHighs.map(function(year) {
-                                return <MenuItem value={year} key={year}>{year}</MenuItem>
-                            })}
-                        </Select>
+                <SingleSelect id={'model'} label={'Model'} defaultValue={''} errors={errors} register={register}>
+                    <MenuItem value="any">Any</MenuItem>
+                    {makesModels[make] && Object.keys(makesModels[make]).map(function(model) {
+                        return <MenuItem value={makesModels[make][model]} key={makesModels[make][model]}>{makesModels[make][model]}</MenuItem>
+                    })}
+                </SingleSelect>
 
-                </FormControl>
-
-                <FormControl fullWidth sx={{mt: 3}} error={errors?.make}>
-                    <InputLabel>Make</InputLabel>
-
-                        <Select defaultValue={"any"} {...register("make", { required: true })} id={"make"}>
-                            <MenuItem value="any">Any</MenuItem>
-                            {Object.keys(makesModels).map(function(make) {
-                                return <MenuItem value={make} key={make}>{make}</MenuItem>
-                            })}
-                        </Select>
-
-                </FormControl>
-
-                <FormControl fullWidth sx={{mt: 3}} error={errors?.model}>
-                    <InputLabel>Model</InputLabel>
-                        <Select defaultValue={"any"} {...register("model", { required: true })} id={"model"}>
-                            <MenuItem value="any">Any</MenuItem>
-
-                            {makesModels[make] && Object.keys(makesModels[make]).map(function(model) {
-                                return <MenuItem value={makesModels[make][model]} key={makesModels[make][model]}>{makesModels[make][model]}</MenuItem>
-                            })}
-                        </Select>
-                </FormControl>
-
-                <FormControl fullWidth sx={{mt: 3}} error={errors?.engine_type}>
-                    <InputLabel>Engine Type</InputLabel>
-                        <Select {...register("engine_type", { required: true })} id={"engine_type"}>
-                            <MenuItem value="gasoline">Gasoline</MenuItem>
-                            <MenuItem value="hybrid">Hybrid</MenuItem>
-                            <MenuItem value="plugin_hybrid">Plugin Hybrid</MenuItem>
-                            <MenuItem value="electric">Electric</MenuItem>
-                            <MenuItem value="diesel">Diesel</MenuItem>
-                            <MenuItem value="any">Any</MenuItem>
-                        </Select>
-                </FormControl>
+                <SingleSelect id={'engine_type'} label={'Engine Type'} defaultValue={''} errors={errors} register={register}>
+                    <MenuItem value="any">Any</MenuItem>
+                    <MenuItem value="gasoline">Gasoline</MenuItem>
+                    <MenuItem value="hybrid">Hybrid</MenuItem>
+                    <MenuItem value="plugin_hybrid">Plugin Hybrid</MenuItem>
+                    <MenuItem value="electric">Electric</MenuItem>
+                    <MenuItem value="diesel">Diesel</MenuItem>
+                </SingleSelect>
 
                 <MultiSelect name={'exterior_colors'} label={'Preferred Exterior Colors'} control={control} options={Object.keys(exteriorColors).map(exteriorColor => {return { "id": exteriorColor, "name": exteriorColors[exteriorColor] }} )}/>
 

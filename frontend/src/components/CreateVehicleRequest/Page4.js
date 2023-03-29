@@ -1,4 +1,4 @@
-import {useForm} from "react-hook-form";
+import {Controller, useForm} from "react-hook-form";
 import {useState} from "react";
 import {
     Button,
@@ -6,7 +6,7 @@ import {
     FormControlLabel,
     FormLabel,
     InputLabel,
-    MenuItem,
+    MenuItem, Radio,
     RadioGroup,
     Select,
     Typography
@@ -14,6 +14,7 @@ import {
 import {makesModels} from "@/data/makesModels";
 import axios from "@/lib/axios";
 import {LoadingButton} from "@mui/lab";
+import SingleSelect from "@/components/Form/SingleSelect";
 
 export const Page4 = ({goToPage, externalId}) => {
 
@@ -24,6 +25,7 @@ export const Page4 = ({goToPage, externalId}) => {
         handleSubmit,
         register,
         watch,
+        control,
         formState: { errors },
     } = useForm({ mode: "onSubmit" });
 
@@ -55,76 +57,52 @@ export const Page4 = ({goToPage, externalId}) => {
             <form onSubmit={handleSubmit(saveData)}>
 
                 <div>
-                    <FormControl error={errors?.has_trade_in} sx={{mt: 3}}>
-                        <FormLabel>Do you have a trade-in vehicle?</FormLabel>
 
-                        <RadioGroup sx={{ml: 1}}>
-                            <FormControlLabel value="has_trade_in_yes" control={
-                                <input
-                                    {...register("has_trade_in", { required: "Trade-in is required" })}
-                                    type="radio"
-                                    value="has_trade_in_yes"
-                                    id="has_trade_in_yes"
-                                />
-
-                            } label="Yes" />
-
-                            <FormControlLabel value="has_trade_in_no" control={
-
-                                <input
-                                    {...register("has_trade_in", { required: "Trade-in is required" })}
-                                    type="radio"
-                                    value="has_trade_in_no"
-                                    id="has_trade_in_no"
-                                />
-
-                            } label="No" />
-
-                        </RadioGroup>
-
-                    </FormControl>
-
+                    {/*TODO: error, required */}
+                    <Controller
+                        name={'has_trade_in'}
+                        control={control}
+                        render={ ({field}) => (
+                            <>
+                                <FormLabel id={'has_trade_in_label'}>Do you have a trade-in vehicle?</FormLabel>
+                                <FormControl sx={{mt: 0}} fullWidth>
+                                    <RadioGroup {...field} value={field.value}>
+                                        <FormControlLabel value="true" control={<Radio  />} label="Yes" />
+                                        <FormControlLabel value="false" control={<Radio/>} label="No" />
+                                    </RadioGroup>
+                                </FormControl>
+                            </>
+                        )}/>
 
                     {
-                        has_trade_in === 'has_trade_in_yes' &&
+                        has_trade_in === 'true' &&
                         (
                             <>
-                                <FormControl fullWidth sx={{mt: 3}} error={errors?.trade_in_year}>
-                                    <InputLabel>Trade In Year</InputLabel>
-                                    <Select defaultValue={"any"} {...register("trade_in_year", {required: true})}
-                                            id={"trade_in_year"}>
-                                        {tradeInYears.map(function (year) {
-                                            return <MenuItem value={year} key={year}>{year}</MenuItem>
-                                        })}
-                                    </Select>
-                                </FormControl>
+                                <SingleSelect id={'trade_in_year'} label={'Trade In Year'} defaultValue={''} errors={errors} register={register}>
+                                    {tradeInYears.map(function (year) {
+                                        return <MenuItem value={year} key={year}>{year}</MenuItem>
+                                    })}
+                                </SingleSelect>
 
-                                <FormControl fullWidth sx={{mt: 3}} error={errors?.trade_in_make}>
-                                    <InputLabel>Trade In Make</InputLabel>
+                                <SingleSelect id={'trade_in_make'} label={'Trade In Make'} defaultValue={''} errors={errors} register={register}>
+                                    {Object.keys(makesModels).map(function(make) {
+                                        return <MenuItem value={make} key={make}>{make}</MenuItem>
+                                    })}
+                                </SingleSelect>
 
-                                    <Select defaultValue={"any"} {...register("trade_in_make", { required: true })} id={"trade_in_make"}>
-                                        {Object.keys(makesModels).map(function(make) {
-                                            return <MenuItem value={make} key={make}>{make}</MenuItem>
-                                        })}
-                                    </Select>
-                                </FormControl>
-
-                                <FormControl fullWidth sx={{mt: 3}} error={errors?.trade_in_model}>
-                                    <InputLabel>Trade In Model</InputLabel>
-                                    <Select defaultValue={"any"} {...register("trade_in_model", { required: true })} id={"trade_in_model"}>
-                                        {makesModels[tradeInMake] && Object.keys(makesModels[tradeInMake]).map(function(model) {
-                                            return <MenuItem value={makesModels[tradeInMake][model]} key={makesModels[tradeInMake][model]}>{makesModels[tradeInMake][model]}</MenuItem>
-                                        })}
-                                    </Select>
-                                </FormControl>
+                                <SingleSelect id={'trade_in_model'} label={'Trade In Model'} defaultValue={''} errors={errors} register={register}>
+                                    {makesModels[tradeInMake] && Object.keys(makesModels[tradeInMake]).map(function(model) {
+                                        return <MenuItem value={makesModels[tradeInMake][model]} key={makesModels[tradeInMake][model]}>{makesModels[tradeInMake][model]}</MenuItem>
+                                    })}
+                                </SingleSelect>
 
                             </>
                         )
                     }
                     {
-                        has_trade_in === 'has_trade_in_no' &&
+                        has_trade_in === 'false' &&
                             (
-                                <Typography>No problem!</Typography>
+                                <></>
                             )
                     }
 

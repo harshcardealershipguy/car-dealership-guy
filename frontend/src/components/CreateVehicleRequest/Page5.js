@@ -1,9 +1,10 @@
 import {useForm} from "react-hook-form";
 import {useState} from "react";
-import {Button, FormControl, InputLabel, MenuItem, Select, TextField, Typography} from "@mui/material";
+import {MenuItem, TextField, Typography} from "@mui/material";
 import {states} from "@/data/states";
 import axios from "@/lib/axios";
 import {LoadingButton} from "@mui/lab";
+import SingleSelect from "@/components/Form/SingleSelect";
 
 export const Page5 = ({goToPage, externalId}) => {
 
@@ -43,15 +44,11 @@ export const Page5 = ({goToPage, externalId}) => {
             <form onSubmit={handleSubmit(saveData)}>
                 <TextField {...register("city", {required: true})} variant="outlined" label="City" error={errors?.city} fullWidth/>
 
-                <FormControl fullWidth sx={{mt: 3}} error={errors?.state}>
-                    <InputLabel>State</InputLabel>
-                    <Select defaultValue={"any"} {...register("state", {required: true})}
-                            id={"state"}>
-                        {Object.keys(states).map(function (stateId) {
-                            return <MenuItem value={stateId} key={stateId}>{states[stateId]}</MenuItem>
-                        })}
-                    </Select>
-                </FormControl>
+                <SingleSelect id={'state'} label={'State'} defaultValue={''} errors={errors} register={register}>
+                    {Object.keys(states).map(function (stateId) {
+                        return <MenuItem value={stateId} key={stateId}>{states[stateId]}</MenuItem>
+                    })}
+                </SingleSelect>
 
                 <TextField {...register("email", {required: true})} variant="outlined" label="Email" error={errors?.email} fullWidth sx={{mt: 3}}/>
                 <TextField {...register("name", {required: true})} variant="outlined" label="Name" error={errors?.name} fullWidth sx={{mt: 3}}/>
