@@ -17,7 +17,7 @@ export const Page2No = ({goToPage, externalId}) => {
 
     const schema = yup.object({
         new_or_used: yup.string().required(),
-    }).required();
+    });
 
     const {
         control,
@@ -60,7 +60,7 @@ export const Page2No = ({goToPage, externalId}) => {
                     <MenuItem value="new_or_used">New Or Used</MenuItem>
                 </SingleSelect>
 
-                <SingleSelect id={'body_style'} label={'Body Style'} defaultValue={'any'} errors={errors} register={register}>
+                <SingleSelect id={'body_style'} label={'Body Style'} defaultValue={''} errors={errors} register={register}>
                     <MenuItem value="any">Any</MenuItem>
                     <MenuItem value="sports_car">Sports Car</MenuItem>
                     <MenuItem value="hatchback">Hatchback</MenuItem>
@@ -74,7 +74,7 @@ export const Page2No = ({goToPage, externalId}) => {
                     <MenuItem value="pickup_truck">Pickup Truck</MenuItem>
                 </SingleSelect>
 
-                <SingleSelect id={'engine_type'} label={'Engine Type'} defaultValue={'any'} errors={errors} register={register}>
+                <SingleSelect id={'engine_type'} label={'Engine Type'} defaultValue={''} errors={errors} register={register}>
                     <MenuItem value="any">Any</MenuItem>
                     <MenuItem value="gasoline">Gasoline</MenuItem>
                     <MenuItem value="hybrid">Hybrid</MenuItem>
@@ -83,7 +83,7 @@ export const Page2No = ({goToPage, externalId}) => {
                     <MenuItem value="diesel">Diesel</MenuItem>
                 </SingleSelect>
 
-                <SingleSelect id={'size'} label={'Size'} defaultValue={'any'} errors={errors} register={register}>
+                <SingleSelect id={'size'} label={'Size'} defaultValue={''} errors={errors} register={register}>
                     <MenuItem value="any">Any</MenuItem>
                     <MenuItem value="compact">Compact</MenuItem>
                     <MenuItem value="small">Small</MenuItem>

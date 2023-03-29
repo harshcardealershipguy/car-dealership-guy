@@ -1,10 +1,16 @@
 import {useForm, Controller} from "react-hook-form";
 import {useState} from "react";
-import {FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography} from "@mui/material";
+import {FormControl, FormControlLabel, FormHelperText, FormLabel, Radio, RadioGroup, Typography} from "@mui/material";
 import axios from "@/lib/axios";
 import {LoadingButton} from "@mui/lab";
+import * as yup from "yup";
+import {yupResolver} from "@hookform/resolvers/yup";
 
 export const Page1 = ({goToPage}) => {
+
+    const schema = yup.object({
+        exact_vehicle_known: yup.boolean().required(),
+    });
 
     const {
         handleSubmit,
@@ -12,7 +18,7 @@ export const Page1 = ({goToPage}) => {
         formState: { errors },
         reset,
         control
-    } = useForm({ mode: "onSubmit" });
+    } = useForm({  resolver: yupResolver(schema), mode: "onSubmit" });
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -53,15 +59,16 @@ export const Page1 = ({goToPage}) => {
                     name={'exact_vehicle_known'}
                     control={control}
                     render={ ({field}) => (
-                        <>
-                            <FormLabel id={'exact_vehicle_known_label'}>Do you know exactly which vehicle you're interested in?</FormLabel>
-                            <FormControl sx={{mt: 0}} fullWidth>
-                                <RadioGroup {...field} value={field.value}>
-                                    <FormControlLabel value="true" control={<Radio  />} label="Yes" />
-                                    <FormControlLabel value="false" control={<Radio/>} label="No" />
-                                </RadioGroup>
-                            </FormControl>
-                        </>
+                        <FormControl sx={{mt: 0}} fullWidth error={errors?.['exact_vehicle_known'] ? true : false}>
+                            <FormLabel id={'exact_vehicle_known_label'} focused={false}>Do you know exactly which vehicle you're interested in?</FormLabel>
+                            <RadioGroup {...field} value={field.value}>
+                                <FormControlLabel value="true" control={<Radio/>} label="Yes" />
+                                <FormControlLabel value="false" control={<Radio/>} label="No" />
+                            </RadioGroup>
+
+                            {errors?.exact_vehicle_known && <FormHelperText>{errors?.exact_vehicle_known.message}</FormHelperText>}
+                        </FormControl>
+
                     )}/>
 
                 <LoadingButton type="submit" variant="outlined" sx={{mt: 1}} fullWidth loading={isLoading}>Next</LoadingButton>

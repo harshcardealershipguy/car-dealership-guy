@@ -63,15 +63,14 @@ export const Page4 = ({goToPage, externalId}) => {
                         name={'has_trade_in'}
                         control={control}
                         render={ ({field}) => (
-                            <>
-                                <FormLabel id={'has_trade_in_label'}>Do you have a trade-in vehicle?</FormLabel>
-                                <FormControl sx={{mt: 0}} fullWidth>
-                                    <RadioGroup {...field} value={field.value}>
-                                        <FormControlLabel value="true" control={<Radio  />} label="Yes" />
-                                        <FormControlLabel value="false" control={<Radio/>} label="No" />
-                                    </RadioGroup>
-                                </FormControl>
-                            </>
+                            <FormControl sx={{mt: 0}} fullWidth>
+                                <FormLabel id={'has_trade_in_label'} focused={false}>Do you have a trade-in vehicle?</FormLabel>
+                                <RadioGroup {...field} value={field.value}>
+                                    <FormControlLabel value="true" control={<Radio  />} label="Yes" />
+                                    <FormControlLabel value="false" control={<Radio/>} label="No" />
+                                </RadioGroup>
+                            </FormControl>
+
                         )}/>
 
                     {

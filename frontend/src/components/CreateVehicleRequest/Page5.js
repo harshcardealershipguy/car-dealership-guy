@@ -1,12 +1,22 @@
 import {useForm} from "react-hook-form";
 import {useState} from "react";
-import {MenuItem, TextField, Typography} from "@mui/material";
+import {FormHelperText, MenuItem, TextField, Typography} from "@mui/material";
 import {states} from "@/data/states";
 import axios from "@/lib/axios";
 import {LoadingButton} from "@mui/lab";
 import SingleSelect from "@/components/Form/SingleSelect";
+import * as yup from "yup";
+import {yupResolver} from "@hookform/resolvers/yup";
 
 export const Page5 = ({goToPage, externalId}) => {
+
+    const schema = yup.object({
+        city: yup.string().required(),
+        state: yup.string().required(),
+        email: yup.string().email().required(),
+        password: yup.string().min(8).required(),
+        password_confirmation: yup.string().min(8).oneOf([yup.ref('password'), null], 'Passwords must match').required()
+    });
 
     const {
         reset,
@@ -14,7 +24,7 @@ export const Page5 = ({goToPage, externalId}) => {
         register,
         watch,
         formState: { errors },
-    } = useForm({ mode: "onSubmit" });
+    } = useForm({resolver: yupResolver(schema), mode: "onSubmit" });
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -42,7 +52,7 @@ export const Page5 = ({goToPage, externalId}) => {
             <Typography sx={{mb: 3}}>One final step so that we know where you're located and how to get in-touch.</Typography>
 
             <form onSubmit={handleSubmit(saveData)}>
-                <TextField {...register("city", {required: true})} variant="outlined" label="City" error={errors?.city} fullWidth/>
+                <TextField {...register("city")} variant="outlined" label="City" error={!!errors?.city} helperText={errors?.['city']?.message} fullWidth/>
 
                 <SingleSelect id={'state'} label={'State'} defaultValue={''} errors={errors} register={register}>
                     {Object.keys(states).map(function (stateId) {
@@ -50,10 +60,13 @@ export const Page5 = ({goToPage, externalId}) => {
                     })}
                 </SingleSelect>
 
-                <TextField {...register("email", {required: true})} variant="outlined" label="Email" error={errors?.email} fullWidth sx={{mt: 3}}/>
-                <TextField {...register("name", {required: true})} variant="outlined" label="Name" error={errors?.name} fullWidth sx={{mt: 3}}/>
-                <TextField {...register("password", {required: true})} type={'password'} variant="outlined" label="Password" error={errors?.password} fullWidth sx={{mt: 3}}/>
-                <TextField {...register("password_confirmation", {required: true})} type={'password'} variant="outlined" label="Password Confirmation" error={errors?.password_confirmation} fullWidth sx={{mt: 3}}/>
+                <TextField {...register("email")} variant="outlined" label="Email" error={!!errors?.email} helperText={errors?.['email']?.message} fullWidth sx={{mt: 3}}/>
+
+                <TextField {...register("name")} variant="outlined" label="Name" error={!!errors?.name} fullWidth sx={{mt: 3}}/>
+
+                <TextField {...register("password")} type={'password'} variant="outlined" label="Password" error={!!errors?.password} helperText={errors?.['password']?.message} fullWidth sx={{mt: 3}}/>
+
+                <TextField {...register("password_confirmation")} type={'password'} variant="outlined" label="Password Confirmation" error={!!errors?.password_confirmation} helperText={errors?.['password_confirmation']?.message} fullWidth sx={{mt: 3}}/>
 
                 <LoadingButton type="submit" variant="outlined" sx={{mt: 1}} fullWidth loading={isLoading}>Next</LoadingButton>
 
