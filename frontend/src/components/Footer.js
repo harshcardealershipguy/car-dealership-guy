@@ -1,4 +1,5 @@
-import {Box, Container, Paper, Typography} from "@mui/material";
+import {Box, Container, Grid, Paper, Typography} from "@mui/material";
+import Link from "next/link";
 
 
 const Footer = () => (
@@ -37,6 +38,14 @@ const Footer = () => (
                 </Typography>
 
             </Box>
+
+
+            <Grid container sx={{my: 3}}>
+                <Grid item xs={4}>
+                    <Link href={'/login'}>Login</Link>
+                </Grid>
+
+            </Grid>
         </Container>
     </Paper>
 )

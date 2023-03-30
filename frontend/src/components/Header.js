@@ -1,4 +1,5 @@
 import {AppBar, Box, Button, IconButton, Toolbar, Typography} from "@mui/material";
+import Link from "next/link";
 
 const Header = () => (
     <Box sx={{ flexGrow: 1 }}>
@@ -13,11 +14,15 @@ const Header = () => (
                 >
 
                 </IconButton>
-                <img src={"/logo.png"} style={{maxHeight: '50px', marginTop: '5px', marginBottom: '5px', marginRight: '5px'}}/>
-                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight={'bold'}>
-                    Car Dealership Guy
+
+                    <img src={"/logo.png"} style={{maxHeight: '50px', marginTop: '5px', marginBottom: '5px', marginRight: '5px'}}/>
+                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight={'bold'}>
+                        <a href={'/'} color={'white'}>Car Dealership Guy</a>
+                    </Typography>
+
+                <Typography>
+                    <Link href={'/create-vehicle-request/initial'}>Create Vehicle Request</Link>
                 </Typography>
-                <Button color="inherit">Dealer Login</Button>
             </Toolbar>
         </AppBar>
     </Box>

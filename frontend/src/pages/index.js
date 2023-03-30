@@ -1,25 +1,22 @@
 import Head from 'next/head'
-import Link from 'next/link'
-import { useAuth } from '@/hooks/auth'
 import AppLayout from "@/components/Layouts/AppLayout";
 import {Grid, Typography} from "@mui/material";
+import GuestLayout from "@/components/Layouts/GuestLayout";
 
 export default function Home() {
-    const { user } = useAuth({ middleware: 'guest' })
-
     return (
         <>
             <Head>
                 <title>Car Dealership Guy</title>
             </Head>
 
-            <AppLayout>
+            <GuestLayout>
                 <Grid container>
                     <Grid item xs={12}>
-                        <Typography variant={'h1'}>Car Dealership Guy</Typography>
+                        <Typography textAlign={'center'} variant={'h4'}>Ready for your new vehicle?</Typography>
                     </Grid>
                 </Grid>
-                <Grid container>
+                <Grid container sx={{my:3}}>
                     <Grid item xs={4}>
                         Item 1
                     </Grid>
@@ -30,7 +27,7 @@ export default function Home() {
                         Item 3
                     </Grid>
                 </Grid>
-            </AppLayout>
+            </GuestLayout>
 
         </>
     )
