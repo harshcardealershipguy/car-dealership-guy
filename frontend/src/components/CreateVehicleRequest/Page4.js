@@ -52,8 +52,8 @@ export const Page4 = ({goToPage, externalId}) => {
 
     return (
         <>
-            <Typography fontWeight={'bold'} variant={'h3'} sx={{mt: 3}}>Trade-In Details</Typography>
-            <Typography sx={{mb: 3}}>If you have a trade-in, our partners can help include it as part of your deal.</Typography>
+            <Typography variant={'h4'} fontWeight={'bold'} sx={{mt: 3}}>Trade-In Details</Typography>
+            <Typography variant={'subtitle1'} color="gray" sx={{mb: 3}}>If you have a trade-in, our partners can help include it as part of your deal.</Typography>
             <form onSubmit={handleSubmit(saveData)}>
 
                 <div>
@@ -64,7 +64,7 @@ export const Page4 = ({goToPage, externalId}) => {
                         control={control}
                         render={ ({field}) => (
                             <FormControl sx={{mt: 0}} fullWidth>
-                                <FormLabel id={'has_trade_in_label'} focused={false}>Do you have a trade-in vehicle?</FormLabel>
+                                <FormLabel id={'has_trade_in_label'} style={{color: '#000'}} focused={false}>Do you have a trade-in vehicle?</FormLabel>
                                 <RadioGroup {...field} value={field.value}>
                                     <FormControlLabel value="true" control={<Radio  />} label="Yes" />
                                     <FormControlLabel value="false" control={<Radio/>} label="No" />
@@ -107,7 +107,8 @@ export const Page4 = ({goToPage, externalId}) => {
 
 
                     {/*TODO: Make the next button active only when the trade-in is answered*/}
-                    <LoadingButton type="submit" variant="outlined" sx={{mt: 1}} fullWidth loading={isLoading}>Next</LoadingButton>
+                    <LoadingButton type="submit" variant="contained" sx={{mt: 3}} fullWidth size={'large'} loading={isLoading}>Next</LoadingButton>
+
                 </div>
 
             </form>

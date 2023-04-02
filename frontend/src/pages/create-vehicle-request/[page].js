@@ -84,7 +84,7 @@ const CreateVehicleRequest = () => {
 
     return (
         <GuestLayout>
-            <Grid container justifyContent="center" sx={{mt: 5}}>
+            <Grid container justifyContent="center">
                 <Grid item xs={5}>
 
                     {/* Session Status */}

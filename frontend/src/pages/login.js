@@ -1,16 +1,12 @@
-import ApplicationLogo from '@/components/ApplicationLogo'
-import AuthCard from '@/components/AuthCard'
 import AuthSessionStatus from '@/components/AuthSessionStatus'
-import Button from '@/components/Button'
+
 import GuestLayout from '@/components/Layouts/GuestLayout'
-import Input from '@/components/Input'
-import InputError from '@/components/InputError'
-import Label from '@/components/Label'
 import Link from 'next/link'
-import { useAuth } from '@/hooks/auth'
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/router'
-import {Grid, Paper, Typography} from "@mui/material";
+import {useAuth} from '@/hooks/auth'
+import {useEffect, useState} from 'react'
+import {useRouter} from 'next/router'
+import {Button, Checkbox, FormControlLabel, FormGroup, Grid, Paper, TextField, Typography} from "@mui/material";
+import {useForm} from "react-hook-form";
 
 const Login = () => {
     const router = useRouter()
@@ -20,9 +16,7 @@ const Login = () => {
         redirectIfAuthenticated: '/dashboard',
     })
 
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [shouldRemember, setShouldRemember] = useState(false)
+    const { register, handleSubmit } = useForm();
     const [errors, setErrors] = useState([])
     const [status, setStatus] = useState(null)
 
@@ -34,13 +28,11 @@ const Login = () => {
         }
     })
 
-    const submitForm = async event => {
-        event.preventDefault()
-
+    const submitForm = async data => {
         login({
-            email,
-            password,
-            remember: shouldRemember,
+            email: data.email,
+            password: data.password,
+            remember: data.remember,
             setErrors,
             setStatus,
         })
@@ -48,86 +40,33 @@ const Login = () => {
 
     return (
         <GuestLayout>
-
             <Grid container alignItems={'center'} justifyContent="center" >
-                <Grid item xs={4}>
-                    <Paper sx={{my: 4, p: 3}}>
+                <Grid item xs={12} md={6} lg={4}>
 
-                        {/* Session Status */}
-                        <AuthSessionStatus status={status} />
+                    <AuthSessionStatus status={status} />
 
-                        <Typography variant={'h4'} fontWeight={'bold'}>Login</Typography>
-                        <form onSubmit={submitForm}>
-                            {/* Email Address */}
-                            <div>
-                                <Label htmlFor="email">Email</Label>
+                    <Typography variant={'h4'} fontWeight={'bold'}>Login</Typography>
+                    <Typography variant={'subtitle1'} color="gray">If you already have an account, login here. If you haven't created an account, <Link href={'/create-vehicle-request/initial'}>tell us about the vehicle you're interested in</Link>.</Typography>
+                    <form onSubmit={handleSubmit(submitForm)}>
 
-                                <Input
-                                    id="email"
-                                    type="email"
-                                    value={email}
-                                    onChange={event => setEmail(event.target.value)}
-                                    required
-                                    autoFocus
-                                />
+                        <TextField sx={{mt: 3}} {...register("email")} error={errors?.email} helperText={errors.email} type='email' label="Email" variant="outlined" fullWidth required autoFocus />
 
-                                <InputError messages={errors.email}  />
-                            </div>
+                        <TextField sx={{mt: 3}} {...register('password')} error={errors?.password} helperText={errors.password} type='password' label="Password" variant="outlined" fullWidth required />
 
-                            {/* Password */}
-                            <div >
-                                <Label htmlFor="password">Password</Label>
+                        <FormGroup sx={{my: 2}}>
+                            <FormControlLabel control={<Checkbox {...register('remember')} defaultChecked />} label="Remember Me" />
+                        </FormGroup>
 
-                                <Input
-                                    id="password"
-                                    type="password"
-                                    value={password}
-                                    onChange={event => setPassword(event.target.value)}
-                                    required
-                                    autoComplete="current-password"
-                                />
+                        <Button variant="contained" type='submit' fullWidth size={'large'}>Login</Button>
 
-                                <InputError
-                                    messages={errors.password}
+                        <br/>
+                        <Link href="/forgot-password">
+                            <Typography sx={{py: 3}} textAlign={'right'}>Forgot your password?</Typography>
+                        </Link>
+                    </form>
 
-                                />
-                            </div>
-
-                            {/* Remember Me */}
-                            <div>
-                                <label
-                                    htmlFor="remember_me"
-                                >
-                                    <input
-                                        id="remember_me"
-                                        type="checkbox"
-                                        name="remember"
-
-                                        onChange={event =>
-                                            setShouldRemember(event.target.checked)
-                                        }
-                                    />
-
-                                    <span>
-                                Remember me
-                            </span>
-                                </label>
-                            </div>
-
-                            <div>
-                                <Link href="/forgot-password">
-                                    Forgot your password?
-                                </Link>
-
-                                <Button>Login</Button>
-                            </div>
-                        </form>
-
-                    </Paper>
                 </Grid>
             </Grid>
-
-
         </GuestLayout>
     )
 }

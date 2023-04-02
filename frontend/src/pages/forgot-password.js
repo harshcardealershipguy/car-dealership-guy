@@ -1,68 +1,44 @@
-import ApplicationLogo from '@/components/ApplicationLogo'
-import AuthCard from '@/components/AuthCard'
 import AuthSessionStatus from '@/components/AuthSessionStatus'
-import Button from '@/components/Button'
+
 import GuestLayout from '@/components/Layouts/GuestLayout'
-import Input from '@/components/Input'
-import InputError from '@/components/InputError'
-import Label from '@/components/Label'
-import Link from 'next/link'
-import { useAuth } from '@/hooks/auth'
-import { useState } from 'react'
+import {useAuth} from '@/hooks/auth'
+import {useState} from 'react'
+import {Button, Grid, TextField, Typography} from "@mui/material";
+import {useForm} from "react-hook-form";
 
 const ForgotPassword = () => {
     const { forgotPassword } = useAuth({ middleware: 'guest' })
 
-    const [email, setEmail] = useState('')
+    const { register, handleSubmit } = useForm();
+
     const [errors, setErrors] = useState([])
     const [status, setStatus] = useState(null)
 
-    const submitForm = event => {
-        event.preventDefault()
-
-        forgotPassword({ email, setErrors, setStatus })
+    const submitForm = data => {
+        forgotPassword({ email: data.email, setErrors, setStatus })
     }
 
     return (
         <GuestLayout>
-            <AuthCard
-                logo={
-                    <Link href="/">
-                        <ApplicationLogo className="w-20 h-20 fill-current text-gray-500" />
-                    </Link>
-                }>
-                <div className="mb-4 text-sm text-gray-600">
-                    Forgot your password? No problem. Just let us know your
-                    email address and we will email you a password reset link
-                    that will allow you to choose a new one.
-                </div>
+            <Grid container alignItems={'center'} justifyContent="center" >
+                <Grid item xs={12} md={6} lg={4}>
 
-                {/* Session Status */}
-                <AuthSessionStatus className="mb-4" status={status} />
+                    <Typography variant={'h4'} fontWeight={'bold'}>Forgot Password</Typography>
+                    <Typography variant={'subtitle1'} color="gray">Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.</Typography>
 
-                <form onSubmit={submitForm}>
-                    {/* Email Address */}
-                    <div>
-                        <Label htmlFor="email">Email</Label>
-                        <Input
-                            id="email"
-                            type="email"
-                            name="email"
-                            value={email}
-                            className="block mt-1 w-full"
-                            onChange={event => setEmail(event.target.value)}
-                            required
-                            autoFocus
-                        />
+                    {/* Session Status */}
+                    <AuthSessionStatus className="mb-4" status={status} />
 
-                        <InputError messages={errors.email} className="mt-2" />
-                    </div>
+                    <form onSubmit={handleSubmit(submitForm)}>
 
-                    <div className="flex items-center justify-end mt-4">
-                        <Button>Email Password Reset Link</Button>
-                    </div>
-                </form>
-            </AuthCard>
+                        <TextField sx={{mt: 3}} {...register("email")} error={errors?.email} helperText={errors.email} type='email' label="Email" variant="outlined" fullWidth required autoFocus />
+
+                        <Button sx={{my: 3}} variant="contained" type='submit' fullWidth size={'large'}>Email Password Reset Link</Button>
+                    </form>
+
+                </Grid>
+            </Grid>
+
         </GuestLayout>
     )
 }

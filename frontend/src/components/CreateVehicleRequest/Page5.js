@@ -48,8 +48,8 @@ export const Page5 = ({goToPage, externalId}) => {
 
     return (
         <>
-            <Typography fontWeight={'bold'} variant={'h3'} sx={{mt: 3}}>Personal Information</Typography>
-            <Typography sx={{mb: 3}}>One final step so that we know where you're located and how to get in-touch.</Typography>
+            <Typography variant={'h4'} fontWeight={'bold'} sx={{mt: 3}}>Personal Information</Typography>
+            <Typography variant={'subtitle1'} color="gray" sx={{mb: 3}}>One final step so that we know where you're located and how to get in-touch.</Typography>
 
             <form onSubmit={handleSubmit(saveData)}>
                 <TextField {...register("city")} variant="outlined" label="City" error={!!errors?.city} helperText={errors?.['city']?.message} fullWidth/>
@@ -68,7 +68,7 @@ export const Page5 = ({goToPage, externalId}) => {
 
                 <TextField {...register("password_confirmation")} type={'password'} variant="outlined" label="Password Confirmation" error={!!errors?.password_confirmation} helperText={errors?.['password_confirmation']?.message} fullWidth sx={{mt: 3}}/>
 
-                <LoadingButton type="submit" variant="outlined" sx={{mt: 1}} fullWidth loading={isLoading}>Next</LoadingButton>
+                <LoadingButton type="submit" variant="contained" sx={{mt: 3}} fullWidth size={'large'} loading={isLoading}>Next</LoadingButton>
 
             </form>
         </>

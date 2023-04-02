@@ -17,11 +17,15 @@ const Header = () => (
 
                     <img src={"/logo.png"} style={{maxHeight: '50px', marginTop: '5px', marginBottom: '5px', marginRight: '5px'}}/>
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} fontWeight={'bold'}>
-                        <a href={'/'} color={'white'}>Car Dealership Guy</a>
+                        <a href={'/'} className={'white'}>Car Dealership Guy</a>
                     </Typography>
 
+                <Typography sx={{mx: 2}}>
+                    <Link href={'/create-vehicle-request/initial'} className={'white'}>Create Vehicle Request</Link>
+                </Typography>
+
                 <Typography>
-                    <Link href={'/create-vehicle-request/initial'}>Create Vehicle Request</Link>
+                    <Link href={'/create-dealer-request'} className={'white'}>Join Partner Program</Link>
                 </Typography>
             </Toolbar>
         </AppBar>

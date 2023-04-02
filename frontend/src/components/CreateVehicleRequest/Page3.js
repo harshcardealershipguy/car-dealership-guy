@@ -36,8 +36,8 @@ export const Page3 = ({goToPage, externalId}) => {
 
     return (
         <>
-            <Typography fontWeight={'bold'} variant={'h3'} sx={{mt: 3}}>Timing & Financing</Typography>
-            <Typography sx={{mb: 3}}>Let's understand when you're looking to buy and what your budget looks like.</Typography>
+            <Typography variant={'h4'} fontWeight={'bold'} sx={{mt: 3}}>Timing & Financing</Typography>
+            <Typography variant={'subtitle1'} color="gray" sx={{mb: 1}}>Let's understand when you're looking to buy and what your budget looks like.</Typography>
 
             <form onSubmit={handleSubmit(saveData)}>
 
@@ -101,8 +101,8 @@ export const Page3 = ({goToPage, externalId}) => {
                     <MenuItem value="excellent">800 to 850 - Excellent</MenuItem>
                 </SingleSelect>
 
-                <br/>
-                <LoadingButton type="submit" variant="outlined" sx={{mt: 1}} fullWidth loading={isLoading}>Next</LoadingButton>
+
+                <LoadingButton type="submit" variant="contained" sx={{mt: 3}} fullWidth size={'large'} loading={isLoading}>Next</LoadingButton>
             </form>
         </>
     );

@@ -44,8 +44,8 @@ export const Page2Yes = ({goToPage, externalId}) => {
 
     return (
         <>
-            <Typography fontWeight={'bold'} variant={'h3'} sx={{mt: 3}}>Vehicle Details</Typography>
-            <Typography sx={{mb: 3}}>We'll ask you some questions to understand the vehicle you're looking for.</Typography>
+            <Typography variant={'h4'} fontWeight={'bold'} sx={{mt: 3}}>Vehicle Details</Typography>
+            <Typography variant={'subtitle1'} color="gray" sx={{mb: 1}}>We'll ask you some questions to understand the vehicle you're looking for.</Typography>
 
             <form onSubmit={handleSubmit(saveData)}>
 
@@ -96,7 +96,7 @@ export const Page2Yes = ({goToPage, externalId}) => {
 
                 <MultiSelect name={'interior_colors'} label={'Preferred Interior Colors'} control={control} options={Object.keys(interiorColors).map(interiorColor => {return { "id": interiorColor, "name": interiorColors[interiorColor] }} )}/>
 
-                <LoadingButton type="submit" variant="outlined" sx={{mt: 1}} fullWidth loading={isLoading}>Next</LoadingButton>
+                <LoadingButton type="submit" variant="contained" sx={{mt: 3}} fullWidth size={'large'} loading={isLoading}>Next</LoadingButton>
 
             </form>
         </>

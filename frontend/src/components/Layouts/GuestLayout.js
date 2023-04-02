@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import {Box} from "@mui/material";
 
 
 const GuestLayout = ({ children }) => {
@@ -11,9 +12,9 @@ const GuestLayout = ({ children }) => {
             </Head>
 
             <Header/>
-            <div>
+            <Box sx={{py: 5, px: 3}}>
                 {children}
-            </div>
+            </Box>
 
             <Footer/>
         </div>

@@ -8,25 +8,18 @@ import {interiorColors} from "@/data/interiorColors";
 import {importantFeatures} from "@/data/importantFeatures";
 import axios from "@/lib/axios";
 import {LoadingButton} from "@mui/lab";
-import {yupResolver} from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import SingleSelect from "@/components/Form/SingleSelect";
 
 
 export const Page2No = ({goToPage, externalId}) => {
-
-    const schema = yup.object({
-        new_or_used: yup.string().required(),
-    });
 
     const {
         control,
         reset,
         handleSubmit,
         register,
-        watch,
         formState: { errors },
-    } = useForm({ resolver: yupResolver(schema), mode: "onSubmit" });
+    } = useForm({ mode: "onSubmit" });
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -49,8 +42,8 @@ export const Page2No = ({goToPage, externalId}) => {
 
     return (
         <>
-            <Typography fontWeight={'bold'} variant={'h3'} sx={{mt: 3}}>Vehicle Details</Typography>
-            <Typography sx={{mb: 3}}>We'll ask you some simple questions to better understand what types of vehicles would fit what you're looking for.</Typography>
+            <Typography variant={'h4'} fontWeight={'bold'} sx={{mt: 3}}>Vehicle Details</Typography>
+            <Typography variant={'subtitle1'} color="gray" sx={{mb: 1}}>We'll ask you some simple questions to better understand what types of vehicles would fit what you're looking for.</Typography>
 
             <form onSubmit={handleSubmit(saveData)}>
 
@@ -101,7 +94,7 @@ export const Page2No = ({goToPage, externalId}) => {
 
                 <MultiSelect name={'important_features'} label={'Important Features'} control={control} options={importantFeatures.map(importantFeature => {return { "id": importantFeature, "name": importantFeature }} )}/>
 
-                <LoadingButton type="submit" variant="outlined" sx={{mt: 1}} fullWidth loading={isLoading}>Next</LoadingButton>
+                <LoadingButton type="submit" variant="contained" sx={{mt: 3}} fullWidth size={'large'} loading={isLoading}>Next</LoadingButton>
             </form>
         </>
     );
