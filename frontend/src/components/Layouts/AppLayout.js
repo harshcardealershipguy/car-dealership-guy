@@ -8,7 +8,7 @@ const AppLayout = ({ header, children }) => {
     return (
         <Grid container>
             <Grid item xs={12}>
-                <Navigation user={user} />
+                {/*<Navigation user={user} />*/}
                 {children}
             </Grid>
         </Grid>

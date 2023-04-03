@@ -17,7 +17,19 @@ use App\Http\Controllers\DealerController;
 */
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+    $user = $request->user();
+
+    $role = '';
+    if ($user->hasRole(['admin'])) {
+        $role = 'admin';
+    } else if ($user->hasRole(['dealer'])) {
+        $role = 'dealer';
+    } else if ($user->hasRole(['customer'])) {
+       $role = 'customer';
+    }
+    $user['role'] = $role;
+
+    return $user;
 });
 
 
