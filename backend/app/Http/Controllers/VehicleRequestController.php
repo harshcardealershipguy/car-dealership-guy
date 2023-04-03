@@ -9,6 +9,7 @@ use Illuminate\Validation\Rules\Password;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use App\Models\Role;
 
 
 class VehicleRequestController extends Controller
@@ -69,11 +70,15 @@ class VehicleRequestController extends Controller
 
         //if the user doesn't exist create one with the name/email/password
         if(!$user) {
+            $customerRole = Role::where('name', 'customer')->firstOrFail();
+
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
             ]);
+
+            $user->addRole($customerRole);
 
             event(new Registered($user));
         }

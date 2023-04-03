@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VehicleRequestController;
+use App\Http\Controllers\DealerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 Route::post('/request', [VehicleRequestController::class, 'store']);
 Route::post('/request/vehicle-info', [VehicleRequestController::class, 'updatePurchaseVehicleInfo']);
 Route::post('/request/personal-info', [VehicleRequestController::class, 'updatePersonalInformation']);
+
+Route::post('/dealer-join-request', [DealerController::class, 'store']);
 
 // TODO: only allow admins
 Route::get('/vehicle-requests', [VehicleRequestController::class, 'getVehicleRequests']);
