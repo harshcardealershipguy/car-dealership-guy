@@ -12,7 +12,7 @@ const GuestLayout = ({ children }) => {
             </Head>
 
             <Header/>
-            <Box sx={{py: 5, px: 3}}>
+            <Box sx={{pt: 5, pb: 18, px: 3}} className={'main-body'}>
                 {children}
             </Box>
 

@@ -19,6 +19,10 @@ class VehicleRequestController extends Controller
         return VehicleRequest::all();
     }
 
+    public function getVehicleRequest($externalId) {
+        return VehicleRequest::where('external_id', $externalId)->firstOrFail();
+    }
+
     /**
      * Store a newly created resource in storage.
      *

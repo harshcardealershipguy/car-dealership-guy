@@ -8,7 +8,7 @@ import {Page2No} from "@/components/CreateVehicleRequest/Page2-no";
 import {Page3} from "@/components/CreateVehicleRequest/Page3";
 import {Page4} from "@/components/CreateVehicleRequest/Page4";
 import {ThankYouPage} from "@/components/CreateVehicleRequest/ThankYouPage";
-import {Box, Grid, LinearProgress} from "@mui/material";
+import {Box, Grid, LinearProgress, Paper} from "@mui/material";
 import {Page5} from "@/components/CreateVehicleRequest/Page5";
 
 const CreateVehicleRequest = () => {
@@ -93,7 +93,9 @@ const CreateVehicleRequest = () => {
                     <Box sx={{ width: '100%' }}>
                         <LinearProgress variant="determinate" value={progressBarValue} />
                     </Box>
+                    <Paper elevation={0} sx={{px: 4, pb: 4, pt: 1, mt: 2}}>
                     {renderForm()}
+                    </Paper>
 
                 </Grid>
             </Grid>

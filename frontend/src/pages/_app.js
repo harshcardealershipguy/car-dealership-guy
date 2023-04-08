@@ -1,20 +1,35 @@
 import 'styles/styles.css'
-import { red } from '@mui/material/colors';
 
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-
+import { ThemeProvider, createTheme  } from '@mui/material/styles';
 
 const theme = createTheme({
+    shape: {borderRadius: '20px'},
     palette: {
         primary: {
             main: '#0077ff',
+            contrastText: '#fff'
+        },
+        success: {
+            main: 'rgb(102, 187, 106)',
+            contrastText: '#fff',
+
         },
         gray: '#808080',
         black: '#000000'
     },
     typography: {
-        fontFamily: "'Inter', sans-serif"
+        fontFamily: "'Lato', sans-serif",
+        button: {
+            textTransform: 'none'
+        }
     },
+    components: {
+        MuiButton: {
+            defaultProps: {
+                disableElevation: true
+            }
+        }
+    }
 });
 
 

@@ -15,7 +15,7 @@ const AdminDashboard = ({user}) => {
 
     return (
         <>
-            <Typography variant={'h2'}>Admin Dashboard</Typography>
+            <Typography variant={'h4'} fontWeight={'bold'} sx={{mt: 3}}>Admin Dashboard</Typography>
 
         </>
     )

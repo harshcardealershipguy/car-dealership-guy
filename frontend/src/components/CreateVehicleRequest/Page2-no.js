@@ -9,6 +9,7 @@ import {importantFeatures} from "@/data/importantFeatures";
 import axios from "@/lib/axios";
 import {LoadingButton} from "@mui/lab";
 import SingleSelect from "@/components/Form/SingleSelect";
+import {yearHighs, yearLows} from "@/data/years";
 
 
 export const Page2No = ({goToPage, externalId}) => {
@@ -51,6 +52,20 @@ export const Page2No = ({goToPage, externalId}) => {
                     <MenuItem value="new">New</MenuItem>
                     <MenuItem value="used">Used</MenuItem>
                     <MenuItem value="new_or_used">New Or Used</MenuItem>
+                </SingleSelect>
+
+                <SingleSelect id={'year_low'} label={'Year Minimum'} defaultValue={''} errors={errors} register={register}>
+                    <MenuItem value="any" defaultValue>Any</MenuItem>
+                    {yearLows.map(function(year) {
+                        return <MenuItem value={year} key={year}>{year}</MenuItem>
+                    })}
+                </SingleSelect>
+
+                <SingleSelect id={'year_high'} label={'Year Maximum'} defaultValue={''} errors={errors} register={register}>
+                    <MenuItem value="any">Any</MenuItem>
+                    {yearHighs.map(function(year) {
+                        return <MenuItem value={year} key={year}>{year}</MenuItem>
+                    })}
                 </SingleSelect>
 
                 <SingleSelect id={'body_style'} label={'Body Style'} defaultValue={''} errors={errors} register={register}>

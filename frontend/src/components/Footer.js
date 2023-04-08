@@ -4,9 +4,9 @@ import Link from "next/link";
 
 const Footer = () => (
     <Paper sx={{
-        mt: 6,
+        mt: 0,
         width: '100%',
-        backgroundColor: '#eee'
+        backgroundColor: '#2d2d2d'
     }} component="footer" square variant="outlined">
         <Container maxWidth="lg">
             <Box
@@ -27,8 +27,8 @@ const Footer = () => (
                     flexGrow: 1,
                     justifyContent: "center",
                     display: "flex",
-                    mb: 4,
-                    mt: 2
+                    mb: 15,
+                    mt: 5
                 }}
             >
                 <br/>
@@ -40,7 +40,7 @@ const Footer = () => (
             </Box>
 
 
-            <Grid container sx={{my: 3}}>
+            <Grid container sx={{my: 10}}>
                 <Grid item xs={4}>
                     <Link href={'/login'}>Login</Link>
                 </Grid>

@@ -9,6 +9,11 @@ class VehicleRequest extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'exterior_colors' => 'array',
+        'interior_colors' => 'array'
+    ];
+
     protected $fillable = [
         'external_id',
         'user_id',

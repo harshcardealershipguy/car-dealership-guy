@@ -39,5 +39,8 @@ Route::post('/request/personal-info', [VehicleRequestController::class, 'updateP
 
 Route::post('/dealer-join-request', [DealerController::class, 'store']);
 
-// TODO: only allow admins
+// TODO: only allow dealers+admins
 Route::get('/vehicle-requests', [VehicleRequestController::class, 'getVehicleRequests']);
+
+//TODO: only allow dealers+admins
+Route::get('/vehicle-request/{externalId}', [VehicleRequestController::class, 'getVehicleRequest']);

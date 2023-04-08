@@ -8,10 +8,9 @@ import axios from "@/lib/axios";
 import MultiSelect from "@/components/Form/MultiSelect";
 import {LoadingButton} from "@mui/lab";
 import SingleSelect from "@/components/Form/SingleSelect";
+import {yearHighs, yearLows} from "@/data/years";
 
 export const Page2Yes = ({goToPage, externalId}) => {
-    const yearLows = [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023];
-    const yearHighs = [2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024];
 
     const {
         control,

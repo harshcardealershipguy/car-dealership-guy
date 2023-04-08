@@ -15,7 +15,7 @@ const CustomerDashboard = ({user}) => {
 
     return (
         <>
-            <Typography variant={'h2'}>Customer Dashboard</Typography>
+            <Typography variant={'h4'} fontWeight={'bold'} sx={{mt: 3}}>Customer Dashboard</Typography>
 
         </>
     )
