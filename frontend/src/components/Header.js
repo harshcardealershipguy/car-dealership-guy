@@ -1,9 +1,9 @@
-import {AppBar, Box, Button, IconButton, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, IconButton, Toolbar, Typography} from "@mui/material";
 import Link from "next/link";
 
 const Header = () => (
     <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static" style={{background: "#313c4c"}} elevation={0}>
+        <AppBar position="static" style={{background: "#eeeeee"}} elevation={0}>
             <Toolbar >
                 <IconButton
                     size="large"
@@ -16,16 +16,16 @@ const Header = () => (
                 </IconButton>
 
                     <img src={"/logo.png"} style={{maxHeight: '50px', marginTop: '5px', marginBottom: '5px', marginRight: '5px'}}/>
-                    <Typography variant="h4" component="div" sx={{ flexGrow: 1 }} fontWeight={'bold'}>
-                        <Link href={'/'} className={'white'} style={{textDecoration: 'none'}}>Car Dealership Guy</Link>
+                    <Typography variant="h5" component="div" sx={{ flexGrow: 1 }} fontWeight={'bold'}>
+                        <Link href={'/'} className={'black'} style={{textDecoration: 'none'}}>Car Dealership Guy</Link>
                     </Typography>
 
                 <Typography sx={{mx: 2}}>
-                    <Link href={'/create-vehicle-request/initial'} className={'white'}  style={{textDecoration: 'none'}}>Create Vehicle Request</Link>
+                    <Link href={'/create-vehicle-request/initial'} className={'black'}  style={{textDecoration: 'none'}}>Create Vehicle Request</Link>
                 </Typography>
 
                 <Typography>
-                    <Link href={'/create-dealer-request'} className={'white'}  style={{textDecoration: 'none'}}>Join Partner Program</Link>
+                    <Link href={'/create-dealer-request'} className={'black'}  style={{textDecoration: 'none'}}>Join Partner Program</Link>
                 </Typography>
             </Toolbar>
         </AppBar>

@@ -8,6 +8,10 @@ body {
     color: #ffffff;
 }
 
+.black {
+    color: #000000;
+}
+
 .vehicle-request-card {
     border-radius: 5px;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -15,4 +19,12 @@ body {
 
 .main-body {
    background-color: #f4f5f6;
+}
+
+
+.hero {
+    background-image: url("/hero.jpg");
+    background-size: cover;
+    background-position-x: center;
+    background-position-y: top;
 }
