@@ -38,11 +38,9 @@ class DealerController extends Controller
 
             event(new Registered($user));
 
-            //TODO: log the user in
+            Auth::login($user);
         }
 
-        return [
-            "OK"
-        ];
+        return response()->noContent();
     }
 }

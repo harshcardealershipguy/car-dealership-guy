@@ -19,12 +19,12 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     const csrf = () => axios.get('/sanctum/csrf-cookie')
 
-    const register = async ({ setErrors, ...props }) => {
+    const registerApi = async ({ setErrors, ...props }) => {
         await csrf()
 
         setErrors([])
 
-        axios
+        return axios
             .post('/register', props)
             .then(() => mutate())
             .catch(error => {
@@ -111,7 +111,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
 
     return {
         user,
-        register,
+        registerApi,
         login,
         forgotPassword,
         resetPassword,

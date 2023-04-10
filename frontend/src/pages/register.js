@@ -1,139 +1,102 @@
-import ApplicationLogo from '@/components/ApplicationLogo'
-import AuthCard from '@/components/AuthCard'
-import Button from '@/components/Button'
-import GuestLayout from '@/components/Layouts/GuestLayout'
-import Input from '@/components/Input'
-import InputError from '@/components/InputError'
-import Label from '@/components/Label'
-import Link from 'next/link'
-import { useAuth } from '@/hooks/auth'
-import { useState } from 'react'
-import {Grid} from "@mui/material";
+import {useAuth} from '@/hooks/auth'
+import {useState} from 'react'
+import {Alert, Grid, Paper, TextField, Typography} from "@mui/material";
+import * as yup from "yup";
+import {useForm} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {LoadingButton} from "@mui/lab";
+import AuthSessionStatus from "@/components/AuthSessionStatus";
+import GuestLayout from "@/components/Layouts/GuestLayout";
+import {useRouter} from "next/router";
 
 const Register = () => {
-    const { register } = useAuth({
+
+    const router = useRouter();
+
+    const { registerApi } = useAuth({
         middleware: 'guest',
         redirectIfAuthenticated: '/dashboard',
     })
 
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [passwordConfirmation, setPasswordConfirmation] = useState('')
-    const [errors, setErrors] = useState([])
+    //TODO: Show API errors to the user
+    const [errors, setErrors] = useState({});
 
-    const submitForm = event => {
-        event.preventDefault()
+    const schema = yup.object({
+        zip: yup.string().required()
+            .matches(/^[0-9]+$/, "Zip must be only digits")
+            .min(5, "Zip must be exactly 5 digits")
+            .max(5, "Zip must be exactly 5 digits"),
+        email: yup.string().email().required(),
+        password: yup.string().min(8).required(),
+        password_confirmation: yup.string().min(8).oneOf([yup.ref('password'), null], 'Passwords must match').required()
+    });
 
-        register({
-            name,
-            email,
-            password,
-            password_confirmation: passwordConfirmation,
-            setErrors,
-        })
-    }
+    const {
+        reset,
+        handleSubmit,
+        register,
+        formState,
+    } = useForm({resolver: yupResolver(schema), mode: "onSubmit" });
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const saveData = async (data) => {
+        setIsLoading(true);
+
+        await registerApi({setErrors, ...data})
+            .catch((error) => {setIsLoading(false); throw error})
+            .then(() => {
+                router.push('/dashboard');
+            })
+    };
 
     return (
-        <GuestLayout>
-            <Grid container alignItems={'center'} justifyContent="center" >
-                <Grid item xs={12} md={6} lg={4}>
+        <>
+            <GuestLayout>
+                <Grid container justifyContent="center">
+                    <Grid item xs={5}>
 
-                    {/*MANUAL REGISTRATION IS DISABLED FOR NOW*/}
+                        {/* Session Status */}
+                        <AuthSessionStatus className="mb-4" />
 
-                    {/*<form onSubmit={submitForm}>*/}
-                    {/*    /!* Name *!/*/}
-                    {/*    <div>*/}
-                    {/*        <Label htmlFor="name">Name</Label>*/}
+                        {Object.keys(errors).length > 0 && (
+                            <Alert severity="error">
+                                There was a problem!
+                                <ul>
+                                    {Object.keys(errors).map(error => <li>{errors[error]}</li>)}
+                                </ul>
+                            </Alert>
 
-                    {/*        <Input*/}
-                    {/*            id="name"*/}
-                    {/*            type="text"*/}
-                    {/*            value={name}*/}
-                    {/*            className="block mt-1 w-full"*/}
-                    {/*            onChange={event => setName(event.target.value)}*/}
-                    {/*            required*/}
-                    {/*            autoFocus*/}
-                    {/*        />*/}
+                        )}
 
-                    {/*        <InputError messages={errors.name} className="mt-2" />*/}
-                    {/*    </div>*/}
+                        <Paper elevation={0} sx={{px: 4, pb: 4, pt: 1, mt: 2}}>
 
-                    {/*    /!* Email Address *!/*/}
-                    {/*    <div className="mt-4">*/}
-                    {/*        <Label htmlFor="email">Email</Label>*/}
+                            <Typography variant={'h4'} fontWeight={'bold'} sx={{mt: 3}}>Register</Typography>
+                            <Typography variant={'subtitle1'} color="gray" sx={{mb: 3}}>One quick step to gain exclusive access to all of the great deals!</Typography>
 
-                    {/*        <Input*/}
-                    {/*            id="email"*/}
-                    {/*            type="email"*/}
-                    {/*            value={email}*/}
-                    {/*            className="block mt-1 w-full"*/}
-                    {/*            onChange={event => setEmail(event.target.value)}*/}
-                    {/*            required*/}
-                    {/*        />*/}
+                            <form onSubmit={handleSubmit(saveData)}>
 
-                    {/*        <InputError messages={errors.email} className="mt-2" />*/}
-                    {/*    </div>*/}
+                                <TextField {...register("name")} variant="outlined" label="Name" error={!!formState.errors?.name} fullWidth/>
 
-                    {/*    /!* Password *!/*/}
-                    {/*    <div className="mt-4">*/}
-                    {/*        <Label htmlFor="password">Password</Label>*/}
+                                <TextField {...register("email")} variant="outlined" label="Email" error={!!formState.errors?.email} helperText={formState.errors?.['email']?.message} fullWidth sx={{mt: 3}}/>
 
-                    {/*        <Input*/}
-                    {/*            id="password"*/}
-                    {/*            type="password"*/}
-                    {/*            value={password}*/}
-                    {/*            className="block mt-1 w-full"*/}
-                    {/*            onChange={event => setPassword(event.target.value)}*/}
-                    {/*            required*/}
-                    {/*            autoComplete="new-password"*/}
-                    {/*        />*/}
+                                <TextField {...register("zip")} variant="outlined" label="Zipcode" error={!!formState.errors?.zip} helperText={formState.errors?.['zip']?.message} fullWidth sx={{mt: 3}}/>
 
-                    {/*        <InputError*/}
-                    {/*            messages={errors.password}*/}
-                    {/*            className="mt-2"*/}
-                    {/*        />*/}
-                    {/*    </div>*/}
+                                <TextField {...register("password")} type={'password'} variant="outlined" label="Password" error={!!formState.errors?.password} helperText={formState.errors?.['password']?.message} fullWidth sx={{mt: 3}}/>
 
-                    {/*    /!* Confirm Password *!/*/}
-                    {/*    <div className="mt-4">*/}
-                    {/*        <Label htmlFor="passwordConfirmation">*/}
-                    {/*            Confirm Password*/}
-                    {/*        </Label>*/}
+                                <TextField {...register("password_confirmation")} type={'password'} variant="outlined" label="Password Confirmation" error={!!formState.errors?.password_confirmation} helperText={formState.errors?.['password_confirmation']?.message} fullWidth sx={{mt: 3}}/>
 
-                    {/*        <Input*/}
-                    {/*            id="passwordConfirmation"*/}
-                    {/*            type="password"*/}
-                    {/*            value={passwordConfirmation}*/}
-                    {/*            className="block mt-1 w-full"*/}
-                    {/*            onChange={event =>*/}
-                    {/*                setPasswordConfirmation(event.target.value)*/}
-                    {/*            }*/}
-                    {/*            required*/}
-                    {/*        />*/}
+                                <LoadingButton type="submit" variant="contained" sx={{mt: 3}} fullWidth size={'large'} loading={isLoading}>Register</LoadingButton>
 
-                    {/*        <InputError*/}
-                    {/*            messages={errors.password_confirmation}*/}
-                    {/*            className="mt-2"*/}
-                    {/*        />*/}
-                    {/*    </div>*/}
-
-                    {/*    <div className="flex items-center justify-end mt-4">*/}
-                    {/*        <Link*/}
-                    {/*            href="/login"*/}
-                    {/*            className="underline text-sm text-gray-600 hover:text-gray-900">*/}
-                    {/*            Already registered?*/}
-                    {/*        </Link>*/}
-
-                    {/*        <Button className="ml-4">Register</Button>*/}
-                    {/*    </div>*/}
-                    {/*</form>*/}
-
-
+                            </form>
+                        </Paper>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </GuestLayout>
-    )
+            </GuestLayout>
+        </>
+    );
+
+
 }
 
 export default Register

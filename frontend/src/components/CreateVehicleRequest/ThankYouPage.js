@@ -5,13 +5,14 @@ export const ThankYouPage = () => {
         <>
             <Box display="flex"
                  justifyContent="center"
-                 alignItems="center">
+                 alignItems="center"
+                 sx={{my: 4}}>
                 <Typography fontWeight={'bold'} variant={'h2'} sx={{my: 2}}>Thank you!</Typography>
             </Box>
             <Box display="flex"
                  justifyContent="center"
                  alignItems="center">
-                <Typography textAlign={'center'} variant={'p'}>One of our trusted partners will be in touch shortly.</Typography>
+                <Typography textAlign={'center'} variant={'body1'}>One of our trusted partners will be in touch shortly.</Typography>
             </Box>
         </>
     );

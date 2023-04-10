@@ -45,7 +45,7 @@ export const Page4 = ({goToPage, externalId}) => {
 
         setIsLoading(false);
 
-        goToPage('personal-info');
+        goToPage('thank-you');
 
         reset(); // reset form after successful submission
     };

@@ -42,6 +42,9 @@ const Footer = () => (
 
             <Grid container sx={{my: 10}}>
                 <Grid item xs={4}>
+                    <Link href={'/register'}>Register</Link>
+                </Grid>
+                <Grid item xs={4}>
                     <Link href={'/login'}>Login</Link>
                 </Grid>
 

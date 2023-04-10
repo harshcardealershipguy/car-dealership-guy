@@ -62,8 +62,7 @@ class VehicleRequestController extends Controller
             'name' => ['string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'password' => ['confirmed', Password::defaults()],
-            'city' => ['required'],
-            'state' => ['required']
+            'zip' => ['required'],
         ]);
 
         $vehicleRequest = VehicleRequest::where('external_id', $request->external_id)->firstOrFail();
@@ -85,6 +84,8 @@ class VehicleRequestController extends Controller
             $user->addRole($customerRole);
 
             event(new Registered($user));
+
+            //TODO: log the user in?
         }
 
         $vehicleRequest = VehicleRequest::where('external_id', $request->external_id)->firstOrFail();

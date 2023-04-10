@@ -72,8 +72,8 @@ export const Page1 = ({goToPage}) => {
                         <FormControl sx={{mt: 0}} fullWidth error={errors?.['exact_vehicle_known'] ? true : false}>
                             <FormLabel id={'exact_vehicle_known_label'} style={{color: '#000'}} focused={false}>Do you know exactly which vehicle you're interested in?</FormLabel>
                             <RadioGroup {...field} value={field.value}>
-                                <FormControlLabel value="true" control={<Radio/>} label="Yes" />
-                                <FormControlLabel value="false" control={<Radio/>} label="No" />
+                                <FormControlLabel value="true" control={<Radio/>} label="Yes"/>
+                                <FormControlLabel value="false" control={<Radio/>} label="No"/>
                             </RadioGroup>
 
                             {errors?.exact_vehicle_known && <FormHelperText>{errors?.exact_vehicle_known.message}</FormHelperText>}

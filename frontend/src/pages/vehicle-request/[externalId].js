@@ -57,6 +57,7 @@ const VehicleRequest = () => {
                                             <Card sx={{my: 2}} className={'vehicle-request-card'} style={{minHeight: '100%'}}>
                                                 <CardContent>
                                                     <Typography variant={'h5'} fontWeight={'bold'}>Vehicle Details</Typography>
+                                                    <hr/>
                                                     {detailsLine(vehicleRequest, 'new_or_used')}
                                                     {detailsLine(vehicleRequest, 'body_style')}
                                                     {detailsLine(vehicleRequest, 'size')}
@@ -73,6 +74,7 @@ const VehicleRequest = () => {
                                             <Card sx={{my: 2}} className={'vehicle-request-card'} style={{minHeight: '100%'}}>
                                                 <CardContent>
                                                     <Typography variant={'h5'} fontWeight={'bold'}>Timing & Financing</Typography>
+                                                    <hr/>
                                                     {detailsLine(vehicleRequest, 'timeframe')}
                                                     {detailsLine(vehicleRequest, 'payment_method')}
                                                     {detailsLine(vehicleRequest, 'budget_or_monthly_payment')}
@@ -89,6 +91,7 @@ const VehicleRequest = () => {
                                             <Card sx={{my: 2}} className={'vehicle-request-card'} style={{minHeight: '100%'}}>
                                                 <CardContent>
                                                     <Typography variant={'h5'} fontWeight={'bold'}>Trade-In Details</Typography>
+                                                    <hr/>
                                                     {detailsLine(vehicleRequest, 'trade_in_year')}
                                                     {detailsLine(vehicleRequest, 'trade_in_make')}
                                                     {detailsLine(vehicleRequest, 'trade_in_model')}
@@ -99,6 +102,7 @@ const VehicleRequest = () => {
                                             <Card sx={{my: 2}} className={'vehicle-request-card'} style={{minHeight: '100%'}}>
                                                 <CardContent>
                                                     <Typography variant={'h5'} fontWeight={'bold'}>Personal Information</Typography>
+                                                    <hr/>
                                                     {detailsLine(vehicleRequest, 'city')}
                                                     {detailsLine(vehicleRequest, 'state')}
                                                 </CardContent>
