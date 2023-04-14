@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VehicleRequestController;
 use App\Http\Controllers\DealerController;
+use App\Http\Controllers\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,3 +45,10 @@ Route::get('/vehicle-requests', [VehicleRequestController::class, 'getVehicleReq
 
 //TODO: only allow dealers+admins
 Route::get('/vehicle-request/{externalId}', [VehicleRequestController::class, 'getVehicleRequest']);
+
+
+//TODO: only allow getting messages and sending messages for yourself
+Route::middleware(['auth:sanctum'])->get('/messages/{otherUserExternalId}', [MessageController::class, 'getMessages']);
+Route::middleware(['auth:sanctum'])->post('/messages/{otherUserExternalId}', [MessageController::class, 'addMessage']);
+
+Route::middleware(['auth:sanctum'])->get('/conversations', [MessageController::class, 'getConversations']);

@@ -45,25 +45,28 @@ const Login = () => {
 
                     <AuthSessionStatus status={status} />
 
-                    <Typography variant={'h4'} fontWeight={'bold'}>Login</Typography>
-                    <Typography variant={'subtitle1'} color="gray">If you already have an account, login here. If you haven't created an account, <Link href={'/create-vehicle-request/initial'}>tell us about the vehicle you're interested in</Link>.</Typography>
-                    <form onSubmit={handleSubmit(submitForm)}>
+                    <Paper elevation={0} sx={{px: 4, pb: 4, pt: 1, mt: 2}}>
 
-                        <TextField sx={{mt: 3}} {...register("email")} error={errors?.email} helperText={errors.email} type='email' label="Email" variant="outlined" fullWidth required autoFocus />
+                        <Typography variant={'h4'} fontWeight={'bold'} sx={{mt: 3}}>Login</Typography>
+                        <Typography variant={'subtitle1'} color="gray">If you already have an account, login here. If you haven't created an account, <Link href={'/create-vehicle-request/initial'}>tell us about the vehicle you're interested in</Link>.</Typography>
+                        <form onSubmit={handleSubmit(submitForm)}>
 
-                        <TextField sx={{mt: 3}} {...register('password')} error={errors?.password} helperText={errors.password} type='password' label="Password" variant="outlined" fullWidth required />
+                            <TextField sx={{mt: 3}} {...register("email")} error={errors?.email} helperText={errors.email} type='email' label="Email" variant="outlined" fullWidth required autoFocus />
 
-                        <FormGroup sx={{my: 2}}>
-                            <FormControlLabel control={<Checkbox {...register('remember')} defaultChecked />} label="Remember Me" />
-                        </FormGroup>
+                            <TextField sx={{mt: 3}} {...register('password')} error={errors?.password} helperText={errors.password} type='password' label="Password" variant="outlined" fullWidth required />
 
-                        <Button variant="contained" type='submit' fullWidth size={'large'}>Login</Button>
+                            <FormGroup sx={{my: 2}}>
+                                <FormControlLabel control={<Checkbox {...register('remember')} defaultChecked />} label="Remember Me" />
+                            </FormGroup>
 
-                        <br/>
-                        <Link href="/forgot-password">
-                            <Typography sx={{py: 3}} textAlign={'right'}>Forgot your password?</Typography>
-                        </Link>
-                    </form>
+                            <Button variant="contained" type='submit' fullWidth size={'large'}>Login</Button>
+
+                            <br/>
+                            <Link href="/forgot-password">
+                                <Typography sx={{py: 3}} textAlign={'right'}>Forgot your password?</Typography>
+                            </Link>
+                        </form>
+                    </Paper>
 
                 </Grid>
             </Grid>

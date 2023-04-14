@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Models\Role;
+use Illuminate\Support\Str;
 
 class DealerController extends Controller
 {
@@ -28,6 +29,7 @@ class DealerController extends Controller
             $dealerRole = Role::where('name', 'dealer')->firstOrFail();
 
             $user = User::create([
+                'external_id' => Str::orderedUuid(),
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),

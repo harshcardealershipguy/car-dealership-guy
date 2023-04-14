@@ -76,6 +76,7 @@ class VehicleRequestController extends Controller
             $customerRole = Role::where('name', 'customer')->firstOrFail();
 
             $user = User::create([
+                'external_id' => Str::orderedUuid(),
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),

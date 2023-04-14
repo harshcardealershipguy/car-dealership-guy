@@ -8,6 +8,10 @@ body {
     color: #ffffff;
 }
 
+.white-background {
+    background-color: white;
+}
+
 .black {
     color: #000000;
 }

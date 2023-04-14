@@ -15,7 +15,7 @@ const Register = () => {
 
     const { registerApi } = useAuth({
         middleware: 'guest',
-        redirectIfAuthenticated: '/dashboard',
+        redirectIfAuthenticated: '/',
     })
 
     //TODO: Show API errors to the user
@@ -46,7 +46,7 @@ const Register = () => {
         await registerApi({setErrors, ...data})
             .catch((error) => {setIsLoading(false); throw error})
             .then(() => {
-                router.push('/dashboard');
+                router.push('/');
             })
     };
 
