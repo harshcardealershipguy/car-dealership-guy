@@ -44,10 +44,8 @@ const Register = () => {
         setIsLoading(true);
 
         await registerApi({setErrors, ...data})
-            .catch((error) => {setIsLoading(false); throw error})
-            .then(() => {
-                router.push('/');
-            })
+
+        setIsLoading(false);
     };
 
     return (
@@ -63,7 +61,7 @@ const Register = () => {
                             <Alert severity="error">
                                 There was a problem!
                                 <ul>
-                                    {Object.keys(errors).map(error => <li>{errors[error]}</li>)}
+                                    {Object.keys(errors).map(error => <li key={error}>{errors[error]}</li>)}
                                 </ul>
                             </Alert>
 
