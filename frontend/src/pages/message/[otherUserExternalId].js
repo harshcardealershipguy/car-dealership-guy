@@ -28,6 +28,8 @@ const Message = () => {
     const [isLoadingMessages, setIsLoadingMessages] = useState(false);
     const [isLoadingConversations, setIsLoadingConversations] = useState(false);
     const [isButtonLoading, setIsButtonLoading] = useState(false);
+    const [isStartADealLoading, setIsStartADealLoading] = useState(false);
+    const [otherUser, setOtherUser] = useState(null);
     const [messages, setMessages] = useState([]);
     const [conversations, setConversations] = useState([]);
     const previousMessages = usePrevious(messages);
@@ -57,7 +59,7 @@ const Message = () => {
         await axios
             .get('/api/messages/' + otherUserExternalId)
             .then(res => res.data)
-            .then(data => setMessages(data))
+            .then(data => {setMessages(data.messages); setOtherUser(data.otherUser)})
     }
 
     useEffect(() => {
@@ -79,6 +81,7 @@ const Message = () => {
     useEffect( () => {
         async function loadMessages() {
             setMessages([]);
+            setOtherUser(null);
             setIsLoadingMessages(true);
             await fetchMessages();
             setIsLoadingMessages(false);
@@ -155,6 +158,15 @@ const Message = () => {
         )
     }
 
+    const onClickStartADeal = () => {
+        setIsStartADealLoading(true);
+        //TODO: do something
+        setTimeout(() => {
+            setIsStartADealLoading(false);
+
+        }, 2000)
+    }
+
     return (
         <AppLayout>
             <Grid container justifyContent="center" spacing={2}>
@@ -202,7 +214,20 @@ const Message = () => {
                 </Grid>
                 <Grid item md={5}>
 
-                    <Paper sx={{px: 2, py: 2, my: 2}} elevation={0} style={{height: '600px', overflowY: 'scroll'}}>
+                    {otherUser &&
+                        (<><Typography variant={'h4'} fontWeight={'bold'}>Conversation with {otherUser?.name}</Typography>
+
+                            <Grid container justifyContent={'space-between'} alignItems={'center'}>
+                                <Grid item>
+                                    <Typography variant={'body1'} color={'gray'}>Once you've picked out a vehicle or 2, start a deal to move forward.</Typography>
+                                </Grid>
+                                <Grid item>
+                                    <LoadingButton variant={'contained'} size={'large'} loading={isStartADealLoading} onClick={onClickStartADeal} color={'success'}>Start a Deal!</LoadingButton>
+                                </Grid>
+                            </Grid>
+                        </>)}
+
+                    <Paper sx={{px: 2, py: 2, my: 2}} elevation={0} style={{height: '400px', overflowY: 'scroll'}}>
 
                         {isLoadingMessages && (
                             <div style={{display: 'flex', justifyContent: 'center'}}>

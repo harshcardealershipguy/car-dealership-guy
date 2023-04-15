@@ -12,20 +12,21 @@ use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-
-
 class MessageController extends Controller
 {
-
     public function getMessages($otherUserExternalId) {
         $currentUser = Auth::user()->external_id;
 
-        return DB::select("SELECT * FROM messages WHERE
+        $messages = DB::select("SELECT * FROM messages WHERE
             (from_user_external_id= :currentUser AND to_user_external_id= :otherUserExternalId) OR
             (from_user_external_id= :otherUserExternalId AND to_user_external_id= :currentUser)
             ORDER BY created_at
             "
         , array('currentUser' => $currentUser, 'otherUserExternalId' => $otherUserExternalId));
+
+        $otherUser = User::select('name')->where('external_id', $otherUserExternalId)->first();
+
+        return ['otherUser' => $otherUser, 'messages' => $messages];
     }
 
     public function getConversations() {
