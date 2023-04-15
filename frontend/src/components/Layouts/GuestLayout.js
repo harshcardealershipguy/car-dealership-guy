@@ -8,7 +8,7 @@ const GuestLayout = ({ children }) => {
     return (
         <div>
             <Head>
-                <title>CarDealershipGuy</title>
+                <title>Car Dealership Guy</title>
             </Head>
 
             <Header/>

@@ -5,12 +5,12 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 const AppLayout = ({ header, children }) => {
-    // const { user } = useAuth({ middleware: 'auth' })
+    const { user } = useAuth({ middleware: 'auth' })
 
     return (
         <div>
             <Head>
-                <title>CarDealershipGuy</title>
+                <title>Car Dealership Guy</title>
             </Head>
 
             {/*<Navigation user={user} />*/}
