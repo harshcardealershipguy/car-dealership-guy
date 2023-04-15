@@ -9,6 +9,7 @@ import {Page3} from "@/components/CreateVehicleRequest/Page3";
 import {Page4} from "@/components/CreateVehicleRequest/Page4";
 import {ThankYouPage} from "@/components/CreateVehicleRequest/ThankYouPage";
 import {Box, Grid, LinearProgress, Paper} from "@mui/material";
+import {Page5} from "@/components/CreateVehicleRequest/Page5";
 
 
 const CreateVehicleRequest = () => {
@@ -58,6 +59,8 @@ const CreateVehicleRequest = () => {
                 return <Page3 goToPage={goToPage} externalId={externalId}/>;
             case 'trade-in':
                 return <Page4 goToPage={goToPage} externalId={externalId}/>;
+            case 'personal-info':
+                return <Page5 goToPage={goToPage} externalId={externalId}/>;
             case 'thank-you':
                 return <ThankYouPage/>;
             default:

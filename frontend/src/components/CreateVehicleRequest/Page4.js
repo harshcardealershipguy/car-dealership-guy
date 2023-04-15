@@ -1,20 +1,11 @@
 import {Controller, useForm} from "react-hook-form";
 import {useState} from "react";
-import {
-    Button,
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    InputLabel,
-    MenuItem, Radio,
-    RadioGroup,
-    Select,
-    Typography
-} from "@mui/material";
+import {FormControl, FormControlLabel, FormLabel, MenuItem, Radio, RadioGroup, Typography} from "@mui/material";
 import {makesModels} from "@/data/makesModels";
 import axios from "@/lib/axios";
 import {LoadingButton} from "@mui/lab";
 import SingleSelect from "@/components/Form/SingleSelect";
+import {useAuth} from "@/hooks/auth";
 
 export const Page4 = ({goToPage, externalId}) => {
 
@@ -32,6 +23,7 @@ export const Page4 = ({goToPage, externalId}) => {
     const [isLoading, setIsLoading] = useState(false);
     const tradeInMake = watch('trade_in_make');
     const has_trade_in = watch('has_trade_in');
+    const {user} = useAuth();
 
     const saveData = async (data) => {
         setIsLoading(true);
@@ -45,7 +37,13 @@ export const Page4 = ({goToPage, externalId}) => {
 
         setIsLoading(false);
 
-        goToPage('thank-you');
+        //if the user is logged in, go to thank you
+        if (user) {
+            goToPage('thank-you');
+        } else {
+            goToPage('personal-info');
+        }
+
 
         reset(); // reset form after successful submission
     };

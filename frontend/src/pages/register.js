@@ -71,8 +71,8 @@ const Register = () => {
 
                         <Paper elevation={0} sx={{px: 4, pb: 4, pt: 1, mt: 2}}>
 
-                            <Typography variant={'h4'} fontWeight={'bold'} sx={{mt: 3}}>Register</Typography>
-                            <Typography variant={'subtitle1'} color="gray" sx={{mb: 3}}>One quick step to gain exclusive access to all of the great deals!</Typography>
+                            <Typography variant={'h4'} fontWeight={'bold'} sx={{mt: 3}}>Create Account</Typography>
+                            <Typography variant={'subtitle1'} color="gray" sx={{mb: 3}}>One quick step to gain exclusive access to all of our great deals!</Typography>
 
                             <form onSubmit={handleSubmit(saveData)}>
 

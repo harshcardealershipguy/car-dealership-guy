@@ -10,6 +10,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Models\Role;
+use Illuminate\Support\Facades\Auth;
 
 
 class VehicleRequestController extends Controller
@@ -34,12 +35,20 @@ class VehicleRequestController extends Controller
             'exact_vehicle_known' => 'required|boolean',
         ]);
 
+        $vehicleRequestData = [
+              'exact_vehicle_known' => $request->exact_vehicle_known,
+              'external_id' => Str::orderedUuid()
+        ];
+
+        //if this request was made by an authenticated user, associate it
+        $user = Auth::user();
+        if ($user !== null) {
+            $vehicleRequestData['user_id'] = $user->id;
+        }
+
         $vehicleRequest = VehicleRequest::create(
-                [
-                    'exact_vehicle_known' => $request->exact_vehicle_known,
-                    'external_id' => Str::orderedUuid()
-                ]
-            );
+            $vehicleRequestData
+        );
 
         return [
             "external_id" => $vehicleRequest->external_id
@@ -71,8 +80,8 @@ class VehicleRequestController extends Controller
 
         $user = User::where('email', $request->email)->first();
 
-        //if the user doesn't exist create one with the name/email/password
-        if(!$user) {
+        //if the user doesn't exist and there isn't already a user assigned to this request, create a new user
+        if(!$user && !$vehicleRequest->user_id) {
             $customerRole = Role::where('name', 'customer')->firstOrFail();
 
             $user = User::create([
@@ -80,6 +89,7 @@ class VehicleRequestController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'zip' => $request->zip
             ]);
 
             $user->addRole($customerRole);

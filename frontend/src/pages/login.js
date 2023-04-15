@@ -48,7 +48,7 @@ const Login = () => {
                     <Paper elevation={0} sx={{px: 4, pb: 4, pt: 1, mt: 2}}>
 
                         <Typography variant={'h4'} fontWeight={'bold'} sx={{mt: 3}}>Login</Typography>
-                        <Typography variant={'subtitle1'} color="gray">If you already have an account, login here. If you haven't created an account, <Link href={'/create-vehicle-request/initial'}>tell us about the vehicle you're interested in</Link>.</Typography>
+                        <Typography variant={'subtitle1'} color="gray">If you already have an account, login here. Or <Link href={'/register'}>create an account</Link>.</Typography>
                         <form onSubmit={handleSubmit(submitForm)}>
 
                             <TextField sx={{mt: 3}} {...register("email")} error={errors?.email} helperText={errors.email} type='email' label="Email" variant="outlined" fullWidth required autoFocus />
