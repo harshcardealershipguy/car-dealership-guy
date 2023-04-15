@@ -15,10 +15,13 @@ import {
 import {ExpandMore} from "@mui/icons-material";
 import moment from "moment";
 import toTitleCase from "@/lib/toTitleCase";
+import {useRouter} from "next/router";
 
 const DealerDashboard = ({user}) => {
 
     const [vehicleRequests, setVehicleRequests] = useState([]);
+
+    const router = useRouter();
 
     useEffect(() => {
         axios
@@ -40,6 +43,8 @@ const DealerDashboard = ({user}) => {
     return (
         <>
             <Typography variant={'h4'} fontWeight={'bold'} sx={{mt: 3}}>Dealer Dashboard</Typography>
+
+            <Button onClick={() => router.push('/create-vehicle')} variant={'contained'} size={'large'}>List a Vehicle!</Button>
 
 
             <Typography variant={'h5'} fontWeight={'bold'} sx={{mt: 3}}>Urgent</Typography>
