@@ -281,7 +281,7 @@ export default function Home() {
                                     </Grid>
                                     <Grid item sm={6} md={4} >
                                         <Box style={{backgroundColor: 'transparent'}} sx={{pt: 0}}>
-                                            <Typography sx={{pl: 4}} textAlign={'left'} variant={'h2'} color={'white'} fontWeight={'bold'} >READY<br/> FOR YOUR<br/> NEW VEHICLE?</Typography>
+                                            <Typography sx={{pl: 4}} textAlign={'left'} variant={'h2'} color={'white'} fontWeight={'bold'} >READY<br/> FOR YOUR<br/> NEW VEHICLE!?</Typography>
                                         </Box>
 
                                         <Box style={{backgroundColor: 'transparent'}} sx={{pb: 2, mt: 1}}>
