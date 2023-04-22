@@ -5,11 +5,9 @@ jobs:
   aws_cdk:
     runs-on: ubuntu-latest
     steps:
-      - run: ls
       - uses: actions/checkout@v3
         with:
           ref: master
-      - run: ls
       - name: cdk deploy
         uses: youyo/aws-cdk-github-actions@v2
         with:
