@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return ['Laravel' => app()->version()];
+});
+
+Route::get('/health', function () {
+     return 'OK';
+});
+
+Route::get('/health-check', function () {
+    return response('OK ', 200);
 });
 
 require __DIR__.'/auth.php';

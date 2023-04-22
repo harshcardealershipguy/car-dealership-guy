@@ -1,11 +1,19 @@
 on:
   push:
-    branches: [ staging ]
-name: Build Staging
+    branches: [ master ]
 jobs:
-  deploy-staging:
-    name: "Deploy Staging"
-    uses: ./.github/workflows/build.yml
-    with:
-      environment: staging
-    secrets: inherit
+  aws_cdk:
+    runs-on: ubuntu-latest
+    steps:
+      - name: cdk deploy
+        uses: youyo/aws-cdk-github-actions@v2
+        with:
+          cdk_subcommand: 'deploy'
+          working_dir: '../../ecs-nginx'
+          cdk_stack: '*'
+          cdk_args: '--profile cdg -c profile=staging'
+          actions_comment: false
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: 'us-east-1'

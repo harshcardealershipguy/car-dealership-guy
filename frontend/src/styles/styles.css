@@ -27,8 +27,14 @@ body {
 
 
 .hero {
-    background-image: url("/hero.jpg");
+    background-image: url("/hero6.jpg");
     background-size: cover;
     background-position-x: center;
     background-position-y: top;
+    background-attachment: fixed;
+}
+
+.blur-text {
+    color: transparent;
+    text-shadow: 0 0 10px #000;
 }
