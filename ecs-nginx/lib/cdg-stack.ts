@@ -154,7 +154,6 @@ export class CdgStack extends cdk.Stack {
       publicLoadBalancer: true,
       enableExecuteCommand: true,
       protocol: ApplicationProtocol.HTTPS,
-      domainName: this.config.backendEnvironment.FRONTEND_URL,
       redirectHTTP: true,
       certificate: cert
 
