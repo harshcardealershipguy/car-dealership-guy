@@ -1,15 +1,17 @@
 import * as ec2 from "aws-cdk-lib/aws-ec2";
+import {IVpc} from "aws-cdk-lib/aws-ec2";
 import * as ecs from "aws-cdk-lib/aws-ecs";
+import {LinuxParameters, LogDriver, Secret} from "aws-cdk-lib/aws-ecs";
 import * as ecs_patterns from "aws-cdk-lib/aws-ecs-patterns";
 import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import {LinuxParameters, LogDriver, Secret} from "aws-cdk-lib/aws-ecs";
+import {Construct} from 'constructs';
 import {Effect, Policy, PolicyStatement} from "aws-cdk-lib/aws-iam";
 import {Secret as SecretManager} from 'aws-cdk-lib/aws-secretsmanager';
-import {IVpc} from "aws-cdk-lib/aws-ec2";
 import {
   ApplicationLoadBalancedFargateService
 } from "aws-cdk-lib/aws-ecs-patterns/lib/fargate/application-load-balanced-fargate-service";
+import {ApplicationProtocol} from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import {Certificate, CertificateValidation} from "aws-cdk-lib/aws-certificatemanager";
 
 export class CdgStack extends cdk.Stack {
   config : any;
@@ -137,6 +139,11 @@ export class CdgStack extends cdk.Stack {
       linuxParameters: linuxParameters
     });
 
+    const cert = new Certificate(this, "MyCertificate", {
+      domainName: this.config.backendEnvironment.FRONTEND_URL,
+      validation: CertificateValidation.fromDns(),
+    });
+
     //TODO: if possible add the scurity group of the service to the inbound of the security group of the DB
     new ecs_patterns.ApplicationLoadBalancedFargateService(this, this.stackName + '-' +NAME_PREFIX + '-service', {
       vpc: vpc,
@@ -145,7 +152,12 @@ export class CdgStack extends cdk.Stack {
       serviceName: this.stackName + '-' +NAME_PREFIX + '-service',
       assignPublicIp: true,
       publicLoadBalancer: true,
-      enableExecuteCommand: true
+      enableExecuteCommand: true,
+      protocol: ApplicationProtocol.HTTPS,
+      domainName: this.config.backendEnvironment.FRONTEND_URL,
+      redirectHTTP: true,
+      certificate: cert
+
     });
   }
 

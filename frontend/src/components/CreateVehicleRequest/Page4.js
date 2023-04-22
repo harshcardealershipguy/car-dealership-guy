@@ -25,8 +25,12 @@ export const Page4 = ({goToPage, externalId}) => {
     const has_trade_in = watch('has_trade_in');
     const {user} = useAuth();
 
+    const csrf = () => axios.get('/sanctum/csrf-cookie');
+
     const saveData = async (data) => {
         setIsLoading(true);
+
+        await csrf();
 
         data.external_id = externalId;
         const response = axios
