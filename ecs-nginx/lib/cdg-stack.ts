@@ -140,7 +140,7 @@ export class CdgStack extends cdk.Stack {
     });
 
     const cert = new Certificate(this, "MyCertificate", {
-      domainName: this.config.backendEnvironment.FRONTEND_URL,
+      domainName: 'staging.shop.dealershipguy.com',
       validation: CertificateValidation.fromDns(),
     });
 
