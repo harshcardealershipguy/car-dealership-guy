@@ -9,7 +9,7 @@ jobs:
         uses: youyo/aws-cdk-github-actions@v2
         with:
           cdk_subcommand: 'deploy'
-          working_dir: '../../ecs-nginx'
+          working_dir: './ecs-nginx'
           cdk_stack: '*'
           cdk_args: '--profile cdg -c profile=staging'
           actions_comment: false
