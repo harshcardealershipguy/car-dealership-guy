@@ -1,13 +1,13 @@
 on:
   push:
-    branches: [ master ]
+    branches: [ staging ]
 jobs:
   aws_cdk:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
         with:
-          ref: master
+          ref: staging
       - name: cdk deploy
         uses: youyo/aws-cdk-github-actions@v2
         with:
