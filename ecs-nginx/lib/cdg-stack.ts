@@ -1,5 +1,5 @@
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import {IVpc} from "aws-cdk-lib/aws-ec2";
+import {IVpc, Peer, Port} from "aws-cdk-lib/aws-ec2";
 import * as ecs from "aws-cdk-lib/aws-ecs";
 import {LinuxParameters, LogDriver, Secret} from "aws-cdk-lib/aws-ecs";
 import * as ecs_patterns from "aws-cdk-lib/aws-ecs-patterns";
@@ -125,6 +125,10 @@ export class CdgStack extends cdk.Stack {
       certificate: cert
     });
 
+    const rdsSecurityGroup = ec2.SecurityGroup.fromLookupByName(this, this.stackName + '-rds-security-group', 'RDS Security Group', vpc);
+
+    rdsSecurityGroup.addIngressRule(Peer.securityGroupId(rdsSecurityGroup.securityGroupId), Port.tcp(5432), '', true);
+
     albFargateService.loadBalancer
   }
 
@@ -150,12 +154,12 @@ export class CdgStack extends cdk.Stack {
       linuxParameters: linuxParameters
     });
 
-    const cert = new Certificate(this, "Staging Cert", {
+    const cert = new Certificate(this, this.stackName + '-' + NAME_PREFIX + '-cert', {
       domainName: 'staging.shop.dealershipguy.com',
       validation: CertificateValidation.fromDns(),
     });
 
-    const loadBalancer = new ApplicationLoadBalancer(this, 'LoadBalancer', {
+    const loadBalancer = new ApplicationLoadBalancer(this, this.stackName + '-' + NAME_PREFIX + '-load-balancer', {
       vpc,
       internetFacing: true
     });
