@@ -5,7 +5,7 @@ const fs = require('fs');
 function createEnvFile() {
     console.log(process.env.FRONTEND_ENVIRONMENT_ARG);
     console.log(JSON.parse(process.env.FRONTEND_ENVIRONMENT_ARG));
-    const frontendEnvironmentArg = JSON.parse(JSON.parse(process.env.FRONTEND_ENVIRONMENT_ARG));
+    const frontendEnvironmentArg = JSON.parse(process.env.FRONTEND_ENVIRONMENT_ARG);
     const target = frontendEnvironmentArg.NEXT_JS_ENV;
     const dotenvPath = process.cwd() + `/.env.production`;
 
