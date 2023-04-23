@@ -2,40 +2,33 @@
 
 const fs = require('fs');
 
-const env = {
-    production: 'production',
-    staging: 'staging',
-};
-
 function createEnvFile() {
-    const target = env[process.env.NEXT_JS_ENV] || env.staging;
+    const frontendEnvironmentArg = JSON.parse(JSON.parse(process.env.FRONTEND_ENVIRONMENT_ARG));
+    const target = frontendEnvironmentArg.NEXT_JS_ENV;
     const dotenvPath = process.cwd() + `/.env.production`;
 
-    console.log(process.env);
+    let configFileContents = '';
+    Object.keys(frontendEnvironmentArg).map((key) => {
+        configFileContents += key + '=' + frontendEnvironmentArg[key] + '\n';
+    })
 
-
-    const prodDotEnv = '.env.production';
     try {
-        fs.writeFile(dotenvPath, JSON.stringify(process.env), (err) => {
-
-            // In case of a error throw err.
+        fs.writeFile(dotenvPath, configFileContents, (err) => {
             if (err) throw err;
         })
 
-        console.log(`${prodDotEnv} successfully copied with TARGET_ENV=${target}`);
+        console.log(`${dotenvPath} successfully copied with TARGET_ENV=${target}`);
     } catch (error) {
         console.error(
-            `[copyEnvFile] there was an error copying ${prodDotEnv} file`
+            `[copyEnvFile] there was an error copying ${dotenvPath} file`
         );
         console.error(error);
+        throw err;
     }
 
-
     fs.readFile(dotenvPath, 'utf8', (err, data) => {
-
         if (err) {
-            console.error(err);
-            return;
+            throw err;
         }
         console.log(data);
     })

@@ -12,11 +12,8 @@ RUN npm install
 
 COPY . .
 
-ARG TEST_BUILD_ARG
-ENV TEST_BUILD_ENV =$TEST_BUILD_ARG
-
-
-RUN ["sh", "-c", "node bin/create-nextjs-env-file.js ${TEST_BUILD_ENV}"]
+ARG FRONTEND_ENVIRONMENT_ARG
+RUN ["sh", "-c", "node bin/create-nextjs-env-file.js"]
 
 RUN npm run build
 

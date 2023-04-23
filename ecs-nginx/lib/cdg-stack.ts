@@ -146,9 +146,7 @@ export class CdgStack extends cdk.Stack {
 
     const logConfiguration = LogDriver.awsLogs({streamPrefix: NAME_PREFIX});
 
-    process.env['TEST'] = 'harsh';
-
-    const image  = ecs.ContainerImage.fromAsset('../frontend', {buildArgs: {'TEST_BUILD_ARG': 'test'}});
+    const image  = ecs.ContainerImage.fromAsset('../frontend', {buildArgs: {'FRONTEND_ENVIRONMENT_ARG': JSON.stringify(this.config.frontendEnvironment)}});
 
     taskDefinition.addContainer(this.stackName + '-' + NAME_PREFIX + '-container', {
       containerName: this.stackName + '-' + NAME_PREFIX + '-container',
