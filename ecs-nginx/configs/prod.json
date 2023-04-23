@@ -16,5 +16,6 @@
   "frontendEnvironment": {
 
   },
-  "awsSecretsManagerSecretName": "prod_cdg"
+  "awsSecretsManagerSecretName": "prod_cdg",
+  "certificateDomain": "*.shop.dealershipguy.com"
 }

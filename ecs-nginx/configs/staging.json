@@ -19,5 +19,6 @@
     "NODE_ENV": "production"
 
   },
-  "awsSecretsManagerSecretName": "staging_cdg"
+  "awsSecretsManagerSecretName": "staging_cdg",
+  "certificateDomain": "*.staging.shop.dealershipguy.com"
 }

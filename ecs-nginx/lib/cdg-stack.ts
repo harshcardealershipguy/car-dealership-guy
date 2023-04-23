@@ -10,13 +10,13 @@ import {Secret as SecretManager} from 'aws-cdk-lib/aws-secretsmanager';
 import {
   ApplicationLoadBalancedFargateService
 } from "aws-cdk-lib/aws-ecs-patterns/lib/fargate/application-load-balanced-fargate-service";
-import {ApplicationLoadBalancer, ApplicationProtocol, ListenerAction} from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import {ApplicationLoadBalancer, ApplicationProtocol} from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import {Certificate, CertificateValidation} from "aws-cdk-lib/aws-certificatemanager";
 
 export class CdgStack extends cdk.Stack {
   config : any;
   env : string;
-
+  cert : Certificate;
 
   constructor(scope: Construct, env: string, stackId: string, config: any, props?: cdk.StackProps) {
     super(scope, stackId, props);
@@ -25,6 +25,7 @@ export class CdgStack extends cdk.Stack {
     this.env = env;
 
     const vpc = this.createVpc();
+    this.createCert();
     const taskIamRole = this.createTaskIamRole();
     const linuxParameters = new LinuxParameters(this, 'linux_params', {initProcessEnabled: true})
     this.createBackendService(scope, vpc, taskIamRole, linuxParameters);
@@ -36,6 +37,13 @@ export class CdgStack extends cdk.Stack {
     // Look up the default VPC
     return ec2.Vpc.fromLookup(this, "VPC", {
       isDefault: true
+    });
+  }
+
+  createCert() {
+    this.cert = new Certificate(this, this.stackName + '-cert', {
+      domainName: this.config.certificateDomain,
+      validation: CertificateValidation.fromDns(),
     });
   }
 
@@ -103,11 +111,6 @@ export class CdgStack extends cdk.Stack {
       linuxParameters: linuxParameters
     });
 
-    const cert = new Certificate(this, this.stackName + '-' + NAME_PREFIX + '-cert', {
-      domainName: '*.staging.shop.dealershipguy.com',
-      validation: CertificateValidation.fromDns(),
-    });
-
     const loadBalancer = new ApplicationLoadBalancer(this, this.stackName + '-' + NAME_PREFIX + '-load-balancer', {
       vpc,
       internetFacing: true
@@ -122,11 +125,10 @@ export class CdgStack extends cdk.Stack {
       publicLoadBalancer: true,
       enableExecuteCommand: true,
       loadBalancer: loadBalancer,
-      certificate: cert
+      certificate: this.cert
     });
 
     const rdsSecurityGroup = ec2.SecurityGroup.fromLookupByName(this, this.stackName + '-rds-security-group', 'RDS Security Group', vpc);
-
     rdsSecurityGroup.addIngressRule(Peer.securityGroupId(rdsSecurityGroup.securityGroupId), Port.tcp(5432), '', true);
 
     albFargateService.loadBalancer
@@ -154,10 +156,7 @@ export class CdgStack extends cdk.Stack {
       linuxParameters: linuxParameters
     });
 
-    const cert = new Certificate(this, this.stackName + '-' + NAME_PREFIX + '-cert', {
-      domainName: 'staging.shop.dealershipguy.com',
-      validation: CertificateValidation.fromDns(),
-    });
+
 
     const loadBalancer = new ApplicationLoadBalancer(this, this.stackName + '-' + NAME_PREFIX + '-load-balancer', {
       vpc,
@@ -176,7 +175,7 @@ export class CdgStack extends cdk.Stack {
       protocol: ApplicationProtocol.HTTPS,
       redirectHTTP: true,
       loadBalancer: loadBalancer,
-      certificate: cert
+      certificate: this.cert
 
     });
   }
