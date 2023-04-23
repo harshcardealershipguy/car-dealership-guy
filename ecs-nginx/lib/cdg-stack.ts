@@ -44,7 +44,7 @@ export class CdgStack extends cdk.Stack {
     this.cert = new Certificate(this, this.stackName + '-cert', {
       domainName: this.config.certificateDomain,
       validation: CertificateValidation.fromDns(),
-      subjectAlternativeNames: this.config.certificateAlternativeDomain
+      subjectAlternativeNames: [this.config.certificateAlternativeDomain]
     });
   }
 
