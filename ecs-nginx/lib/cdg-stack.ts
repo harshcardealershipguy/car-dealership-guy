@@ -10,7 +10,7 @@ import {Secret as SecretManager} from 'aws-cdk-lib/aws-secretsmanager';
 import {
   ApplicationLoadBalancedFargateService
 } from "aws-cdk-lib/aws-ecs-patterns/lib/fargate/application-load-balanced-fargate-service";
-import {ApplicationLoadBalancer, ApplicationProtocol} from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import {ApplicationLoadBalancer, ApplicationProtocol, ListenerAction} from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import {Certificate, CertificateValidation} from "aws-cdk-lib/aws-certificatemanager";
 
 export class CdgStack extends cdk.Stack {
@@ -153,6 +153,8 @@ export class CdgStack extends cdk.Stack {
       protocol: ApplicationProtocol.HTTP,
       port: 80
     });
+
+    httpListener.addAction('Fixed', { action: ListenerAction.fixedResponse(200, { contentType: 'text/plain', messageBody: 'N/A', }) });
 
 
     loadBalancer.addRedirect({
