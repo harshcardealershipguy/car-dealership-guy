@@ -17,5 +17,6 @@
 
   },
   "awsSecretsManagerSecretName": "prod_cdg",
-  "certificateDomain": "*.shop.dealershipguy.com"
+  "certificateDomain": "*.shop.dealershipguy.com",
+  "certificateAlternativeDomain": "shop.dealershipguy.com"
 }

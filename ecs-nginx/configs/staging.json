@@ -20,5 +20,6 @@
 
   },
   "awsSecretsManagerSecretName": "staging_cdg",
-  "certificateDomain": "*.staging.shop.dealershipguy.com"
+  "certificateDomain": "*.staging.shop.dealershipguy.com",
+  "certificateAlternativeDomain": "staging.shop.dealershipguy.com"
 }
