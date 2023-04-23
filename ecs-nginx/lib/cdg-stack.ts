@@ -103,6 +103,16 @@ export class CdgStack extends cdk.Stack {
       linuxParameters: linuxParameters
     });
 
+    const cert = new Certificate(this, this.stackName + '-cert', {
+      domainName: '*.staging.shop.dealershipguy.com',
+      validation: CertificateValidation.fromDns(),
+    });
+
+    const loadBalancer = new ApplicationLoadBalancer(this, 'LoadBalancer', {
+      vpc,
+      internetFacing: true
+    });
+
     const albFargateService : ApplicationLoadBalancedFargateService = new ecs_patterns.ApplicationLoadBalancedFargateService(this, this.stackName + '-' + NAME_PREFIX + "-service", {
       vpc: vpc,
       taskDefinition: taskDefinition,
@@ -110,7 +120,9 @@ export class CdgStack extends cdk.Stack {
       serviceName: this.stackName + '-' + NAME_PREFIX + "-service",
       assignPublicIp: true,
       publicLoadBalancer: true,
-      enableExecuteCommand: true
+      enableExecuteCommand: true,
+      loadBalancer: loadBalancer,
+      certificate: cert
     });
 
     albFargateService.loadBalancer
@@ -138,7 +150,7 @@ export class CdgStack extends cdk.Stack {
       linuxParameters: linuxParameters
     });
 
-    const cert = new Certificate(this, "MyCertificate", {
+    const cert = new Certificate(this, "Staging Cert", {
       domainName: 'staging.shop.dealershipguy.com',
       validation: CertificateValidation.fromDns(),
     });
@@ -147,22 +159,6 @@ export class CdgStack extends cdk.Stack {
       vpc,
       internetFacing: true
     });
-
-    // const httpListener = loadBalancer.addListener('HttpListener', {
-    //   protocol: ApplicationProtocol.HTTPS,
-    //   port: 443
-    // });
-    //
-    // httpListener.addAction('Fixed', { action: ListenerAction.fixedResponse(200, { contentType: 'text/plain', messageBody: 'N/A', }) });
-
-    // loadBalancer.addRedirect({
-    //   sourcePort: 80,
-    //   sourceProtocol: ApplicationProtocol.HTTP,
-    //   targetPort: 443,
-    //   targetProtocol: ApplicationProtocol.HTTPS
-    // });
-
-    // httpListener.addCertificates('staging-cert-listener', [cert]);
 
     //TODO: if possible add the scurity group of the service to the inbound of the security group of the DB
     new ecs_patterns.ApplicationLoadBalancedFargateService(this, this.stackName + '-' +NAME_PREFIX + '-service', {
