@@ -103,12 +103,12 @@ export class CdgStack extends cdk.Stack {
       linuxParameters: linuxParameters
     });
 
-    const cert = new Certificate(this, this.stackName + '-cert', {
+    const cert = new Certificate(this, this.stackName + '-' + NAME_PREFIX + '-cert', {
       domainName: '*.staging.shop.dealershipguy.com',
       validation: CertificateValidation.fromDns(),
     });
 
-    const loadBalancer = new ApplicationLoadBalancer(this, 'LoadBalancer', {
+    const loadBalancer = new ApplicationLoadBalancer(this, this.stackName + '-' + NAME_PREFIX + '-load-balancer', {
       vpc,
       internetFacing: true
     });
