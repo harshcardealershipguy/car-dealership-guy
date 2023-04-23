@@ -14,6 +14,7 @@ COPY . .
 
 RUN bin/create-nextjs-env-file.js
 
+
 RUN npm run build
 
 EXPOSE 80
