@@ -148,10 +148,12 @@ export class CdgStack extends cdk.Stack {
 
     process.env['TEST'] = 'harsh';
 
+    const image  = ecs.ContainerImage.fromAsset('../frontend', {buildArgs: {'TEST_BUILD_ARG': 'test'}});
+
     taskDefinition.addContainer(this.stackName + '-' + NAME_PREFIX + '-container', {
       containerName: this.stackName + '-' + NAME_PREFIX + '-container',
       environment: this.config.frontendEnvironment,
-      image: ecs.ContainerImage.fromAsset('../frontend'),
+      image,
       portMappings: [{ containerPort: 80 }],
       memoryReservationMiB: 256,
       cpu: 256,
