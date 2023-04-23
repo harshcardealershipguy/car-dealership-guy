@@ -132,7 +132,7 @@ export class CdgStack extends cdk.Stack {
       containerName: this.stackName + '-' + NAME_PREFIX + '-container',
       environment: this.config.frontendEnvironment,
       image: ecs.ContainerImage.fromAsset('../frontend'),
-      portMappings: [{ containerPort: 80, hostPort: 80 }],
+      portMappings: [{ containerPort: 80 }],
       memoryReservationMiB: 256,
       cpu: 256,
       logging: logConfiguration,
