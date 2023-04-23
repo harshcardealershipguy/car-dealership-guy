@@ -148,12 +148,12 @@ export class CdgStack extends cdk.Stack {
       internetFacing: true
     });
 
-    const httpListener = loadBalancer.addListener('HttpListener', {
-      protocol: ApplicationProtocol.HTTPS,
-      port: 443
-    });
-
-    httpListener.addAction('Fixed', { action: ListenerAction.fixedResponse(200, { contentType: 'text/plain', messageBody: 'N/A', }) });
+    // const httpListener = loadBalancer.addListener('HttpListener', {
+    //   protocol: ApplicationProtocol.HTTPS,
+    //   port: 443
+    // });
+    //
+    // httpListener.addAction('Fixed', { action: ListenerAction.fixedResponse(200, { contentType: 'text/plain', messageBody: 'N/A', }) });
 
     // loadBalancer.addRedirect({
     //   sourcePort: 80,
@@ -162,7 +162,7 @@ export class CdgStack extends cdk.Stack {
     //   targetProtocol: ApplicationProtocol.HTTPS
     // });
 
-    httpListener.addCertificates('staging-cert-listener', [cert]);
+    // httpListener.addCertificates('staging-cert-listener', [cert]);
 
     //TODO: if possible add the scurity group of the service to the inbound of the security group of the DB
     new ecs_patterns.ApplicationLoadBalancedFargateService(this, this.stackName + '-' +NAME_PREFIX + '-service', {
