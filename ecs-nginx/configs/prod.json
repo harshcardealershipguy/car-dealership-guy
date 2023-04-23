@@ -3,18 +3,24 @@
     "APP_NAME": "Car Dealership Guy",
     "APP_ENV": "production",
     "APP_DEBUG": "false",
-    "APP_URL": "localhost",
-    "FRONTEND_URL": "http://localhost",
+    "APP_URL": "https://api.shop.dealershipguy.com",
+    "FRONTEND_URL": "https://shop.dealershipguy.com",
     "LOG_CHANNEL": "stack",
     "LOG_LEVEL": "info",
     "DB_CONNECTION": "pgsql",
     "DB_HOST": "cdg.clibsqkim8fp.us-east-1.rds.amazonaws.com",
     "DB_PORT": "5432",
     "DB_DATABASE": "cdg",
-    "FILESYSTEM_DISK": "local"
+    "FILESYSTEM_DISK": "local",
+    "SESSION_DOMAIN": ".shop.dealershipguy.com",
+    "SANCTUM_STATEFUL_DOMAINS": "shop.dealershipguy.com"
   },
   "frontendEnvironment": {
-
+    "NODE_ENV": "production",
+    "NEXT_JS_ENV": "staging",
+    "NEXT_PUBLIC_BACKEND_URL": "https://api.shop.dealershipguy.com"
   },
-  "awsSecretsManagerSecretName": "prod_cdg"
+  "awsSecretsManagerSecretName": "prod_cdg",
+  "certificateDomain": "*.shop.dealershipguy.com",
+  "certificateAlternativeDomain": "shop.dealershipguy.com"
 }

@@ -12,6 +12,9 @@ RUN npm install
 
 COPY . .
 
+ARG FRONTEND_ENVIRONMENT_ARG
+RUN ["sh", "-c", "node bin/create-nextjs-env-file.js"]
+
 RUN npm run build
 
 EXPOSE 80

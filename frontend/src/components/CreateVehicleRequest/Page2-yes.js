@@ -24,8 +24,12 @@ export const Page2Yes = ({goToPage, externalId}) => {
     const [isLoading, setIsLoading] = useState(false);
     const make = watch('make');
 
+    const csrf = () => axios.get('/sanctum/csrf-cookie');
+
     const saveData = async  (data) => {
         setIsLoading(true);
+
+        await csrf();
 
         data.external_id = externalId;
         const response = axios

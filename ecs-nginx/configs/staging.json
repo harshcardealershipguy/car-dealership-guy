@@ -3,19 +3,24 @@
     "APP_NAME": "Car Dealership Guy",
     "APP_ENV": "staging",
     "APP_DEBUG": "false",
-    "APP_URL": "http://api.staging.shop.dealershipguy.com",
-    "FRONTEND_URL": "http://stagi-stagi-khwr9s6vuc3z-1316246197.us-east-1.elb.amazonaws.com",
+    "APP_URL": "https://api.staging.shop.dealershipguy.com",
+    "FRONTEND_URL": "https://staging.shop.dealershipguy.com",
     "LOG_CHANNEL": "stack",
     "LOG_LEVEL": "info",
     "DB_CONNECTION": "pgsql",
     "DB_HOST": "cdg.clibsqkim8fp.us-east-1.rds.amazonaws.com",
     "DB_PORT": "5432",
     "DB_DATABASE": "cdg-staging",
-    "FILESYSTEM_DISK": "local"
+    "FILESYSTEM_DISK": "local",
+    "SESSION_DOMAIN": ".shop.dealershipguy.com",
+    "SANCTUM_STATEFUL_DOMAINS": "staging.shop.dealershipguy.com"
   },
   "frontendEnvironment": {
-    "NODE_ENV": "production"
-
+    "NODE_ENV": "production",
+    "NEXT_JS_ENV": "staging",
+    "NEXT_PUBLIC_BACKEND_URL": "https://api.staging.shop.dealershipguy.com"
   },
-  "awsSecretsManagerSecretName": "staging_cdg"
+  "awsSecretsManagerSecretName": "staging_cdg",
+  "certificateDomain": "*.staging.shop.dealershipguy.com",
+  "certificateAlternativeDomain": "staging.shop.dealershipguy.com"
 }

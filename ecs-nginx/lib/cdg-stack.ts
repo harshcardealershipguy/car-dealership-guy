@@ -1,20 +1,22 @@
 import * as ec2 from "aws-cdk-lib/aws-ec2";
+import {IVpc, Peer, Port} from "aws-cdk-lib/aws-ec2";
 import * as ecs from "aws-cdk-lib/aws-ecs";
+import {LinuxParameters, LogDriver, Secret} from "aws-cdk-lib/aws-ecs";
 import * as ecs_patterns from "aws-cdk-lib/aws-ecs-patterns";
 import * as cdk from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-import {LinuxParameters, LogDriver, Secret} from "aws-cdk-lib/aws-ecs";
+import {Construct} from 'constructs';
 import {Effect, Policy, PolicyStatement} from "aws-cdk-lib/aws-iam";
 import {Secret as SecretManager} from 'aws-cdk-lib/aws-secretsmanager';
-import {IVpc} from "aws-cdk-lib/aws-ec2";
 import {
   ApplicationLoadBalancedFargateService
 } from "aws-cdk-lib/aws-ecs-patterns/lib/fargate/application-load-balanced-fargate-service";
+import {ApplicationLoadBalancer, ApplicationProtocol} from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import {Certificate, CertificateValidation} from "aws-cdk-lib/aws-certificatemanager";
 
 export class CdgStack extends cdk.Stack {
   config : any;
   env : string;
-
+  cert : Certificate;
 
   constructor(scope: Construct, env: string, stackId: string, config: any, props?: cdk.StackProps) {
     super(scope, stackId, props);
@@ -23,6 +25,7 @@ export class CdgStack extends cdk.Stack {
     this.env = env;
 
     const vpc = this.createVpc();
+    this.createCert();
     const taskIamRole = this.createTaskIamRole();
     const linuxParameters = new LinuxParameters(this, 'linux_params', {initProcessEnabled: true})
     this.createBackendService(scope, vpc, taskIamRole, linuxParameters);
@@ -32,10 +35,17 @@ export class CdgStack extends cdk.Stack {
   createVpc() {
     //TODO: should this not be the default VPC?
     // Look up the default VPC
-    const vpc = ec2.Vpc.fromLookup(this, "VPC", {
+    return ec2.Vpc.fromLookup(this, "VPC", {
       isDefault: true
     });
-    return vpc;
+  }
+
+  createCert() {
+    this.cert = new Certificate(this, this.stackName + '-cert', {
+      domainName: this.config.certificateDomain,
+      validation: CertificateValidation.fromDns(),
+      subjectAlternativeNames: [this.config.certificateAlternativeDomain]
+    });
   }
 
   createTaskIamRole() : cdk.aws_iam.Role {
@@ -102,6 +112,11 @@ export class CdgStack extends cdk.Stack {
       linuxParameters: linuxParameters
     });
 
+    const loadBalancer = new ApplicationLoadBalancer(this, this.stackName + '-' + NAME_PREFIX + '-load-balancer', {
+      vpc,
+      internetFacing: true
+    });
+
     const albFargateService : ApplicationLoadBalancedFargateService = new ecs_patterns.ApplicationLoadBalancedFargateService(this, this.stackName + '-' + NAME_PREFIX + "-service", {
       vpc: vpc,
       taskDefinition: taskDefinition,
@@ -109,8 +124,13 @@ export class CdgStack extends cdk.Stack {
       serviceName: this.stackName + '-' + NAME_PREFIX + "-service",
       assignPublicIp: true,
       publicLoadBalancer: true,
-      enableExecuteCommand: true
+      enableExecuteCommand: true,
+      loadBalancer: loadBalancer,
+      certificate: this.cert
     });
+
+    const rdsSecurityGroup = ec2.SecurityGroup.fromLookupByName(this, this.stackName + '-rds-security-group', 'RDS Security Group', vpc);
+    rdsSecurityGroup.addIngressRule(Peer.securityGroupId(albFargateService.service.connections.securityGroups[0].securityGroupId), Port.tcp(5432), '', true);
 
     albFargateService.loadBalancer
   }
@@ -126,15 +146,24 @@ export class CdgStack extends cdk.Stack {
 
     const logConfiguration = LogDriver.awsLogs({streamPrefix: NAME_PREFIX});
 
+    const image  = ecs.ContainerImage.fromAsset('../frontend', {buildArgs: {'FRONTEND_ENVIRONMENT_ARG': JSON.stringify(this.config.frontendEnvironment)}});
+
     taskDefinition.addContainer(this.stackName + '-' + NAME_PREFIX + '-container', {
       containerName: this.stackName + '-' + NAME_PREFIX + '-container',
       environment: this.config.frontendEnvironment,
-      image: ecs.ContainerImage.fromAsset('../frontend'),
-      portMappings: [{ containerPort: 80, hostPort: 80 }],
+      image,
+      portMappings: [{ containerPort: 80 }],
       memoryReservationMiB: 256,
       cpu: 256,
       logging: logConfiguration,
       linuxParameters: linuxParameters
+    });
+
+
+
+    const loadBalancer = new ApplicationLoadBalancer(this, this.stackName + '-' + NAME_PREFIX + '-load-balancer', {
+      vpc,
+      internetFacing: true
     });
 
     //TODO: if possible add the scurity group of the service to the inbound of the security group of the DB
@@ -145,7 +174,12 @@ export class CdgStack extends cdk.Stack {
       serviceName: this.stackName + '-' +NAME_PREFIX + '-service',
       assignPublicIp: true,
       publicLoadBalancer: true,
-      enableExecuteCommand: true
+      enableExecuteCommand: true,
+      protocol: ApplicationProtocol.HTTPS,
+      redirectHTTP: true,
+      loadBalancer: loadBalancer,
+      certificate: this.cert
+
     });
   }
 
