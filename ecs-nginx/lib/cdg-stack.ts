@@ -155,12 +155,12 @@ export class CdgStack extends cdk.Stack {
 
     httpListener.addAction('Fixed', { action: ListenerAction.fixedResponse(200, { contentType: 'text/plain', messageBody: 'N/A', }) });
 
-    loadBalancer.addRedirect({
-      sourcePort: 80,
-      sourceProtocol: ApplicationProtocol.HTTP,
-      targetPort: 443,
-      targetProtocol: ApplicationProtocol.HTTPS
-    });
+    // loadBalancer.addRedirect({
+    //   sourcePort: 80,
+    //   sourceProtocol: ApplicationProtocol.HTTP,
+    //   targetPort: 443,
+    //   targetProtocol: ApplicationProtocol.HTTPS
+    // });
 
     httpListener.addCertificates('staging-cert-listener', [cert]);
 
