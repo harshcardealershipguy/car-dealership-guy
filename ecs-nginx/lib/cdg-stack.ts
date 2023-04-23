@@ -10,7 +10,7 @@ import {Secret as SecretManager} from 'aws-cdk-lib/aws-secretsmanager';
 import {
   ApplicationLoadBalancedFargateService
 } from "aws-cdk-lib/aws-ecs-patterns/lib/fargate/application-load-balanced-fargate-service";
-import {ApplicationProtocol} from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import {ApplicationLoadBalancer, ApplicationProtocol} from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import {Certificate, CertificateValidation} from "aws-cdk-lib/aws-certificatemanager";
 
 export class CdgStack extends cdk.Stack {
@@ -144,6 +144,26 @@ export class CdgStack extends cdk.Stack {
       validation: CertificateValidation.fromDns(),
     });
 
+    const loadBalancer = new ApplicationLoadBalancer(this, 'LoadBalancer', {
+      vpc,
+      internetFacing: true
+    });
+
+    const httpListener = loadBalancer.addListener('HttpListener', {
+      protocol: ApplicationProtocol.HTTP,
+      port: 80
+    });
+
+
+    loadBalancer.addRedirect({
+      sourcePort: 80,
+      sourceProtocol: ApplicationProtocol.HTTP,
+      targetPort: 443,
+      targetProtocol: ApplicationProtocol.HTTPS
+    });
+
+    httpListener.addCertificates('staging-cert-listener', [cert]);
+
     //TODO: if possible add the scurity group of the service to the inbound of the security group of the DB
     new ecs_patterns.ApplicationLoadBalancedFargateService(this, this.stackName + '-' +NAME_PREFIX + '-service', {
       vpc: vpc,
@@ -155,6 +175,7 @@ export class CdgStack extends cdk.Stack {
       enableExecuteCommand: true,
       protocol: ApplicationProtocol.HTTPS,
       redirectHTTP: true,
+      loadBalancer: loadBalancer,
       certificate: cert
 
     });
