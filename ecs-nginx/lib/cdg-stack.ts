@@ -10,7 +10,7 @@ import {Secret as SecretManager} from 'aws-cdk-lib/aws-secretsmanager';
 import {
   ApplicationLoadBalancedFargateService
 } from "aws-cdk-lib/aws-ecs-patterns/lib/fargate/application-load-balanced-fargate-service";
-import {ApplicationLoadBalancer, ApplicationProtocol, ListenerAction} from "aws-cdk-lib/aws-elasticloadbalancingv2";
+import {ApplicationLoadBalancer, ApplicationProtocol} from "aws-cdk-lib/aws-elasticloadbalancingv2";
 import {Certificate, CertificateValidation} from "aws-cdk-lib/aws-certificatemanager";
 
 export class CdgStack extends cdk.Stack {
@@ -34,10 +34,9 @@ export class CdgStack extends cdk.Stack {
   createVpc() {
     //TODO: should this not be the default VPC?
     // Look up the default VPC
-    const vpc = ec2.Vpc.fromLookup(this, "VPC", {
+    return ec2.Vpc.fromLookup(this, "VPC", {
       isDefault: true
     });
-    return vpc;
   }
 
   createTaskIamRole() : cdk.aws_iam.Role {
@@ -150,12 +149,11 @@ export class CdgStack extends cdk.Stack {
     });
 
     const httpListener = loadBalancer.addListener('HttpListener', {
-      protocol: ApplicationProtocol.HTTP,
-      port: 80
+      protocol: ApplicationProtocol.HTTPS,
+      port: 443
     });
 
-    httpListener.addAction('Fixed', { action: ListenerAction.fixedResponse(200, { contentType: 'text/plain', messageBody: 'N/A', }) });
-
+    // httpListener.addAction('Fixed', { action: ListenerAction.fixedResponse(200, { contentType: 'text/plain', messageBody: 'N/A', }) });
 
     loadBalancer.addRedirect({
       sourcePort: 80,
