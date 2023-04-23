@@ -130,7 +130,7 @@ export class CdgStack extends cdk.Stack {
     });
 
     const rdsSecurityGroup = ec2.SecurityGroup.fromLookupByName(this, this.stackName + '-rds-security-group', 'RDS Security Group', vpc);
-    rdsSecurityGroup.addIngressRule(Peer.securityGroupId(rdsSecurityGroup.securityGroupId), Port.tcp(5432), '', true);
+    rdsSecurityGroup.addIngressRule(Peer.securityGroupId(albFargateService.service.connections.securityGroups[0].securityGroupId), Port.tcp(5432), '', true);
 
     albFargateService.loadBalancer
   }
