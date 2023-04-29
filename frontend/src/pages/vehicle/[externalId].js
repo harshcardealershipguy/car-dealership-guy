@@ -36,7 +36,7 @@ const Vehicle = () => {
             <Grid container alignItems={'center'} justifyContent="center" >
                 <Grid item xs={12} md={10} lg={8}>
 
-                    <AuthSessionStatus status={status} />
+                    <AuthSessionStatus />
 
                     <Paper elevation={0} sx={{px: 4, pb: 4, pt: 1, mt: 2}}>
 
