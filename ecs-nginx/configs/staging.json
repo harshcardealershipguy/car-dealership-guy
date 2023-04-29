@@ -13,7 +13,9 @@
     "DB_DATABASE": "cdg-staging",
     "FILESYSTEM_DISK": "local",
     "SESSION_DOMAIN": ".shop.dealershipguy.com",
-    "SANCTUM_STATEFUL_DOMAINS": "staging.shop.dealershipguy.com"
+    "SANCTUM_STATEFUL_DOMAINS": "staging.shop.dealershipguy.com",
+    "AWS_BUCKET": "staging-cdg-images",
+    "AWS_DEFAULT_REGION": "us-east-1"
   },
   "frontendEnvironment": {
     "NODE_ENV": "production",

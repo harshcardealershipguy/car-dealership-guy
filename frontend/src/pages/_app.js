@@ -3,7 +3,7 @@ import 'styles/styles.css'
 import { ThemeProvider, createTheme  } from '@mui/material/styles';
 
 const theme = createTheme({
-    shape: {borderRadius: '20px'},
+    shape: {borderRadius: 20},
     palette: {
         primary: {
             main: '#0077ff',

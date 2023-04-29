@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\VehicleRequestController;
 use App\Http\Controllers\DealerController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\VehicleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,9 +48,14 @@ Route::get('/vehicle-requests', [VehicleRequestController::class, 'getVehicleReq
 //TODO: only allow dealers+admins
 Route::get('/vehicle-request/{externalId}', [VehicleRequestController::class, 'getVehicleRequest']);
 
+// TOOD: only allow dealers
+Route::post('/add-vehicle', [VehicleController::class, 'store']);
+
 
 //TODO: only allow getting messages and sending messages for yourself
 Route::middleware(['auth:sanctum'])->get('/messages/{otherUserExternalId}', [MessageController::class, 'getMessages']);
 Route::middleware(['auth:sanctum'])->post('/messages/{otherUserExternalId}', [MessageController::class, 'addMessage']);
 
 Route::middleware(['auth:sanctum'])->get('/conversations', [MessageController::class, 'getConversations']);
+
+Route::post('/upload-image', [ImageController::class, 'uploadImage']);

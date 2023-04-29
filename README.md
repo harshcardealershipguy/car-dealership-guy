@@ -46,3 +46,7 @@ frontend/.env.production
 /ecs-nginx/configs/staging.json
 /ecs-nginx/cdg-stack.ts (secrets)
 ```
+
+
+## Notes
+* When spinning up a new environment for the first time, the cert needs to be manually verified in ACM or else the Cloudformation job will hang.

@@ -38,3 +38,26 @@ body {
     color: transparent;
     text-shadow: 0 0 10px #000;
 }
+
+.dropzone {
+    padding-top: 45px;
+    padding-bottom: 45px;
+    margin-top: 20px;
+    background-color: #fafafa;
+    border-color: #eee;
+    border-style: dashed;
+    border-width: 2px;
+    border-radius: 15px;
+}
+
+.dropzone-thumb-inner {
+    display: flex;
+    minWidth: 0;
+    overflow: hidden;
+}
+
+.dropzone-thumb-img {
+    display: block;
+    width: auto;
+    height: 100%;
+}
