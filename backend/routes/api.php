@@ -45,6 +45,10 @@ Route::post('/dealer-join-request', [DealerController::class, 'store']);
 // TODO: only allow dealers+admins
 Route::get('/vehicle-requests', [VehicleRequestController::class, 'getVehicleRequests']);
 
+//TODO: only allow authenticated users to do
+Route::get('/my-vehicle-requests', [VehicleRequestController::class, 'getOwnVehicleRequests']);
+
+
 //TODO: only allow dealers+admins
 Route::get('/vehicle-request/{externalId}', [VehicleRequestController::class, 'getVehicleRequest']);
 

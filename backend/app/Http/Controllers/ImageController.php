@@ -25,7 +25,7 @@ class ImageController extends Controller
         ]);
 
         $uuid = Str::orderedUuid();
-        $imageName = $uuid . '.' . $request->file->extension();
+        $imageName = $uuid . '.jpg';
 
         $img = Image::make($request->file->path());
 
