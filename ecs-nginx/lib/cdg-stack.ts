@@ -85,7 +85,9 @@ export class CdgStack extends cdk.Stack {
     const secretsEnvVars = {
       DB_USERNAME: Secret.fromSecretsManager(secrets, 'DB_USERNAME'),
       DB_PASSWORD: Secret.fromSecretsManager(secrets, 'DB_PASSWORD'),
-      APP_KEY: Secret.fromSecretsManager(secrets, 'APP_KEY')
+      APP_KEY: Secret.fromSecretsManager(secrets, 'APP_KEY'),
+      AWS_ACCESS_KEY_ID: Secret.fromSecretsManager(secrets, 'AWS_ACCESS_KEY_ID'),
+      AWS_SECRET_ACCESS_KEY: Secret.fromSecretsManager(secrets, 'AWS_SECRET_ACCESS_KEY'),
     };
 
     const logConfiguration = LogDriver.awsLogs({streamPrefix: this.stackName + '-' + NAME_PREFIX});
