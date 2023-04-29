@@ -20,6 +20,10 @@ class VehicleRequestController extends Controller
         return VehicleRequest::all();
     }
 
+    public function getOwnVehicleRequests() {
+        return VehicleRequest::where('user_id', Auth::user()->id)->get();
+    }
+
     public function getVehicleRequest($externalId) {
         return VehicleRequest::where('external_id', $externalId)->firstOrFail();
     }

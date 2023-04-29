@@ -19,6 +19,7 @@ aws ecs execute-command --cluster <cluster-name> \
     --task <task-id> \
     --container <container-name> \
     --interactive \
+    --profile cdg \
     --command "/bin/sh"
 ```
 

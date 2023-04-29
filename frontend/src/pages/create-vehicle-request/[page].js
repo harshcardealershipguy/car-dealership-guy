@@ -92,7 +92,7 @@ const CreateVehicleRequest = () => {
                     <AuthSessionStatus className="mb-4" />
 
                     <Box sx={{ width: '100%' }}>
-                        <LinearProgress variant="determinate" value={progressBarValue} />
+                        <LinearProgress variant="determinate" value={progressBarValue} sx={{borderRadius: '5px', height: '8px'}} />
                     </Box>
                     <Paper elevation={0} sx={{px: 4, pb: 4, pt: 1, mt: 2}}>
                     {renderForm()}

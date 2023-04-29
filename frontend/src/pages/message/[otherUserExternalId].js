@@ -22,6 +22,7 @@ import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {LoadingButton} from "@mui/lab";
 import usePrevious from "@/hooks/usePrevious";
+import Link from "next/link";
 
 const Message = () => {
 
@@ -170,8 +171,12 @@ const Message = () => {
     return (
         <AppLayout>
             <Grid container justifyContent="center" spacing={2}>
+                <Grid item xs={7}>
+                    <Link href={'/dashboard'}><Typography variant={'body1'}>← Back to Dashboard</Typography></Link>
+                </Grid>
+            </Grid>
+            <Grid container justifyContent="center" columnSpacing={2}>
                 <Grid item md={2}>
-
                     <Paper sx={{py: 2, my: 2}} elevation={0} style={{height: '600px', overflowY: 'scroll'}}>
                         <Typography variant={'h6'} textAlign={'center'} fontWeight={'bold'}>Your Conversations</Typography>
 

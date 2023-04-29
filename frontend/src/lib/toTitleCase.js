@@ -1,6 +1,6 @@
 const toTitleCase = input => {
     if (input === null || input === undefined) {
-        return '';
+        return null;
     } else if (typeof input === "boolean") {
         if (input) { return "Yes"; }
         else {return "No";}
