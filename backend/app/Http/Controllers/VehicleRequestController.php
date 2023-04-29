@@ -16,8 +16,10 @@ use Illuminate\Support\Facades\Auth;
 class VehicleRequestController extends Controller
 {
 
-    public function getVehicleRequests() {
-        return VehicleRequest::all();
+    public function getVehicleRequests(Request $request) {
+        return VehicleRequest::limit($request->limit)
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     public function getOwnVehicleRequests() {

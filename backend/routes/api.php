@@ -53,6 +53,9 @@ Route::get('/my-vehicle-requests', [VehicleRequestController::class, 'getOwnVehi
 Route::get('/vehicle-request/{externalId}', [VehicleRequestController::class, 'getVehicleRequest']);
 
 // TOOD: only allow dealers
+Route::get('/vehicle', [VehicleController::class, 'getOwnVehicles']);
+
+// TOOD: only allow dealers
 Route::post('/add-vehicle', [VehicleController::class, 'store']);
 
 

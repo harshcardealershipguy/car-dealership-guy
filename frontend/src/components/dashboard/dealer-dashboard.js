@@ -6,154 +6,174 @@ import {
     AccordionSummary,
     Box,
     Button,
-    Card,
-    CardContent,
+    CardMedia,
     Chip,
+    CircularProgress,
     Grid,
+    Paper,
     Typography
 } from "@mui/material";
-import {ExpandMore} from "@mui/icons-material";
 import moment from "moment";
 import toTitleCase from "@/lib/toTitleCase";
 import {useRouter} from "next/router";
+import AuthSessionStatus from "@/components/AuthSessionStatus";
+import Link from "next/link";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ConversationsList from "@/components/ConversationsList";
+import vehicleRequestNameFormatter from "@/lib/vehicleRequestNameFormatter";
 
 const DealerDashboard = ({user}) => {
 
     const [vehicleRequests, setVehicleRequests] = useState([]);
+    const [vehicles, setVehicles] = useState([]);
+    const [isVehiclesLoading, setIsVehiclesLoading] = useState(true);
+    const [isVehicleRequestsLoading, setIsVehicleRequestsLoading] = useState(true);
 
     const router = useRouter();
 
     useEffect(() => {
         axios
-            .get('/api/vehicle-requests')
+            .get('/api/vehicle-requests?limit=15')
             .then(res => res.data)
             .then(data => {
                 data.forEach(dataItem => {
-                    dataItem['created_at'] = moment(dataItem['created_at']).fromNow();
-                })
-
+                    dataItem['created_since'] = moment(dataItem['created_at']).fromNow();
+                });
+                setIsVehicleRequestsLoading(false);
                 return setVehicleRequests(data);
-            })
+            });
+
+        axios
+            .get('/api/vehicle?limit=9')
+            .then(res => res.data)
+            .then(data => {
+                setIsVehiclesLoading(false);
+                return setVehicles(data);
+            });
+
     }, []);
 
     function detailsLine (vehicleRequest, property) {
-        return <><Typography color="text.secondary" style={{display: 'inline-block'}}>{toTitleCase(property)}</Typography> <Typography style={{display: 'inline-block'}}>{toTitleCase(vehicleRequest[property])}</Typography><br/></>
+        return <><Typography color="text.secondary" style={{display: 'inline-block'}} sx={{ml: 1}}>{toTitleCase(property)}</Typography> <Typography style={{display: 'inline-block'}}>{toTitleCase(vehicleRequest[property] ?? '--')}</Typography></>
     }
 
     return (
         <>
-            <Typography variant={'h4'} fontWeight={'bold'} sx={{mt: 3}}>Dealer Dashboard</Typography>
+            <Grid container alignItems={'center'} justifyContent="center" >
+                <Grid item xs={12} md={10} lg={8}>
 
-            <Button onClick={() => router.push('/create-vehicle')} variant={'contained'} size={'large'}>List a Vehicle!</Button>
+                    <AuthSessionStatus status={status} />
 
+                    <Paper elevation={0} sx={{px: 4, pb: 4, pt: 1, mt: 2}}>
 
-            <Typography variant={'h5'} fontWeight={'bold'} sx={{mt: 3}}>Urgent</Typography>
-            <Grid container spacing={4}>
-                {vehicleRequests.map(vehicleRequest =>
+                        <Grid container sx={{mt: 3}}>
+                            <Grid item sm={9}>
+                                <Typography variant={'h4'} fontWeight={'bold'} >Dealer Dashboard</Typography>
+                                <Typography variant={'body1'} color={'gray'}>Dashboard</Typography>
+                            </Grid>
+                            <Grid item sm={3}>
+                                <Button onClick={() => router.push('/create-vehicle')} variant={'contained'} size={'large'} fullWidth>List a Vehicle!</Button>
+                            </Grid>
+                        </Grid>
 
-                    <Grid item md={4} >
-                        <Card sx={{ minWidth: 275 }} class={'vehicle-request-card'}>
-                            <CardContent>
-                                <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+                        <ConversationsList/>
 
+                        {isVehicleRequestsLoading && (
+                            <div style={{display: 'flex', justifyContent: 'center', paddingTop: '30px', paddingBottom: '30px'}}>
+                                <CircularProgress />
+                            </div>
+                        )}
 
-                                    <Chip label={detailsLine(vehicleRequest, 'created_at')} />
+                        {!isVehicleRequestsLoading && (
+                            <>
+                                {vehicleRequests.length > 0 && (<Typography variant={'h6'} fontWeight={'bold'} sx={{mt: 3}}>Open Vehicle Requests</Typography>)}
+                                <Grid container spacing={2}>
+                                    {vehicleRequests.map((vehicleRequest) => {
+                                        return (
+                                            <Grid item key={vehicleRequest.external_id} xs={12}>
+                                                <Paper className={'vehicle-request-card'}>
+                                                    <Grid container justifyContent={'center'} alignItems={'center'}>
+                                                        <Grid item sx={{my: 1, p: 1}} sm={10}>
 
-                                </Typography>
+                                                            <Accordion elevation={0}>
+                                                                <AccordionSummary expandIcon={<ExpandMoreIcon />} id="panel1a-header" >
+                                                                    <Typography variant={'body1'}>{vehicleRequestNameFormatter(vehicleRequest)}</Typography>
+                                                                </AccordionSummary>
+                                                                <AccordionDetails>
+                                                                    <Grid container>
+                                                                        <Grid item md={4}>
+                                                                            {detailsLine(vehicleRequest, 'new_or_used')} <br/>
+                                                                            {detailsLine(vehicleRequest, 'year_low')} <br/>
+                                                                            {detailsLine(vehicleRequest, 'year_high')} <br/>
+                                                                            {detailsLine(vehicleRequest, 'make')} <br/>
+                                                                            {detailsLine(vehicleRequest, 'model')} <br/>
+                                                                            {detailsLine(vehicleRequest, 'created_since')}
+                                                                        </Grid>
+                                                                        <Grid item md={4}>
+                                                                            {detailsLine(vehicleRequest, 'timeframe')} <br/>
+                                                                            {detailsLine(vehicleRequest, 'body_style')} <br/>
+                                                                            {detailsLine(vehicleRequest, 'size')} <br/>
+                                                                            {detailsLine(vehicleRequest, 'makes')} <br/>
+                                                                            {detailsLine(vehicleRequest, 'exterior_colors')}
+                                                                        </Grid>
+                                                                        <Grid item md={4}>
+                                                                            {detailsLine(vehicleRequest, 'payment_method')} <br/>
+                                                                            {detailsLine(vehicleRequest, 'budget_or_monthly_payment')} <br/>
+                                                                            {detailsLine(vehicleRequest, 'city')} <br/>
+                                                                            {detailsLine(vehicleRequest, 'state')}
+                                                                        </Grid>
+                                                                    </Grid>
+                                                                </AccordionDetails>
+                                                            </Accordion>
+                                                        </Grid>
+                                                        <Grid item sx={{my: 1}} sm={2}>
+                                                            <Link href={'/vehicle-request/' + vehicleRequest.external_id}><Button variant={'outlined'}>View Vehicle Request</Button></Link>
+                                                        </Grid>
+                                                    </Grid>
+                                                </Paper>
+                                            </Grid>
+                                        );
+                                    })}
+                                </Grid>
+                            </>
+                        )}
 
-                                <Typography variant="h5" component="div">
-                                    {vehicleRequest['year_low']}-{vehicleRequest['year_high']} {vehicleRequest['make']} {vehicleRequest['model']}
-                                </Typography>
-                                <Box sx={{py: 2}}>
-                                    <Chip color="primary" label={detailsLine(vehicleRequest, 'exact_vehicle_known')} />
-                                    <Chip color="success" label={detailsLine(vehicleRequest, 'timeframe')} />
-                                </Box>
+                        {isVehiclesLoading && (
+                            <div style={{display: 'flex', justifyContent: 'center', paddingTop: '30px'}}>
+                                <CircularProgress />
+                            </div>
+                        )}
 
+                        {!isVehiclesLoading && (
+                            <>
+                                <Typography variant={'h6'} fontWeight={'bold'} sx={{mt: 3}}>Your Listed Vehicles</Typography>
+                                <Grid container spacing={2}>
+                                {vehicles.map((vehicle) => {
+                                    return (
+                                        <Grid item md={4}>
+                                            <Paper sx={{pb: 2}} elevation={0} className={'vehicle-request-card'}>
 
-                                <Accordion>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMore />}
-                                        aria-controls="panel1a-content"
-                                        id="panel1a-header"
-                                    >
-                                        <Typography>Vehicle Details</Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        {detailsLine(vehicleRequest, 'new_or_used')}
-                                        {detailsLine(vehicleRequest, 'body_style')}
-                                        {detailsLine(vehicleRequest, 'size')}
-                                        {detailsLine(vehicleRequest, 'engine_type')}
+                                                <Box display="flex" justifyContent="center">
+                                                    <CardMedia component="img" height="230" image={vehicle.images[0]} sx={{borderTopRightRadius: '20px', borderTopLeftRadius: '20px'}} />
+                                                </Box>
 
-                                        {detailsLine(vehicleRequest, 'makes')}
-                                        {detailsLine(vehicleRequest, 'exclude_makes')}
-                                        {detailsLine(vehicleRequest, 'exterior_colors')}
-                                        {detailsLine(vehicleRequest, 'interior_colors')}
-                                        {detailsLine(vehicleRequest, 'important_features')}
-                                    </AccordionDetails>
-                                </Accordion>
-                                <Accordion>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMore />}
-                                        aria-controls="panel2a-content"
-                                        id="panel2a-header"
-                                    >
-                                        <Typography>Timing & Financing</Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        {detailsLine(vehicleRequest, 'timeframe')}
-                                        {detailsLine(vehicleRequest, 'payment_method')}
-                                        {detailsLine(vehicleRequest, 'budget_or_monthly_payment')}
-                                        {detailsLine(vehicleRequest, 'credit_score')}
-                                        {detailsLine(vehicleRequest, 'money_down')}
-                                    </AccordionDetails>
-                                </Accordion>
-                                <Accordion>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMore />}
-                                        aria-controls="panel3a-content"
-                                        id="panel3a-header"
-                                    >
-                                        <Typography>Trade-In Details</Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        {detailsLine(vehicleRequest, 'trade_in_year')}
-                                        {detailsLine(vehicleRequest, 'trade_in_make')}
-                                        {detailsLine(vehicleRequest, 'trade_in_model')}
-                                    </AccordionDetails>
-                                </Accordion>
+                                                <Typography variant={'h5'} fontWeight={'bold'} textAlign={'center'} sx={{pt: 1}}>{vehicle.year} {vehicle.make} {vehicle.model}</Typography>
+                                                <Typography variant={'body1'} textAlign={'center'}>Sale Price: ${vehicle.price}</Typography>
+                                                <Box display="flex" justifyContent="center">
+                                                    <Chip color={'primary'} label={vehicle.status} sx={{mt: 2}} variant={'outlined'}/>
+                                                </Box>
 
-                                <Accordion>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMore />}
-                                        aria-controls="panel4a-content"
-                                        id="panel4a-header"
-                                    >
-                                        <Typography>Personal Information</Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        {detailsLine(vehicleRequest, 'city')}
-                                        {detailsLine(vehicleRequest, 'state')}
-                                    </AccordionDetails>
-                                </Accordion>
+                                            </Paper>
+                                        </Grid>
+                                    );
 
-                                <Button href={'/vehicle-request/' + vehicleRequest.external_id} variant="outlined" sx={{mt: 3}} fullWidth size={'large'}>View</Button>
-
-
-                            </CardContent>
-
-                        </Card>
-                    </Grid>
-
-
-
-
-
-
-
-                )}
-
+                                })}
+                                </Grid>
+                            </>
+                        )}
+                    </Paper>
+                </Grid>
             </Grid>
-
         </>
     )
 }

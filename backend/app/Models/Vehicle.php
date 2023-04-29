@@ -9,6 +9,10 @@ class Vehicle extends Model
 {
     use HasFactory;
 
+    protected $casts = [
+        'images' => 'array'
+    ];
+
     protected $fillable = [
         'external_id',
         'user_id',

@@ -32,10 +32,10 @@ class MessageController extends Controller
     public function getConversations() {
         $currentUser = Auth::user()->external_id;
 
-        return DB::select("SELECT name, other_user_external_id, content
+        return DB::select("SELECT name, other_user_external_id, message_created_at::TIMESTAMP WITH TIME ZONE as last_message_at, content
                            FROM (
 
-                               (SELECT DISTINCT ON (other_user_external_id) other_user_external_id, created_at, content
+                               (SELECT DISTINCT ON (other_user_external_id) other_user_external_id, created_at as message_created_at, content
                                FROM ((SELECT DISTINCT ON (to_user_external_id) to_user_external_id as other_user_external_id, created_at, content
                                       FROM messages
                                       WHERE from_user_external_id = :currentUser

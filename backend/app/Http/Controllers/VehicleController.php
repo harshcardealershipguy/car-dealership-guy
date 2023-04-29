@@ -9,6 +9,13 @@ use App\Models\Vehicle;
 
 class VehicleController extends Controller
 {
+
+    public function getOwnVehicles() {
+        return Vehicle::where('user_id', Auth::user()->id)
+            ->orderBy('updated_at', 'desc')
+            ->get();
+    }
+
     public function store(Request $request) {
 
         $request->validate([
@@ -28,7 +35,7 @@ class VehicleController extends Controller
         $requestData = $request->all();
         $requestData['user_id'] = Auth::user()->id;
         $requestData['external_id'] = Str::orderedUuid();
-        $requestData['images'] = json_encode($requestData['images']);
+        $requestData['images'] = $requestData['images'];
         $requestData['status'] = 'PENDING_REVIEW';
 
         $vehicle = Vehicle::create($requestData);
