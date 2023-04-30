@@ -1,8 +1,8 @@
 import {FormControl, FormHelperText, InputLabel, Select} from "@mui/material";
 
-const SingleSelect = ({ id, label, defaultValue, errors, register, children }) => (
+const SingleSelect = ({ id, label, defaultValue, errors, register, children, fullWidth=true, sx={} }) => (
 
-    <FormControl sx={{mt: 3}} fullWidth error={!!errors?.[id]}>
+    <FormControl fullWidth={fullWidth} error={!!errors?.[id]} sx={sx}>
         <InputLabel id={id + '_label'}>{label}</InputLabel>
         <Select labelId={id + '_label'} label={label} {...register(id)} id={id} defaultValue={defaultValue}>
             {children}

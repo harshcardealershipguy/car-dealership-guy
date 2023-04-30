@@ -2,156 +2,29 @@ import Head from 'next/head'
 import {
     Box,
     Button,
-    CardMedia,
-    Chip, Divider,
+    CardMedia, Chip, CircularProgress,
     Grid,
+    MenuItem,
     Paper,
     styled,
     Tooltip,
     tooltipClasses,
-    Typography,
-    Zoom
+    Typography, Zoom
 } from "@mui/material";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import Image from "next/image";
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import NoCrashIcon from '@mui/icons-material/NoCrash';
 import CarRentalIcon from '@mui/icons-material/CarRental';
 import axios from "@/lib/axios";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import SingleSelect from "@/components/Form/SingleSelect";
+import {yearHighs, yearLows} from "@/data/years";
+import {useForm} from "react-hook-form";
+import {makesModels} from "@/data/makesModels";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 
 export default function Home() {
-
-    const listings = [
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-4.png',
-            location: '19446 - Lansdale, PA'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-3.png',
-            location: '60060 - Mundelein, IL'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-2.png',
-            location: '19446 - Lansdale, PA'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-1.png',
-            location: '60060 - Mundelein, IL'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-5.png',
-            location: '19446 - Lansdale, PA'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-6.png',
-            location: '60060 - Mundelein, IL'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-7.png',
-            location: '60060 - Mundelein, IL'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-3.png',
-            location: '19446 - Lansdale, PA'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-2.png',
-            location: '60060 - Mundelein, IL'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-4.png',
-            location: '19446 - Lansdale, PA'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-3.png',
-            location: '60060 - Mundelein, IL'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-2.png',
-            location: '19446 - Lansdale, PA'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-1.png',
-            location: '60060 - Mundelein, IL'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-5.png',
-            location: '19446 - Lansdale, PA'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-6.png',
-            location: '60060 - Mundelein, IL'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-7.png',
-            location: '60060 - Mundelein, IL'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-3.png',
-            location: '19446 - Lansdale, PA'
-        },
-        {
-            title: '2020 Mazda CX',
-            price: '20,493',
-            mileage: '94,203',
-            image: '/vehicle-images/vehicle-2.png',
-            location: '60060 - Mundelein, IL'
-        },
-    ];
 
     const HtmlTooltip = styled(({ className, ...props }) => (
         <Tooltip {...props} classes={{ popper: className }} />
@@ -172,35 +45,36 @@ export default function Home() {
         }
     }
 
+    const [vehicles, setVehicles] = useState([]);
+    const [isVehiclesLoading, setIsVehiclesLoading] = useState(true);
+
     const getCards = () => {
-        const listingCards = listings.map(listing => {
-            return <Grid item xs={4}>
-                <Paper sx={{pb: 2}} elevation={0}>
+        const listingCards = vehicles.map((vehicle) => {
+            return (
+                <Grid item xs={4} key={vehicle.external_id}>
+                    <Paper sx={{pb: 2}} elevation={0}>
 
-                    <Box display="flex" justifyContent="center">
-                        <CardMedia component="img" height="230" image={listing.image} sx={{borderTopRightRadius: '20px', borderTopLeftRadius: '20px'}} />
-                    </Box>
-                    <Chip color={'primary'} label={'New'} sx={{mx: 2, mt: 2}} variant={'outlined'}/>
-                    <Typography variant={'h5'} fontWeight={'bold'} textAlign={'center'} sx={{pt: 0}}>{listing.title}</Typography>
-                    <Typography variant={'body1'} textAlign={'center'} color={'gray'}>Platinum 4D AWD</Typography>
-                    <Typography variant={'subtitle1'} color={'gray'} textAlign={'center'}>{listing.location}</Typography>
+                        <Box display="flex" justifyContent="center">
+                            <CardMedia component="img" height="230" image={vehicle.images[0]} sx={{borderTopRightRadius: '20px', borderTopLeftRadius: '20px'}} />
+                        </Box>
+                        <Chip color={'primary'} label={'New'} sx={{mx: 2, mt: 2}} variant={'outlined'}/>
+                        <Typography variant={'h5'} fontWeight={'bold'} textAlign={'center'} sx={{pt: 0}}>{vehicle.year} {vehicle.make} {vehicle.model}</Typography>
+                        <Typography variant={'body1'} textAlign={'center'} color={'gray'}>trim</Typography>
+                        <Typography variant={'subtitle1'} color={'gray'} textAlign={'center'}>location</Typography>
 
-                    <Typography variant={'h6'} textAlign={'center'} sx={{mt: 2}}>
-                        <Typography variant={'h5'} display={'inline'} fontWeight={'bold'}> {listing.mileage} miles - $</Typography>
-
-                        <HtmlTooltip TransitionComponent={Zoom} title={<Typography variant={'h6'} textAlign={'center'}>Sign up to see our exclusive pricing!</Typography>}>
-                            <Box display={'inline'}>
-                                <Typography display={'inline'} className={'blur-text'} fontWeight={'bold'} variant={'h5'}>23,000</Typography>
-                                <HelpOutlineIcon fontSize={'small'}/>
-                            </Box>
-                        </HtmlTooltip>
-
-                    </Typography>
-
-
-                </Paper>
-            </Grid>
-        });
+                        <Box textAlign={'center'}>
+                            <Typography variant={'h6'} display={'inline'} fontWeight={'bold'} > {vehicle.mileage} miles - $</Typography>
+                            <HtmlTooltip TransitionComponent={Zoom} title={<Typography variant={'h6'} textAlign={'center'}>Sign up to see our exclusive pricing!</Typography>}>
+                                <Box display={'inline'}>
+                                    <Typography display={'inline'} className={'blur-text'} fontWeight={'bold'} variant={'h5'}>{vehicle.price}</Typography>
+                                    <HelpOutlineIcon fontSize={'small'}/>
+                                </Box>
+                            </HtmlTooltip>
+                        </Box>
+                    </Paper>
+                </Grid>
+            );
+        })
 
         const promoCard1 = <Grid item xs={4}>
             <Paper sx={{pb: 2}} elevation={0} sx={{px: 2}}>
@@ -247,21 +121,55 @@ export default function Home() {
             </Paper>
         </Grid>
 
-        const array = [...listingCards, promoCard1, promoCard2, promoCard3];
+        listingCards.splice(2, 0, promoCard1);
 
-        shuffleArray(array);
-
-        return array;
-
-
+        if (listingCards.length > 7) {
+            listingCards.splice(6, 0, promoCard2);
+            listingCards.splice(11, 0, promoCard3);
+        }
+        return listingCards;
     }
 
+    const {
+        reset,
+        handleSubmit,
+        register,
+        watch,
+        setValue,
+        formState: { errors },
+    } = useForm({ mode: "onChange" });
+
+    const year_low = watch('year_low');
+    const year_high = watch('year_high');
+    const make = watch('make');
+    const model = watch('model');
 
     useEffect(() => {
-        axios.get('http://stagi-stagi-pllspmjzuuso-1831827029.us-east-1.elb.amazonaws.com/')
-            .then(res => res.data);
-    }, []);
+        setIsVehiclesLoading(true);
 
+        //if the make changes, clear out the model
+        if(make && model && !(makesModels[make].includes(model))) {
+            setValue('model', '');
+        }
+
+        const queryParams = {
+            "limit": 99,
+            "year_low": year_low,
+            "year_high": year_high,
+            "make": make,
+            "model": model
+        };
+
+        const queryString = Object.keys(queryParams).filter(key => queryParams[key]).map(key => key + '=' + queryParams[key]).join('&');
+
+        axios
+            .get('/api/vehicles?' + queryString)
+            .then(res => res.data)
+            .then(data => {
+                setIsVehiclesLoading(false);
+                setVehicles(data);
+            });
+    }, [year_low, year_high, make, model]);
 
     return (
         <>
@@ -294,10 +202,69 @@ export default function Home() {
                         </Grid>
                     </Grid>
                     <Grid container sx={{my:3}} justifyContent={'center'} >
-                        <Grid item md={10}>
+                        <Grid item sm={10}>
+                            <Paper className={'vehicle-request-card'} sx={{mb: 2, py: 2, pl: 2}}>
+                                <form>
 
-                            <Grid container spacing={3}>
-                                {getCards()}
+                                    <Grid container  alignItems={'center'} spacing={1}>
+                                        <Grid item sm={1}>
+                                            <Typography variant={'body1'} color={'gray'} textAlign={'center'} fontWeight={'bold'}>Filter</Typography>
+                                        </Grid>
+                                        <Grid item sm={2}>
+                                            <SingleSelect id={'year_low'} label={'Year Minimum'} defaultValue={''} errors={errors} register={register}>
+                                                <MenuItem value={""}>Any</MenuItem>
+
+                                                {yearLows.map(function(year) {
+                                                    return <MenuItem value={year} key={year}>{year}</MenuItem>
+                                                })}
+                                            </SingleSelect>
+                                        </Grid>
+
+                                        <Grid item sm={2}>
+                                            <SingleSelect id={'year_high'} label={'Year Maximum'} defaultValue={''} errors={errors} register={register}>
+                                                <MenuItem value="">Any</MenuItem>
+
+                                                {yearHighs.map(function(year) {
+                                                    return <MenuItem value={year} key={year}>{year}</MenuItem>
+                                                })}
+                                            </SingleSelect>
+                                        </Grid>
+
+                                        <Grid item sm={2}>
+                                            <SingleSelect id={'make'} label={'Make'} defaultValue={''} errors={errors} register={register}>
+                                                <MenuItem value="">Any</MenuItem>
+
+                                                {Object.keys(makesModels).map(function(make) {
+                                                    return <MenuItem value={make} key={make}>{make}</MenuItem>
+                                                })}
+                                            </SingleSelect>
+                                        </Grid>
+
+                                        <Grid item sm={2}>
+                                            <SingleSelect id={'model'} label={'Model'} defaultValue={''} errors={errors} register={register}>
+                                                <MenuItem value="">Any</MenuItem>
+
+                                                {makesModels[make] && Object.keys(makesModels[make]).map(function(model) {
+                                                    return <MenuItem value={makesModels[make][model]} key={makesModels[make][model]}>{makesModels[make][model]}</MenuItem>
+                                                })}
+                                            </SingleSelect>
+                                        </Grid>
+                                </Grid>
+                                </form>
+                            </Paper>
+
+                        </Grid>
+
+                        <Grid item md={10}>
+                            <Grid container spacing={2}>
+
+                                {isVehiclesLoading && (
+                                    <div style={{display: 'flex', justifyContent: 'center', paddingTop: '30px', paddingBottom: '30px', width: '100%'}}>
+                                        <CircularProgress />
+                                    </div>
+                                )}
+
+                                {!isVehiclesLoading && getCards() }
 
                             </Grid>
                         </Grid>

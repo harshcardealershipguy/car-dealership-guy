@@ -45,7 +45,7 @@ export const Page3 = ({goToPage, externalId}) => {
 
             <form onSubmit={handleSubmit(saveData)}>
 
-                <SingleSelect id={'timeframe'} label={'Purchase Timeframe'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'timeframe'} label={'Purchase Timeframe'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="asap">ASAP</MenuItem>
                     <MenuItem value="2_weeks">In the next 2 weeks</MenuItem>
                     <MenuItem value="30_days">In the next 30 days</MenuItem>
@@ -54,13 +54,13 @@ export const Page3 = ({goToPage, externalId}) => {
                     <MenuItem value="more_than_90_days">90+ days</MenuItem>
                 </SingleSelect>
 
-                <SingleSelect id={'payment_method'} label={'Payment Method'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'payment_method'} label={'Payment Method'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="financing">Financing</MenuItem>
                     <MenuItem value="cash">Cash</MenuItem>
                 </SingleSelect>
 
                 {payment_method === 'financing' && (
-                    <SingleSelect id={'money_down'} label={'Money Down'} defaultValue={''} errors={errors} register={register}>
+                    <SingleSelect id={'money_down'} label={'Money Down'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                         <MenuItem value="0">$0</MenuItem>
                         <MenuItem value="1_to_5000">$1 - $5,000</MenuItem>
                         <MenuItem value="5000_to_10000">$5,000 - $10,000</MenuItem>
@@ -70,7 +70,7 @@ export const Page3 = ({goToPage, externalId}) => {
                     </SingleSelect>
                 )}
 
-                <SingleSelect id={'budget_or_monthly_payment'} label={'Budget'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'budget_or_monthly_payment'} label={'Budget'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     {
                         payment_method === 'cash' ? (
                             [
@@ -97,7 +97,7 @@ export const Page3 = ({goToPage, externalId}) => {
                     }
                 </SingleSelect>
 
-                <SingleSelect id={'credit_score'} label={'Credit Score'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'credit_score'} label={'Credit Score'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="poor">300 to 579 - Poor</MenuItem>
                     <MenuItem value="fair">580 to 669 - Fair</MenuItem>
                     <MenuItem value="good">670 to 739 - Good</MenuItem>

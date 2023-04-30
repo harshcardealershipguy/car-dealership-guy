@@ -163,19 +163,19 @@ const CreateVehicle = () => {
                         <form onSubmit={handleSubmit(saveData)}>
                             <TextField {...register("vin")} variant="outlined" label="VIN" error={!!errors?.vin} helperText={errors?.['vin']?.message} fullWidth />
 
-                            <SingleSelect id={'year'} label={'Year'} defaultValue={''} errors={errors} register={register}>
+                            <SingleSelect id={'year'} label={'Year'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                                 {yearLows.map(function(year) {
                                     return <MenuItem value={year} key={year}>{year}</MenuItem>
                                 })}
                             </SingleSelect>
 
-                            <SingleSelect id={'make'} label={'Make'} defaultValue={''} errors={errors} register={register}>
+                            <SingleSelect id={'make'} label={'Make'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                                 {Object.keys(makesModels).map(function(make) {
                                     return <MenuItem value={make} key={make}>{make}</MenuItem>
                                 })}
                             </SingleSelect>
 
-                            <SingleSelect id={'model'} label={'Model'} defaultValue={''} errors={errors} register={register}>
+                            <SingleSelect id={'model'} label={'Model'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                                 {makesModels[make] && Object.keys(makesModels[make]).map(function(model) {
                                     return <MenuItem value={makesModels[make][model]} key={makesModels[make][model]}>{makesModels[make][model]}</MenuItem>
                                 })}

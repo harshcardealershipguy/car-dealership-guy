@@ -52,41 +52,41 @@ export const Page2Yes = ({goToPage, externalId}) => {
 
             <form onSubmit={handleSubmit(saveData)}>
 
-                <SingleSelect id={'new_or_used'} label={'New Or Used'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'new_or_used'} label={'New Or Used'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="new">New</MenuItem>
                     <MenuItem value="used">Used</MenuItem>
                     <MenuItem value="new_or_used">New Or Used</MenuItem>
                 </SingleSelect>
 
-                <SingleSelect id={'year_low'} label={'Year Minimum'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'year_low'} label={'Year Minimum'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="any" defaultValue>Any</MenuItem>
                     {yearLows.map(function(year) {
                         return <MenuItem value={year} key={year}>{year}</MenuItem>
                     })}
                 </SingleSelect>
 
-                <SingleSelect id={'year_high'} label={'Year Maximum'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'year_high'} label={'Year Maximum'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="any">Any</MenuItem>
                     {yearHighs.map(function(year) {
                         return <MenuItem value={year} key={year}>{year}</MenuItem>
                     })}
                 </SingleSelect>
 
-                <SingleSelect id={'make'} label={'Make'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'make'} label={'Make'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="any">Any</MenuItem>
                     {Object.keys(makesModels).map(function(make) {
                         return <MenuItem value={make} key={make}>{make}</MenuItem>
                     })}
                 </SingleSelect>
 
-                <SingleSelect id={'model'} label={'Model'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'model'} label={'Model'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="any">Any</MenuItem>
                     {makesModels[make] && Object.keys(makesModels[make]).map(function(model) {
                         return <MenuItem value={makesModels[make][model]} key={makesModels[make][model]}>{makesModels[make][model]}</MenuItem>
                     })}
                 </SingleSelect>
 
-                <SingleSelect id={'engine_type'} label={'Engine Type'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'engine_type'} label={'Engine Type'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="any">Any</MenuItem>
                     <MenuItem value="gasoline">Gasoline</MenuItem>
                     <MenuItem value="hybrid">Hybrid</MenuItem>

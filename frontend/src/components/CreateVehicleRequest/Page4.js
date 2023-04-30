@@ -79,19 +79,19 @@ export const Page4 = ({goToPage, externalId}) => {
                         has_trade_in === 'true' &&
                         (
                             <>
-                                <SingleSelect id={'trade_in_year'} label={'Trade In Year'} defaultValue={''} errors={errors} register={register}>
+                                <SingleSelect id={'trade_in_year'} label={'Trade In Year'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                                     {tradeInYears.map(function (year) {
                                         return <MenuItem value={year} key={year}>{year}</MenuItem>
                                     })}
                                 </SingleSelect>
 
-                                <SingleSelect id={'trade_in_make'} label={'Trade In Make'} defaultValue={''} errors={errors} register={register}>
+                                <SingleSelect id={'trade_in_make'} label={'Trade In Make'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                                     {Object.keys(makesModels).map(function(make) {
                                         return <MenuItem value={make} key={make}>{make}</MenuItem>
                                     })}
                                 </SingleSelect>
 
-                                <SingleSelect id={'trade_in_model'} label={'Trade In Model'} defaultValue={''} errors={errors} register={register}>
+                                <SingleSelect id={'trade_in_model'} label={'Trade In Model'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                                     {makesModels[tradeInMake] && Object.keys(makesModels[tradeInMake]).map(function(model) {
                                         return <MenuItem value={makesModels[tradeInMake][model]} key={makesModels[tradeInMake][model]}>{makesModels[tradeInMake][model]}</MenuItem>
                                     })}

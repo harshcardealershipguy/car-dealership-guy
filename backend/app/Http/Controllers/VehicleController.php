@@ -10,6 +10,30 @@ use App\Models\Vehicle;
 class VehicleController extends Controller
 {
 
+    public function getVehicles(Request $request) {
+
+        $query = Vehicle::limit($request->limit)
+            ->orderBy('updated_at', 'desc')
+            ->where('status', '=', 'APPROVED');
+
+        if ($request->year_low) {
+            $query->where('year', '>=', $request->year_low);
+        }
+
+        if ($request->year_high) {
+            $query->where('year', '<=', $request->year_high);
+        }
+
+        if ($request->make) {
+            $query->where('make', '=', $request->make);
+        }
+        if ($request->model) {
+            $query->where('model', '=', $request->model);
+        }
+
+        return $query->get();
+    }
+
     public function getOwnVehicles() {
         return Vehicle::where('user_id', Auth::user()->id)
             ->orderBy('updated_at', 'desc')

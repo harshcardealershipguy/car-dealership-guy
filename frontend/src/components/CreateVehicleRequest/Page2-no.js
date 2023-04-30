@@ -52,27 +52,27 @@ export const Page2No = ({goToPage, externalId}) => {
 
             <form onSubmit={handleSubmit(saveData)}>
 
-                <SingleSelect id={'new_or_used'} label={'New Or Used'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'new_or_used'} label={'New Or Used'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="new">New</MenuItem>
                     <MenuItem value="used">Used</MenuItem>
                     <MenuItem value="new_or_used">New Or Used</MenuItem>
                 </SingleSelect>
 
-                <SingleSelect id={'year_low'} label={'Year Minimum'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'year_low'} label={'Year Minimum'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="any" defaultValue>Any</MenuItem>
                     {yearLows.map(function(year) {
                         return <MenuItem value={year} key={year}>{year}</MenuItem>
                     })}
                 </SingleSelect>
 
-                <SingleSelect id={'year_high'} label={'Year Maximum'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'year_high'} label={'Year Maximum'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="any">Any</MenuItem>
                     {yearHighs.map(function(year) {
                         return <MenuItem value={year} key={year}>{year}</MenuItem>
                     })}
                 </SingleSelect>
 
-                <SingleSelect id={'body_style'} label={'Body Style'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'body_style'} label={'Body Style'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="any">Any</MenuItem>
                     <MenuItem value="sports_car">Sports Car</MenuItem>
                     <MenuItem value="hatchback">Hatchback</MenuItem>
@@ -86,7 +86,7 @@ export const Page2No = ({goToPage, externalId}) => {
                     <MenuItem value="pickup_truck">Pickup Truck</MenuItem>
                 </SingleSelect>
 
-                <SingleSelect id={'engine_type'} label={'Engine Type'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'engine_type'} label={'Engine Type'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="any">Any</MenuItem>
                     <MenuItem value="gasoline">Gasoline</MenuItem>
                     <MenuItem value="hybrid">Hybrid</MenuItem>
@@ -95,7 +95,7 @@ export const Page2No = ({goToPage, externalId}) => {
                     <MenuItem value="diesel">Diesel</MenuItem>
                 </SingleSelect>
 
-                <SingleSelect id={'size'} label={'Size'} defaultValue={''} errors={errors} register={register}>
+                <SingleSelect id={'size'} label={'Size'} defaultValue={''} errors={errors} register={register} sx={{mt: 3}}>
                     <MenuItem value="any">Any</MenuItem>
                     <MenuItem value="compact">Compact</MenuItem>
                     <MenuItem value="small">Small</MenuItem>

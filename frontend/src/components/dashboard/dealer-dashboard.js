@@ -44,7 +44,7 @@ const DealerDashboard = ({user}) => {
             });
 
         axios
-            .get('/api/vehicle?limit=9')
+            .get('/api/my-vehicles?limit=9')
             .then(res => res.data)
             .then(data => {
                 setIsVehiclesLoading(false);
