@@ -77,11 +77,8 @@ export default function Home() {
         })
 
         const promoCard1 = <Grid item xs={4}>
-            <Paper sx={{pb: 2}} elevation={0} sx={{px: 2}}>
-                <Typography variant={'h5'} textAlign={'center'} sx={{pt: 4}}>
-                    <ReceiptLongIcon fontSize={'large'} style={{transform: 'scale(2.8)'}} sx={{my: 4}}/>
-                </Typography>
-                <Typography variant={'h6'} fontWeight={'bold'} textAlign={'center'} sx={{mt: 2}}>
+            <Paper sx={{p: 4}} elevation={0} className={'promo-card-1'}>
+                <Typography variant={'h4'} fontWeight={'bold'} textAlign={'center'} sx={{mt: 2}}>
                     Purchase Your Next Car With Car Dealership Guy
                 </Typography>
                 <Typography variant={'body1'} textAlign={'center'} sx={{mt: 2, pb: 4}}>
@@ -92,11 +89,8 @@ export default function Home() {
         </Grid>
 
         const promoCard2 = <Grid item xs={4}>
-            <Paper sx={{pb: 2}} elevation={0} sx={{px: 2}}>
-                <Typography variant={'h5'} textAlign={'center'} sx={{pt: 4}}>
-                    <NoCrashIcon fontSize={'large'} style={{transform: 'scale(2.8)'}} sx={{my: 4}}/>
-                </Typography>
-                <Typography variant={'h6'} fontWeight={'bold'} textAlign={'center'} sx={{mt: 2}}>
+            <Paper sx={{p: 4}} elevation={0} className={'promo-card-2'}>
+                <Typography variant={'h4'} fontWeight={'bold'} textAlign={'center'} sx={{mt: 2}}>
                     Purchase Your Next Car With Car Dealership Guy
                 </Typography>
                 <Typography variant={'body1'} textAlign={'center'} sx={{mt: 2, pb: 4}}>
@@ -107,11 +101,8 @@ export default function Home() {
         </Grid>
 
         const promoCard3 = <Grid item xs={4}>
-            <Paper sx={{pb: 2}} elevation={0} sx={{px: 2}}>
-                <Typography variant={'h5'} textAlign={'center'} sx={{pt: 4}}>
-                    <CarRentalIcon fontSize={'large'} style={{transform: 'scale(2.8)'}} sx={{my: 4}}/>
-                </Typography>
-                <Typography variant={'h6'} fontWeight={'bold'} textAlign={'center'} sx={{mt: 2}}>
+            <Paper sx={{p: 4}} elevation={0} className={'promo-card-3'}>
+                <Typography variant={'h4'} fontWeight={'bold'} textAlign={'center'} sx={{mt: 2}}>
                     Purchase Your Next Car With Car Dealership Guy
                 </Typography>
                 <Typography variant={'body1'} textAlign={'center'} sx={{mt: 2, pb: 4}}>
