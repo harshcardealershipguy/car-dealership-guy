@@ -27,11 +27,11 @@ body {
 
 
 .hero {
-    background-image: url("/hero6.jpg");
+    background-image: url("/hero8.webp");
     background-size: cover;
     background-position-x: center;
     background-position-y: top;
-    background-attachment: fixed;
+    /*background-attachment: fixed;*/
 }
 
 .blur-text {

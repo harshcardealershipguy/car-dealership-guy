@@ -11,7 +11,7 @@ export const ThankYouPage = () => {
                  justifyContent="center"
                  alignItems="center"
                  sx={{my: 4}}>
-                <Typography fontWeight={'bold'} variant={'h2'}>Thank you!</Typography>
+                <Typography fontWeight={'bold'} variant={'h2'}>All set!</Typography>
             </Box>
             <Box display="flex"
                  justifyContent="center"
