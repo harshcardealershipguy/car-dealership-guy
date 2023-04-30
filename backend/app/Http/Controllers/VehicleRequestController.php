@@ -27,7 +27,12 @@ class VehicleRequestController extends Controller
     }
 
     public function getVehicleRequest($externalId) {
-        return VehicleRequest::where('external_id', $externalId)->firstOrFail();
+        $vehicleRequest = VehicleRequest::where('external_id', $externalId)->firstOrFail();
+        $vehicleRequestUser = User::where('id', $vehicleRequest->user_id)->firstOrFail();
+
+        $vehicleRequest['user_external_id'] = $vehicleRequestUser->external_id;
+
+        return $vehicleRequest;
     }
 
     /**

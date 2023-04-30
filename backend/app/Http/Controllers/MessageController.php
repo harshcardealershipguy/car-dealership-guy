@@ -53,6 +53,7 @@ class MessageController extends Controller
                                LEFT JOIN users
                                ON  other_user_external_id = external_id
                            ) as aggregated_messages
+                           ORDER BY message_created_at DESC
                             "
                         , array('currentUser' => $currentUser));
 
