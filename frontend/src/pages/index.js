@@ -78,10 +78,10 @@ export default function Home() {
 
         const promoCard1 = <Grid item xs={4}>
             <Paper sx={{p: 4}} elevation={0} className={'promo-card-1'}>
-                <Typography variant={'h4'} fontWeight={'bold'} textAlign={'center'} sx={{mt: 2}}>
+                <Typography variant={'h4'} fontWeight={'bold'} textAlign={'center'} sx={{mt: 2}} color={'white'}>
                     Purchase Your Next Car With Car Dealership Guy
                 </Typography>
-                <Typography variant={'body1'} textAlign={'center'} sx={{mt: 2, pb: 4}}>
+                <Typography variant={'body1'} textAlign={'center'} sx={{mt: 2, pb: 4}} color={'white'}>
                     Get a great deal and a personalized experience, exclusively for members.
                 </Typography>
                 <Button variant={'contained'} size={'large'} sx={{mb: 4}} fullWidth>Sign Up Now</Button>
@@ -90,10 +90,10 @@ export default function Home() {
 
         const promoCard2 = <Grid item xs={4}>
             <Paper sx={{p: 4}} elevation={0} className={'promo-card-2'}>
-                <Typography variant={'h4'} fontWeight={'bold'} textAlign={'center'} sx={{mt: 2}}>
+                <Typography variant={'h4'} fontWeight={'bold'} textAlign={'center'} sx={{mt: 2}} color={'white'}>
                     Purchase Your Next Car With Car Dealership Guy
                 </Typography>
-                <Typography variant={'body1'} textAlign={'center'} sx={{mt: 2, pb: 4}}>
+                <Typography variant={'body1'} textAlign={'center'} sx={{mt: 2, pb: 4}} color={'white'}>
                     Get a great deal and a personalized experience, exclusively for members.
                 </Typography>
                 <Button variant={'contained'} size={'large'} sx={{mb: 4}} fullWidth>Sign Up Now</Button>
@@ -102,10 +102,10 @@ export default function Home() {
 
         const promoCard3 = <Grid item xs={4}>
             <Paper sx={{p: 4}} elevation={0} className={'promo-card-3'}>
-                <Typography variant={'h4'} fontWeight={'bold'} textAlign={'center'} sx={{mt: 2}}>
+                <Typography variant={'h4'} fontWeight={'bold'} textAlign={'center'} sx={{mt: 2}} color={'white'}>
                     Purchase Your Next Car With Car Dealership Guy
                 </Typography>
-                <Typography variant={'body1'} textAlign={'center'} sx={{mt: 2, pb: 4}}>
+                <Typography variant={'body1'} textAlign={'center'} sx={{mt: 2, pb: 4}} color={'white'}>
                     Get a great deal and a personalized experience, exclusively for members.
                 </Typography>
                 <Button variant={'contained'} size={'large'} sx={{mb: 4}} fullWidth>Sign Up Now</Button>

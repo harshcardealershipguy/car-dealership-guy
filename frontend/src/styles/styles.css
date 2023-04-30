@@ -38,21 +38,18 @@ body {
     background: url('/promo-background-1.webp');
     background-size: cover;
     background-position-y: center;
-    color: white;
 }
 
 .promo-card-2 {
     background: url('/promo-background-2.webp');
     background-size: cover;
     background-position-y: center;
-    color: white;
 }
 
 .promo-card-3 {
     background: url('/promo-background-3.webp');
     background-size: cover;
     background-position-y: center;
-    color: white;
 }
 
 .blur-text {
