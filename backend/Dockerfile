@@ -36,13 +36,14 @@ RUN set -eux; \
     composer install --prefer-dist --no-progress --no-suggest --no-autoloader --no-scripts --no-dev;  \
     composer clear-cache
 
-COPY . /var/www/backend/
+COPY --chown=www-data:www-data . /var/www/backend/
 
 RUN composer dump-autoload --no-dev --optimize
 
-RUN chown -R www-data:www-data /var/www
 USER www-data
 
+RUN chmod 705 bin/start.sh
 
+CMD ["bin/start.sh"]
 
 

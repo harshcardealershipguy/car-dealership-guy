@@ -1,5 +1,6 @@
 {
   "backendEnvironment": {
+    "CONTAINER_ROLE": "app",
     "APP_NAME": "Car Dealership Guy",
     "APP_ENV": "staging",
     "APP_DEBUG": "false",
@@ -16,6 +17,26 @@
     "SANCTUM_STATEFUL_DOMAINS": "staging.shop.dealershipguy.com",
     "AWS_BUCKET": "staging-cdg-images",
     "AWS_DEFAULT_REGION": "us-east-1"
+  },
+  "backendQueueWorkerEnvironment": {
+    "CONTAINER_ROLE": "worker",
+    "APP_NAME": "Car Dealership Guy",
+    "APP_ENV": "staging",
+    "APP_DEBUG": "false",
+    "APP_URL": "https://api.staging.shop.dealershipguy.com",
+    "FRONTEND_URL": "https://staging.shop.dealershipguy.com",
+    "LOG_CHANNEL": "stack",
+    "LOG_LEVEL": "info",
+    "DB_CONNECTION": "pgsql",
+    "DB_HOST": "cdg.clibsqkim8fp.us-east-1.rds.amazonaws.com",
+    "DB_PORT": "5432",
+    "DB_DATABASE": "cdg-staging",
+    "FILESYSTEM_DISK": "local",
+    "SESSION_DOMAIN": ".shop.dealershipguy.com",
+    "SANCTUM_STATEFUL_DOMAINS": "staging.shop.dealershipguy.com",
+    "AWS_BUCKET": "staging-cdg-images",
+    "AWS_DEFAULT_REGION": "us-east-1",
+    "QUEUE_CONNECTION": "database"
   },
   "frontendEnvironment": {
     "NODE_ENV": "production",

@@ -1,7 +1,7 @@
 import * as ec2 from "aws-cdk-lib/aws-ec2";
 import {IVpc, Peer, Port} from "aws-cdk-lib/aws-ec2";
 import * as ecs from "aws-cdk-lib/aws-ecs";
-import {LinuxParameters, LogDriver, Secret} from "aws-cdk-lib/aws-ecs";
+import {FargateService, ICluster, LinuxParameters, LogDriver, Secret} from "aws-cdk-lib/aws-ecs";
 import * as ecs_patterns from "aws-cdk-lib/aws-ecs-patterns";
 import * as cdk from 'aws-cdk-lib';
 import {Construct} from 'constructs';
@@ -17,6 +17,7 @@ export class CdgStack extends cdk.Stack {
   config : any;
   env : string;
   cert : Certificate;
+  cluster : ICluster;
 
   constructor(scope: Construct, env: string, stackId: string, config: any, props?: cdk.StackProps) {
     super(scope, stackId, props);
@@ -29,6 +30,7 @@ export class CdgStack extends cdk.Stack {
     const taskIamRole = this.createTaskIamRole();
     const linuxParameters = new LinuxParameters(this, 'linux_params', {initProcessEnabled: true})
     this.createBackendService(scope, vpc, taskIamRole, linuxParameters);
+    this.createBackendQueueWorkerService(scope, vpc, taskIamRole, linuxParameters);
     this.createFrontendService(scope, vpc, taskIamRole, linuxParameters);
   }
 
@@ -68,6 +70,51 @@ export class CdgStack extends cdk.Stack {
     const policy = new Policy(this, this.stackName + '-exec-role', {statements: [statement]});
     taskIamRole.attachInlinePolicy(policy);
     return taskIamRole;
+  }
+
+  createBackendQueueWorkerService(scope: Construct, vpc : IVpc, taskIamRole: cdk.aws_iam.Role, linuxParameters : LinuxParameters) {
+    const NAME_PREFIX = 'backend-queue-worker';
+
+    const taskDefinition = new ecs.FargateTaskDefinition(this, this.stackName + '-' + NAME_PREFIX + '-task-definition', {
+      taskRole: taskIamRole,
+      cpu: 256,
+      memoryLimitMiB: 512
+    });
+
+    // SECRETS
+    const secrets = SecretManager.fromSecretNameV2(this, this.stackName + 'secrets', this.config.awsSecretsManagerSecretName);
+
+    const secretsEnvVars = {
+      DB_USERNAME: Secret.fromSecretsManager(secrets, 'DB_USERNAME'),
+      DB_PASSWORD: Secret.fromSecretsManager(secrets, 'DB_PASSWORD'),
+      APP_KEY: Secret.fromSecretsManager(secrets, 'APP_KEY'),
+      AWS_ACCESS_KEY_ID: Secret.fromSecretsManager(secrets, 'AWS_ACCESS_KEY_ID'),
+      AWS_SECRET_ACCESS_KEY: Secret.fromSecretsManager(secrets, 'AWS_SECRET_ACCESS_KEY'),
+    };
+
+    const logConfiguration = LogDriver.awsLogs({streamPrefix: this.stackName + '-' + NAME_PREFIX});
+
+    taskDefinition.addContainer(this.stackName + '-' + NAME_PREFIX +  '-container', {
+      containerName: this.stackName + '-' + NAME_PREFIX + '-container',
+      environment: this.config.backendQueueWorkerEnvironment,
+      secrets: secretsEnvVars,
+      image: ecs.ContainerImage.fromAsset('../backend'),
+      memoryReservationMiB: 512,
+      cpu: 256,
+      logging: logConfiguration,
+      linuxParameters: linuxParameters
+    });
+
+    const queueProcessingFargateService : FargateService = new FargateService(this, this.stackName + '-' + NAME_PREFIX + "-service", {
+      taskDefinition: taskDefinition,
+      serviceName: this.stackName + '-' + NAME_PREFIX + "-service",
+      enableExecuteCommand: true,
+      cluster: this.cluster,
+      desiredCount: 1,
+    });
+
+    // const rdsSecurityGroup = ec2.SecurityGroup.fromLookupByName(this, this.stackName + '-rds-security-group', 'RDS Security Group', vpc);
+    // rdsSecurityGroup.addIngressRule(Peer.securityGroupId(albFargateService.service.connections.securityGroups[0].securityGroupId), Port.tcp(5432), '', true);
   }
 
   createBackendService(scope: Construct, vpc : IVpc, taskIamRole: cdk.aws_iam.Role, linuxParameters : LinuxParameters) {
@@ -131,10 +178,10 @@ export class CdgStack extends cdk.Stack {
       certificate: this.cert
     });
 
+    this.cluster = albFargateService.cluster;
+
     const rdsSecurityGroup = ec2.SecurityGroup.fromLookupByName(this, this.stackName + '-rds-security-group', 'RDS Security Group', vpc);
     rdsSecurityGroup.addIngressRule(Peer.securityGroupId(albFargateService.service.connections.securityGroups[0].securityGroupId), Port.tcp(5432), '', true);
-
-    albFargateService.loadBalancer
   }
 
   createFrontendService (scope: Construct, vpc : IVpc, taskIamRole: cdk.aws_iam.Role, linuxParameters : LinuxParameters) {
