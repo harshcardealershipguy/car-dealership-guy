@@ -111,6 +111,7 @@ export class CdgStack extends cdk.Stack {
       enableExecuteCommand: true,
       cluster: this.cluster,
       desiredCount: 1,
+      assignPublicIp: true,
     });
 
     // const rdsSecurityGroup = ec2.SecurityGroup.fromLookupByName(this, this.stackName + '-rds-security-group', 'RDS Security Group', vpc);
