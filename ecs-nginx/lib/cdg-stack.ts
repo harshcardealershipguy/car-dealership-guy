@@ -114,8 +114,8 @@ export class CdgStack extends cdk.Stack {
       assignPublicIp: true,
     });
 
-    // const rdsSecurityGroup = ec2.SecurityGroup.fromLookupByName(this, this.stackName + '-rds-security-group', 'RDS Security Group', vpc);
-    // rdsSecurityGroup.addIngressRule(Peer.securityGroupId(albFargateService.service.connections.securityGroups[0].securityGroupId), Port.tcp(5432), '', true);
+    const rdsSecurityGroup = ec2.SecurityGroup.fromLookupByName(this, this.stackName + '-rds-security-group', 'RDS Security Group', vpc);
+    rdsSecurityGroup.addIngressRule(Peer.securityGroupId(queueProcessingFargateService.connections.securityGroups[0].securityGroupId), Port.tcp(5432), '', true);
   }
 
   createBackendService(scope: Construct, vpc : IVpc, taskIamRole: cdk.aws_iam.Role, linuxParameters : LinuxParameters) {
