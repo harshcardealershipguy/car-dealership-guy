@@ -82,7 +82,7 @@ export class CdgStack extends cdk.Stack {
     });
 
     // SECRETS
-    const secrets = SecretManager.fromSecretNameV2(this, this.stackName + 'secrets', this.config.awsSecretsManagerSecretName);
+    const secrets = SecretManager.fromSecretNameV2(this, this.stackName + '-' + NAME_PREFIX + '-secrets', this.config.awsSecretsManagerSecretName);
 
     const secretsEnvVars = {
       DB_USERNAME: Secret.fromSecretsManager(secrets, 'DB_USERNAME'),
