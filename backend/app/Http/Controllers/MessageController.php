@@ -11,6 +11,9 @@ use App\Models\Role;
 use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Mail\NewMessage;
+use Illuminate\Support\Facades\Mail;
+
 
 class MessageController extends Controller
 {
@@ -71,6 +74,10 @@ class MessageController extends Controller
             'to_user_external_id' => $otherUserExternalId,
             'content' => $request->content
         ]);
+
+        $otherUser = User::where('external_id', '=', $otherUserExternalId)->firstOrFail();
+
+        Mail::to($otherUser)->queue(new NewMessage());
 
 
         return response()->noContent();

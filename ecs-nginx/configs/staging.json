@@ -36,7 +36,9 @@
     "SANCTUM_STATEFUL_DOMAINS": "staging.shop.dealershipguy.com",
     "AWS_BUCKET": "staging-cdg-images",
     "AWS_DEFAULT_REGION": "us-east-1",
-    "QUEUE_CONNECTION": "database"
+    "QUEUE_CONNECTION": "database",
+    "MAIL_MAILER": "ses",
+    "MAIL_FROM_ADDRESS": "no-reply@staging.shop.dealershipguy.com"
   },
   "frontendEnvironment": {
     "NODE_ENV": "production",
