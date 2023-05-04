@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
+use App\Mail\Welcome;
+use Illuminate\Support\Facades\Mail;
 
 
 class VehicleRequestController extends Controller
@@ -106,6 +108,8 @@ class VehicleRequestController extends Controller
             $user->addRole($customerRole);
 
             event(new Registered($user));
+
+            Mail::to($user)->queue(new Welcome());
 
             //TODO: log the user in?
         }

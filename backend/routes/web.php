@@ -26,4 +26,8 @@ Route::get('/health-check', function () {
     return response('OK ', 200);
 });
 
+Route::get('/mailable', function () {
+    return new App\Mail\Welcome();
+});
+
 require __DIR__.'/auth.php';

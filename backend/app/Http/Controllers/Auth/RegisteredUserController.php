@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use App\Models\Role;
 use Illuminate\Support\Str;
+use App\Mail\Welcome;
+use Illuminate\Support\Facades\Mail;
 
 class RegisteredUserController extends Controller
 {
@@ -41,6 +43,8 @@ class RegisteredUserController extends Controller
         $user->addRole($customerRole);
 
         event(new Registered($user));
+
+        Mail::to($user)->queue(new Welcome());
 
         Auth::login($user);
 

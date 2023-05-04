@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Models\Role;
 use Illuminate\Support\Str;
+use App\Mail\WelcomeDealer;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class DealerController extends Controller
 {
@@ -39,6 +42,8 @@ class DealerController extends Controller
             $user->addRole($dealerRole);
 
             event(new Registered($user));
+
+            Mail::to($user)->queue(new WelcomeDealer());
 
             Auth::login($user);
         }
