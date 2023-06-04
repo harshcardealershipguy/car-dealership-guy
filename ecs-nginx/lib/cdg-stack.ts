@@ -228,7 +228,7 @@ export class CdgStack extends cdk.Stack {
       protocol: ApplicationProtocol.HTTPS,
       redirectHTTP: true,
       loadBalancer: loadBalancer,
-      // certificate: this.cert //temporarily removed to use ALB hostname
+      certificate: this.cert
 
     });
   }
